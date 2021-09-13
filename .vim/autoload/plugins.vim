@@ -14,7 +14,7 @@ call plug#begin('~/.vim/plugged')
 
     " syntax highlighting
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-        lua <<EOF
+lua <<EOF
         require'nvim-treesitter.configs'.setup {
         ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
         ignore_install = { "javascript" }, -- List of parsers to ignore installing
@@ -26,9 +26,8 @@ call plug#begin('~/.vim/plugged')
             -- Using this option may slow down your editor, and you may see some duplicate highlights.
             -- Instead of true it can also be a list of languages
             additional_vim_regex_highlighting = false,
-        },
-        }
-        EOF
+        }}
+EOF
 
 
     " lsp config base

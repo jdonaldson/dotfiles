@@ -1,6 +1,3 @@
-" Require common plugins
-source ~/.vim/autoload/plug.vim
-source ~/.vim/autoload/plugins.vim
 
 " Default Command overrides
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -155,3 +152,7 @@ for _, lsp in ipairs(servers) do
 }
 end
 EOF
+
+" Require common plugins
+source ~/.vim/autoload/plug.vim
+source ~/.vim/autoload/plugins.vim

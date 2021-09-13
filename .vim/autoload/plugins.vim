@@ -8,7 +8,7 @@ call plug#begin('~/.vim/plugged')
         " Telescope
         " " Find files using Telescope command-line sugar.
         nnoremap <C-p> <cmd>Telescope find_files<cr>
-        nnoremap <leader><space> <cmd>Telescope live_grep<cr>
+        nmap <Leader><space> <cmd>Telescope live_grep<cr>
         nnoremap <C-b> <cmd>Telescope buffers<cr>
         nnoremap <C-t> <cmd>Telescope help_tags<cr>
 
@@ -58,3 +58,4 @@ EOF
 
 
 call plug#end()
+

@@ -1,0 +1,15 @@
+[core]
+	excludesfile = ~/.gitignore
+	quotepath = false
+	autocrlf = input
+	editor=nvim
+	pager = less -R
+[user]
+	name = Justin Donaldson
+	email = jdonaldson@gmail.com
+[github]
+        user = jdonaldson
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[url "ssh://git@git.soma.salesforce.com/"]
+	insteadOf = https://git.soma.salesforce.com/

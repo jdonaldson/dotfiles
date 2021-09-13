@@ -17,9 +17,13 @@ call plug#begin('~/.vim/plugged')
         Plug 'kyazdani42/nvim-web-devicons'
     Plug 'airblade/vim-gitgutter'
 
-    " TPope awesomeness
+    " Tim Pope's excellent hacks
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-commentary'
+
+
+    " Language stuff
+    Plug 'tpope/vim-markdown'
 
 
 call plug#end()

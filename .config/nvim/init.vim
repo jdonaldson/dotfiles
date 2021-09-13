@@ -99,38 +99,9 @@ nmap <silent><Leader>sh :nohlsearch<CR>
 " Reload current buffer
 nnoremap <leader>ee :edit!<cr>
 
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { "javascript" }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust" },  -- list of language that will be disabled
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
 
-require'lspconfig'.pyright.setup{}
-EOF
-
-
-" Telescope
-" " Find files using Telescope command-line sugar.
-nnoremap <C-p> <cmd>Telescope find_files<cr>
-nnoremap <leader><space> <cmd>Telescope live_grep<cr>
-nnoremap <C-b> <cmd>Telescope buffers<cr>
-nnoremap <C-t> <cmd>Telescope help_tags<cr>
 
  
-" vim-commentary
-xmap \\  <Plug>Commentary<CR>
-nmap \\  <CR><Plug>Commentary
-nmap \\\ <Plug>CommentaryLine<CR>
-nmap \\u <Plug>CommentaryUndo<CR>
 
 
 "nvim-lspconfig
@@ -173,7 +144,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright', 'rust_analyzer', 'tsserver' }
+local servers = { 'pyright','tsserver' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,

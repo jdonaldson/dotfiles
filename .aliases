@@ -1,0 +1,45 @@
+# Linux specific aliases, work on both MacOS and Linux.
+pbcopy() {
+	stdin=$(</dev/stdin);
+	pbcopy="$(which pbcopy)";
+	if [[ -n "$pbcopy" ]]; then
+		echo "$stdin" | "$pbcopy"
+	else
+		echo "$stdin" | xclip -selection clipboard
+	fi
+}
+pbpaste() {
+	pbpaste="$(which pbpaste)";
+	if [[ -n "$pbpaste" ]]; then
+		"$pbpaste"
+	else
+		xclip -selection clipboard
+	fi
+}
+
+# Check for various OS openers. Quit as soon as we find one that works.
+for opener in browser-exec xdg-open cmd.exe cygstart "start" open; do
+	if command -v $opener >/dev/null 2>&1; then
+		if [[ "$opener" == "cmd.exe" ]]; then
+			# shellcheck disable=SC2139
+			alias open="$opener /c start";
+		else
+			# shellcheck disable=SC2139
+			alias open="$opener";
+		fi
+		break;
+	fi
+done
+
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+	colorflag="--color"
+else # OS X `ls`
+	colorflag="-G"
+fi
+
+# Merge PDF files
+# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
+alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
+
+alias vim='nvim'

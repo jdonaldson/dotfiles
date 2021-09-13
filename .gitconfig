@@ -17,3 +17,5 @@
     nit = "!f() { git commit -m \"$@\" && git push; }; f"
 [push]
 	default = current
+[pull]
+	rebase = true

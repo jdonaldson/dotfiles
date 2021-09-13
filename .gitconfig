@@ -13,3 +13,7 @@
 	insteadOf = https://github.com/
 [url "ssh://git@git.soma.salesforce.com/"]
 	insteadOf = https://git.soma.salesforce.com/
+[alias]
+    nit = "!f() { git commit -m \"$@\" && git push; }; f"
+[push]
+	default = current

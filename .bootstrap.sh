@@ -1,6 +1,6 @@
 git clone --bare  git@github.com:jdonaldson/dotfiles.git $HOME/.dotfiles
 function dotfiles {
-   /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME $@
+   /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
 }
 mkdir -p .dotfiles-backup
 dotfiles checkout

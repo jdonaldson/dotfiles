@@ -43,7 +43,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'airblade/vim-gitgutter'
 
-    " TPope awesomeness
+    " Tim Pope's excellent hacks
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-commentary'
         " vim-commentary
@@ -52,6 +52,10 @@ call plug#begin('~/.vim/plugged')
         nmap \\\ <Plug>CommentaryLine<CR>
         nmap \\u <Plug>CommentaryUndo<CR>
 
+
+
+    " Language stuff
+    Plug 'tpope/vim-markdown'
 
 
 call plug#end()

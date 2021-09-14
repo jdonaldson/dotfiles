@@ -43,3 +43,17 @@ fi
 alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
 
 alias vim='nvim'
+
+# Deactivates conda before running brew. 
+# Re-activates conda if it was active upon completion.
+
+brew() {
+    local conda_env="$CONDA_DEFAULT_ENV"
+    while [ "$CONDA_SHLVL" -gt 0  ]; do
+        conda deactivate
+    done
+    command brew $@
+    local brew_status=$?
+    [ -n "${conda_env:+x}" ] && conda activate "$conda_env"
+    return "$brew_status"
+}

@@ -3,6 +3,8 @@ export LESS=eFRX
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
+source ~/miniconda3/bin/activate
+
 session_name="default"
 
 # 1. First you check if a tmux session exists with a given name.

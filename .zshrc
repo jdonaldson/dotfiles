@@ -1,9 +1,21 @@
 source ~/.aliases
 export LESS=eFRX
 
+maybeSource(){
+   test -f $1 && . $1
+}
+
+maybePath(){
+   test -d $1 && export PATH=$1:$PATH
+}
+
+maybePathAppend(){
+   test -d $1 && export PATH=$PATH:$1
+}
+
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-source ~/miniconda3/bin/activate
+maybeSource ~/miniconda3/bin/activate
 
 session_name="default"
 

@@ -11,6 +11,31 @@ call plug#begin('~/.vim/plugged')
         nmap <Leader><space> <cmd>Telescope live_grep<cr>
         nnoremap <C-b> <cmd>Telescope buffers<cr>
         nnoremap <C-t> <cmd>Telescope help_tags<cr>
+        
+    " Install nvim-cmp
+    Plug 'hrsh7th/nvim-cmp'
+        " Install snippet engine (This example installs [hrsh7th/vim-vsnip](https://github.com/hrsh7th/vim-vsnip))
+        Plug 'hrsh7th/vim-vsnip'
+        " Install the buffer completion source
+        Plug 'hrsh7th/cmp-buffer'
+lua <<EOF
+        local cmp = require'cmp'
+        cmp.setup({
+            snippet = {
+            expand = function(args)
+                vim.fn["vsnip#anonymous"](args.body)
+            end,
+            },
+            mapping = {
+            ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+            },
+            sources = {
+            { name = '...' },
+            ...
+            }
+        })
+EOF
+
 
     " syntax highlighting
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -71,7 +96,7 @@ lua << EOF
 
             -- Use a loop to conveniently call 'setup' on multiple servers and
             -- map buffer local keybindings when the language server attaches
-            local servers = { 'pyright','tsserver' }
+            local servers = { 'pyright', 'tsserver' }
             for _, lsp in ipairs(servers) do
             nvim_lsp[lsp].setup {
                 on_attach = on_attach,

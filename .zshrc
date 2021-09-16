@@ -15,7 +15,7 @@ maybePathAppend(){
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-maybeSource ~/miniconda3/bin/activate
+source ~/miniconda3/bin/activate
 
 session_name="default"
 

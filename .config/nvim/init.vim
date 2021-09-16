@@ -89,6 +89,9 @@ else
     au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
 
+" strip whitespace at end of line
+nnoremap <Leader>f$ :%s/\s\+$//<CR>:let @/=''<CR>
+
 " refresh screen
 nmap <silent><Leader>ss :redraw!<CR>
 " hide highlights from last search

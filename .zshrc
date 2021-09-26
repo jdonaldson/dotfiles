@@ -13,9 +13,9 @@ maybePathAppend(){
    test -d $1 && export PATH=$PATH:$1
 }
 
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
-source ~/miniconda3/bin/activate
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 session_name="default"
 
@@ -170,3 +170,19 @@ bindkey -M vicmd 'j' history-substring-search-down
 [[ ! -r /Users/justindonaldson/.opam/opam-init/init.zsh ]] || source /Users/justindonaldson/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 alias config='/usr/bin/git --git-dir=/Users/justindonaldson/.dotfiles/ --work-tree=/Users/justindonaldson'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

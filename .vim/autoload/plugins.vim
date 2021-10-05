@@ -12,6 +12,14 @@ call plug#begin('~/.vim/plugged')
         nnoremap <C-b> <cmd>Telescope buffers<cr>
         nnoremap <C-t> <cmd>Telescope help_tags<cr>
 
+    Plug 'jdonaldson/vim-pumpkinspice'
+
+    Plug 'lifepillar/vim-colortemplate'
+
+    Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+        let g:Hexokinase_highlighters = ['virtual']
+
+
     Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'
         Plug 'hrsh7th/cmp-buffer'
@@ -90,7 +98,7 @@ lua <<EOF
         ignore_install = { "javascript" }, -- List of parsers to ignore installing
         highlight = {
             enable = true,              -- false will disable the whole extension
-            disable = { "c", "rust" },  -- list of language that will be disabled
+            disable = { "c", "rust", "vim" },  -- list of language that will be disabled
             -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
             -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
             -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -162,6 +170,7 @@ EOF
     Plug 'airblade/vim-gitgutter'
 
     " Tim Pope's excellent hacks
+    Plug 'tpope/vim-vinegar'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-commentary'
         " vim-commentary

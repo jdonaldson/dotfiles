@@ -35,7 +35,6 @@ nmap <Leader>ep :e ~/.vim/autoload/plugins.vim<CR>
 autocmd BufWritePost ~/.config/nvim/lua/plugins.lua: !chezmoi add --source-path % <CR>
 autocmd BufWritePost $MYVIRMC: !chezmoi add --source-path % <CR>
 
-silent! colorscheme solarized8
 
 "BASIC OPTIONS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -112,3 +111,4 @@ set undofile " Maintain undo history between sessions
 source ~/.vim/autoload/plug.vim
 source ~/.vim/autoload/plugins.vim
 
+colorscheme pumpkinspice 

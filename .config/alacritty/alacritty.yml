@@ -180,6 +180,7 @@ colors:
   #
   indexed_colors: []
 
+
 # Visual Bell
 #
 # Any time the BEL code is received, Alacritty "rings" the visual bell. Once
@@ -389,7 +390,7 @@ url:
 #   - None
 #
 #   (macOS only):
-#   - ToggleSimpleFullscreen: Enters fullscreen without occupying another space
+#  - ToggleSimpleFullscreen: Enters fullscreen without occupying another space
 #
 # - `command`: Fork and execute a specified command plus arguments
 #
@@ -431,7 +432,7 @@ url:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # at once.
-#key_bindings:
+key_bindings:
 # (Windows, Linux, and BSD only)
 #- { key: V,        mods: Control|Shift, action: Paste            }
 #- { key: C,        mods: Control|Shift, action: Copy             }
@@ -458,7 +459,7 @@ url:
 #- { key: M,      mods: Command,         action: Minimize         }
 #- { key: Q,      mods: Command,         action: Quit             }
 #- { key: W,      mods: Command,         action: Quit             }
-#- { key: F,      mods: Command|Control, action: ToggleFullscreen }
+  - { key: Return,      mods: Command, action: ToggleFullscreen }
 
 #- { key: Paste,                    action: Paste                            }
 #- { key: Copy,                     action: Copy                             }

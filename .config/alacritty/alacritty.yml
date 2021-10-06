@@ -247,7 +247,7 @@ cursor:
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
-  program: /usr/local/bin/zsh
+  program: /bin/zsh
   args:
     - --login
 
@@ -255,7 +255,7 @@ shell:
 #
 # Directory the shell is started in. If this is unset, or `None`, the working
 # directory of the parent process will be used.
-working_directory: /Users/jdonaldson/Projects
+# working_directory: /Users/jdonaldson/Projects
 
 # WinPTY backend (Windows only)
 #
@@ -295,7 +295,7 @@ url:
   #   - (Linux/BSD) xdg-open
   #   - (Windows) explorer
   launcher:
-    program: xdg-open
+    program: open
     args: []
 # URL modifiers
 #

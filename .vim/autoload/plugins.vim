@@ -2,6 +2,7 @@ call plug#begin('~/.vim/plugged')
     " color
     Plug  'lifepillar/vim-solarized8'
 
+
     " finding stuff
     Plug 'nvim-telescope/telescope.nvim'
         Plug 'nvim-lua/plenary.nvim'
@@ -178,6 +179,10 @@ EOF
         nmap \\  <CR><Plug>Commentary
         nmap \\\ <Plug>CommentaryLine<CR>
         nmap \\u <Plug>CommentaryUndo<CR>
+
+    " Tim Pope's framework stuff
+    Plug 'tpope/vim-dadbod'
+    Plug 'kristijanhusak/vim-dadbod-ui'
 
 
 

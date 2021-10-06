@@ -77,16 +77,18 @@ set sw=4
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.sass-cache,*/_site/*
 
 set splitright "splits go to the right
+set termguicolors
 
 " autosave on lost focus
 au FocusLost * :wa
 
 " give a nice color column that helps show an 80 character width
 if exists('+colorcolumn')
-  set colorcolumn=80
+    set colorcolumn=80
 else
     au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 endif
+
 
 " strip whitespace at end of line
 nnoremap <Leader>f$ :%s/\s\+$//<CR>:let @/=''<CR>

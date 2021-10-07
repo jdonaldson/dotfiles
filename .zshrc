@@ -17,6 +17,8 @@ export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
+alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'
+
 session_name="default"
 
 # 1. First you check if a tmux session exists with a given name.

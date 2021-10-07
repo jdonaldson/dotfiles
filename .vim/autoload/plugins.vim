@@ -20,6 +20,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
         let g:Hexokinase_highlighters = ['virtual']
 
+    Plug 'preservim/nerdtree'
+        Plug 'Xuyuanp/nerdtree-git-plugin'
+
 
     Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'
@@ -179,6 +182,8 @@ EOF
         nmap \\  <CR><Plug>Commentary
         nmap \\\ <Plug>CommentaryLine<CR>
         nmap \\u <Plug>CommentaryUndo<CR>
+
+    Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
     " Tim Pope's framework stuff
     Plug 'tpope/vim-dadbod'

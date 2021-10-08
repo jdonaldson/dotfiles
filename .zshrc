@@ -15,6 +15,8 @@ maybePathAppend(){
 
 export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
+export PATH="/opt/homebrew/bin:$PATH"
+
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'

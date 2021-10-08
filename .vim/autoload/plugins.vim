@@ -15,6 +15,9 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'jdonaldson/vim-pumpkinspice'
 
+    Plug 'kdheepak/lazygit.nvim'
+        nnoremap <silent> <leader>lg :LazyGit<CR>
+
     Plug 'lifepillar/vim-colortemplate'
 
     Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }

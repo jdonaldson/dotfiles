@@ -26,6 +26,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'preservim/nerdtree'
         Plug 'Xuyuanp/nerdtree-git-plugin'
 
+    Plug 'sbdchd/neoformat'
+
 
     Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'

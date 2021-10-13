@@ -57,3 +57,8 @@ brew() {
     [ -n "${conda_env:+x}" ] && conda activate "$conda_env"
     return "$brew_status"
 }
+
+alias gs='git status'
+alias gu='git add -u && git status'
+alias gu='git reset -u && git status'
+alias gn='git commit -m \"$@\" && git push'

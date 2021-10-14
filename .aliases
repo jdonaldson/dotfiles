@@ -7,8 +7,7 @@ pbcopy() {
 	else
 		echo "$stdin" | xclip -selection clipboard
 	fi
-}
-pbpaste() {
+} pbpaste() {
 	pbpaste="$(which pbpaste)";
 	if [[ -n "$pbpaste" ]]; then
 		"$pbpaste"
@@ -62,3 +61,7 @@ alias gs='git status'
 alias gu='git add -u && git status'
 alias gu='git reset -u && git status'
 alias gn='git commit -m \"$@\" && git push'
+
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'

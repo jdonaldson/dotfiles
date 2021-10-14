@@ -25,7 +25,7 @@ tmux_conf_new_window_retain_current_path=false
 # new pane retains current path, possible values are:
 #   - true (default)
 #   - false
-tmux_conf_new_pane_retain_current_path=true
+tmux_conf_new_pane_retain_current_pth=true
 
 # new pane tries to reconnect ssh sessions (experimental), possible values are:
 #   - true
@@ -46,7 +46,6 @@ tmux_conf_new_session_prompt=false
 tmux_conf_24b_colour=false
 
 # default theme
-
 tmux_conf_theme_colour_1="#080808"    # dark gray
 tmux_conf_theme_colour_2="#303030"    # gray
 tmux_conf_theme_colour_3="#8a8a8a"    # light gray
@@ -191,11 +190,10 @@ tmux_conf_theme_window_status_last_bg="$tmux_conf_theme_colour_2"
 tmux_conf_theme_window_status_last_attr="none"
 
 # status left/right sections separators
-tmux_conf_theme_left_separator_main='\uE0B0'
-tmux_conf_theme_left_separator_sub='\uE0B1'
-tmux_conf_theme_right_separator_main='\uE0B2'
-tmux_conf_theme_right_separator_sub='\uE0B3'
-
+tmux_conf_theme_left_separator_main=""
+tmux_conf_theme_left_separator_sub="|"
+tmux_conf_theme_right_separator_main=""
+tmux_conf_theme_right_separator_sub="|"
 #tmux_conf_theme_left_separator_main='\uE0B0'  # /!\ you don't need to install Powerline
 #tmux_conf_theme_left_separator_sub='\uE0B1'   #   you only need fonts patched with
 #tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
@@ -332,7 +330,7 @@ tmux_conf_copy_to_os_clipboard=false
 #set -g history-limit 10000
 
 # start with mouse mode enabled
-set -g mouse on
+#set -g mouse on
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
@@ -347,7 +345,7 @@ set -g mouse on
 # bind C-a send-prefix
 
 # move status line to top
-set -g status-position top
+#set -g status-position top
 
 
 # -- tpm -----------------------------------------------------------------------
@@ -369,6 +367,17 @@ tmux_conf_update_plugins_on_launch=true
 #   - false
 tmux_conf_update_plugins_on_reload=true
 
+# by default, reloading the configuration will uninstall tpm and plugins when no
+# plugins are enabled
+#   - true (default)
+#   - false
+tmux_conf_uninstall_plugins_on_reload=true
+
+# /!\ the tpm bindings differ slightly from upstream:
+#   - installing plugins: <prefix> + I
+#   - uninstalling plugins: <prefix> + Alt + u
+#   - updating plugins: <prefix> + u
+
 # /!\ do not add set -g @plugin 'tmux-plugins/tpm'
 # /!\ do not add run '~/.tmux/plugins/tpm/tpm'
 
@@ -379,9 +388,6 @@ tmux_conf_update_plugins_on_reload=true
 #set -g @plugin 'tmux-plugins/tmux-resurrect'
 #set -g @plugin 'tmux-plugins/tmux-continuum'
 #set -g @continuum-restore 'on'
-
-set -g @plugin 'seebi/tmux-colors-solarized'
-set -g @colors-solarized 'dark'
 
 
 # -- custom variables ----------------------------------------------------------
@@ -409,34 +415,4 @@ set -g @colors-solarized 'dark'
 # }
 #
 # "$@"
-# # /!\ do not remove the previous line
-#
-#### COLOUR (Solarized 256)
-
-# default statusbar colors
-set-option -g status-style fg=colour136,bg=colour235 #yellow and base02
-
-# default window title colors
-set-window-option -g window-status-style fg=colour244,bg=default #base0 and default
-#set-window-option -g window-status-style dim
-
-# active window title colors
-set-window-option -g window-status-current-style fg=colour166,bg=default #orange and default
-#set-window-option -g window-status-current-style bright
-
-# pane border
-set-option -g pane-border-style fg=colour235 #base02
-set-option -g pane-active-border-style fg=colour240 #base01
-
-# message text
-set-option -g message-style fg=colour166,bg=colour235 #orange and base02
-
-# pane number display
-set-option -g display-panes-active-colour colour33 #blue
-set-option -g display-panes-colour colour166 #orange
-
-# clock
-set-window-option -g clock-mode-colour colour64 #green
-
-# bell
-set-window-option -g window-status-bell-style fg=colour235,bg=colour160 #base02, red
+# # /!\ do not remove the previous linea

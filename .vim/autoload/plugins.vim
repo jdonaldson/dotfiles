@@ -28,6 +28,9 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'sbdchd/neoformat'
 
+    " Plug 'ryanoasis/vim-devicons'
+    Plug 'kyazdani42/nvim-web-devicons'
+
 
     Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'
@@ -171,10 +174,10 @@ lua << EOF
 EOF
 
     " statusbar and gutter stuff
-    Plug 'hoob3rt/lualine.nvim',
-        Plug 'kyazdani42/nvim-web-devicons'
-        Plug 'ryanoasis/vim-devicons'
-        lua require('lualine').setup{options = {theme = 'solarized_dark'}}
+    " Plug 'hoob3rt/lualine.nvim',
+    "     Plug 'kyazdani42/nvim-web-devicons'
+    "     Plug 'ryanoasis/vim-devicons'
+    "     lua require('lualine').setup{options = {theme = 'solarized_dark'}}
 
     Plug 'airblade/vim-gitgutter'
 

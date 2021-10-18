@@ -106,4 +106,4 @@ set undofile " Maintain undo history between sessions
 source ~/.vim/autoload/plug.vim
 source ~/.vim/autoload/plugins.vim
 
-colorscheme pumpkinspice "
+colorscheme solarized8

@@ -24,6 +24,8 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'preservim/nerdtree'
         Plug 'Xuyuanp/nerdtree-git-plugin'
+        Plug 'kyazdani42/nvim-web-devicons'
+        Plug 'ryanoasis/vim-devicons'
 
     Plug 'sbdchd/neoformat'
 
@@ -174,10 +176,6 @@ lua << EOF
 
 EOF
 
-    " statusbar and gutter stuff
-    Plug 'romgrk/barbar.nvim'
-        Plug 'kyazdani42/nvim-web-devicons'
-        Plug 'ryanoasis/vim-devicons'
 '
 
     Plug 'airblade/vim-gitgutter'

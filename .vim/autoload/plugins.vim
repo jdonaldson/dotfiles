@@ -8,10 +8,9 @@ call plug#begin('~/.vim/plugged')
         Plug 'nvim-lua/plenary.nvim'
         " Telescope
         " " Find files using Telescope command-line sugar.
-        nnoremap <C-p> <cmd>Telescope find_files<cr>
+        nnoremap <Leader>o <cmd>Telescope find_files<cr>
         nmap <Leader><space> <cmd>Telescope live_grep<cr>
-        nnoremap <C-b> <cmd>Telescope buffers<cr>
-        nnoremap <C-t> <cmd>Telescope help_tags<cr>
+        nnoremap <Leader>g <cmd>Telescope git_status<cr>
 
     Plug 'jdonaldson/vim-pumpkinspice'
 
@@ -30,6 +29,8 @@ call plug#begin('~/.vim/plugged')
 
     " Plug 'ryanoasis/vim-devicons'
     Plug 'kyazdani42/nvim-web-devicons'
+
+    Plug 'luukvbaal/stabilize.nvim'
 
 
     Plug 'neovim/nvim-lspconfig'
@@ -98,8 +99,8 @@ lua <<EOF
             capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
         }
 EOF
-        
-        
+
+
 
 
     " syntax highlighting
@@ -155,7 +156,7 @@ lua << EOF
             buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
             buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
             buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-            buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+            -- buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
             end
 
@@ -174,10 +175,10 @@ lua << EOF
 EOF
 
     " statusbar and gutter stuff
-    " Plug 'hoob3rt/lualine.nvim',
-    "     Plug 'kyazdani42/nvim-web-devicons'
-    "     Plug 'ryanoasis/vim-devicons'
-    "     lua require('lualine').setup{options = {theme = 'solarized_dark'}}
+    Plug 'romgrk/barbar.nvim'
+        Plug 'kyazdani42/nvim-web-devicons'
+        Plug 'ryanoasis/vim-devicons'
+'
 
     Plug 'airblade/vim-gitgutter'
 

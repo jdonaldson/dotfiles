@@ -34,6 +34,11 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'luukvbaal/stabilize.nvim'
 
+    Plug 'vim-test/vim-test'
+    Plug 'rcarriga/vim-ultest', { 'do': ':UpdateRemotePlugins' }
+
+    Plug 'tpope/vim-surround'
+
 
     Plug 'neovim/nvim-lspconfig'
         Plug 'hrsh7th/cmp-nvim-lsp'

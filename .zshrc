@@ -15,7 +15,7 @@ maybePathAppend(){
 
 export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
-export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 
 
 session_name="default"
@@ -61,7 +61,7 @@ setopt HIST_IGNORE_ALL_DUPS
 bindkey -e
 
 # Prompt for spelling correction of commands.
-#setopt CORRECT
+setopt CORRECT
 
 # Customize spelling correction prompt.
 #SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '

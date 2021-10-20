@@ -8,14 +8,16 @@ call plug#begin('~/.vim/plugged')
         Plug 'nvim-lua/plenary.nvim'
         " Telescope
         " " Find files using Telescope command-line sugar.
-        nnoremap <Leader>o <cmd>Telescope find_files<cr>
         nmap <Leader><space> <cmd>Telescope live_grep<cr>
-        nnoremap <Leader>g <cmd>Telescope git_status<cr>
+        nnoremap <Leader>e <cmd>Telescope find_files<cr>
+        nnoremap <Leader>eo <cmd>Telescope find_files<cr>
+        nnoremap <Leader>eg <cmd>Telescope git_status<cr>
+        nnoremap <Leader>eg <cmd>Telescope git_status<cr>
 
     Plug 'jdonaldson/vim-pumpkinspice'
 
     Plug 'kdheepak/lazygit.nvim'
-        nnoremap <silent> <leader>lg :LazyGit<CR>
+        nnoremap <silent> <leader>gl :LazyGit<CR>
 
     Plug 'lifepillar/vim-colortemplate'
 
@@ -147,23 +149,24 @@ lua << EOF
             local opts = { noremap=true, silent=true }
 
             -- See `:help vim.lsp.*` for documentation on any of the below functions
-            buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-            buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-            buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-            buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-            buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-            buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-            buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-            buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-            buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-            buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-            buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-            buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-            buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+
+            buf_set_keymap('n', '<leader>law', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+            buf_set_keymap('n', '<leader>lbr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+            buf_set_keymap('n', '<leader>lca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+            buf_set_keymap('n', '<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+            buf_set_keymap('n', '<leader>lgD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+            buf_set_keymap('n', '<leader>lgd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+            buf_set_keymap('n', '<leader>lgi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+            buf_set_keymap('n', '<leader>lgr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+            buf_set_keymap('n', '<leader>lk', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+            buf_set_keymap('n', '<leader>llw', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+            buf_set_keymap('n', '<leader>lrw', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+            buf_set_keymap('n', '<leader>lsd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+            buf_set_keymap('n', '<leader>lsh', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+            buf_set_keymap('n', '<leader>lsl', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+            buf_set_keymap('n', '<leader>ltd', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
             buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
             buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-            buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-            -- buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
             end
 

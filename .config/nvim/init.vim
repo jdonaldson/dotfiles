@@ -24,12 +24,17 @@ nnoremap ; :
 " Bookmarks for configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" edit my vimrc
-nmap <Leader>ev :e $MYVIMRC<CR>
-" source my vimrc
-nmap <Leader>sv :source $MYVIMRC<CR>
 " edit my plugins configuration
 nmap <Leader>ep :e ~/.vim/autoload/plugins.vim<CR>
+
+" edit my vimrc
+nmap <Leader>ev :e $MYVIMRC<CR>
+
+" source my vimrc
+nmap <Leader>sv :source $MYVIMRC<CR>
+
+" git add the current file
+nmap <Leader>ga :silent exec "!git add %"<CR>
 
 " add vimrc/init.vim/plugins.lua with chezmoi if I change them
 autocmd BufWritePost ~/.config/nvim/lua/plugins.lua: !chezmoi add --source-path % <CR>

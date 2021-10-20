@@ -31,6 +31,25 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'sbdchd/neoformat'
 
+    Plug 'spinks/vim-leader-guide'
+        nnoremap <silent> <leader> :<c-u>LeaderGuide ',' <CR>
+        vnoremap <silent> <leader> :<c-u>LeaderGuideVisual ','<CR>
+        let g:leaderGuide_vertical = 1
+        let g:leaderGuide_display_plus_menus = 1
+        " Define prefix dictionary
+        " let g:lmap = {}
+
+        " " Simple command
+        " nnoremap <leader>s :up<CR>
+        " let g:lmap.s = 'save file'
+
+        " " A command with a special (<...>) key
+        " nnoremap <leader><Tab> :call feedkeys(":")<CR>
+        " let g:lmap['<Tab>'] = 'cmd'
+
+
+
+
     " Plug 'ryanoasis/vim-devicons'
     Plug 'kyazdani42/nvim-web-devicons'
 

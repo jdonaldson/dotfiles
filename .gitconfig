@@ -15,11 +15,11 @@
 	insteadOf = https://git.soma.salesforce.com/
 [alias]
     nit = "!f() { git commit -m \"$@\" && git push; }; f"
-	co = checkout
-	br = branch
-	ci = commit
-	st = status
-[push]
-	default = current
+    co = checkout
+    br = branch
+    ci = commit
+    s = status
+    u =  "!f() { git add -u && git status; }; f"
+    default = current
 [pull]
 	rebase = true

@@ -7,13 +7,31 @@ call plug#begin('~/.vim/plugged')
     Plug 'nvim-telescope/telescope.nvim'
         Plug 'nvim-lua/plenary.nvim'
         " Telescope
-        " " Find files using Telescope command-line sugar.
+        " Find just about anything
         nmap <Leader><space> <cmd>Telescope live_grep<cr>
-        nnoremap <Leader>e <cmd>Telescope find_files<cr>
-        nnoremap <Leader>eo <cmd>Telescope find_files<cr>
-        nnoremap <Leader>eg <cmd>Telescope git_status<cr>
-        nnoremap <Leader>eg <cmd>Telescope git_status<cr>
+        " Find files using Telescope command-line sugar.
+        nnoremap <Leader>o <cmd>Telescope find_files<cr>
+        " Find stuff in git
+        nnoremap <Leader>og <cmd>Telescope git_status<cr>
+        nnoremap <Leader>ogc <cmd>Telescope git_bcommits<cr>
+        nnoremap <Leader>ogC <cmd>Telescope git_commits<cr>
+        nnoremap <Leader>ogb <cmd>Telescope git_branches<cr>
+        nnoremap <Leader>ogs <cmd>Telescope git_stash<cr>
+        " Find stuff in LSP
+        nnoremap <Leader>olr <cmd>Telescope lsp_references<cr>
+        nnoremap <Leader>olds <cmd>Telescope lsp_document_symbols<cr>
+        nnoremap <Leader>olws <cmd>Telescope lsp_workspace_symbols<cr>
+        nnoremap <Leader>olca <cmd>Telescope lsp_code_actions<cr>
+        vnoremap <Leader>olca <cmd>Telescope lsp_range_code_actions<cr>
+        nnoremap <Leader>olD <cmd>Telescope lsp_document_diagnostics<cr>
+        nnoremap <Leader>olwd <cmd>Telescope lsp_workspace_diagnostics<cr>
+        nnoremap <Leader>oli <cmd>Telescope lsp_implementations<cr>
+        nnoremap <Leader>old <cmd>Telescope lsp_definitions<cr>
+        nnoremap <Leader>oltd <cmd>Telescope lsp_type_definitions<cr>
 
+
+
+    Plug 'triglav/vim-visual-increment'
     Plug 'jdonaldson/vim-pumpkinspice'
 
     Plug 'kdheepak/lazygit.nvim'

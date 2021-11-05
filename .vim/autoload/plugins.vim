@@ -247,6 +247,7 @@ EOF
         let g:db_ui_save_location = '~/.config/db_ui'
 
 
+    Plug 'beeender/Comrade'
 
     " Language stuff
     Plug 'tpope/vim-markdown'

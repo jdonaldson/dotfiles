@@ -259,5 +259,7 @@ EOF
         Plug 'honza/vim-snippets'
     Plug 'quangnguyen30192/cmp-nvim-ultisnips'
 
+    Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+
 call plug#end()
 

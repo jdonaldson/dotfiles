@@ -37,6 +37,8 @@ else
     tmux switch-client -t "$session_name"
 fi
 
+maybePath ~/.local/bin
+
 # Start configuration added by Zim install {{{
 #
 # User configuration sourced by interactive shells

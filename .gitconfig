@@ -23,3 +23,5 @@
     default = current
 [pull]
 	rebase = true
+[push]
+	default = current

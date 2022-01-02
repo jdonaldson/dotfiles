@@ -20,6 +20,11 @@ export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 maybePath ~/.local/bin
 
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
 session_name="default"
 
 # 1. First you check if a tmux session exists with a given name.
@@ -38,8 +43,6 @@ if [[ -z "$TMUX" ]]; then
 else
     tmux switch-client -t "$session_name"
 fi
-
-maybePath ~/.local/bin
 
 # Start configuration added by Zim install {{{
 #
@@ -190,3 +193,7 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

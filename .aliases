@@ -44,6 +44,9 @@ alias gu='git add -u && git status'
 alias gu='git reset -u && git status'
 alias gn='git commit -m \"$@\" && git push'
 
+alias lv=lvim
+alias le=lvim
+
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'

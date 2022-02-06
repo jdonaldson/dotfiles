@@ -1,7 +1,7 @@
 --[[
 lvim is the global options object
 
-Linters should be
+-- Linters should be
 filled in as strings with either
 a global executable or a path to
 an executable
@@ -43,6 +43,12 @@ lvim.keys.normal_mode[";"] = ":"
 
 -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+
+lvim.builtin.which_key.mappings["d"] = {
+  name = "+Dadbod",
+  d = { "<cmd>DBUIToggle<CR>", "ToggleUi" },
+  s = { "<Plug>(DBUI_ExecuteQuery)", "Execute Query" }
+}
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -149,15 +155,20 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- }
 
 -- Additional Plugins
--- lvim.plugins = {
---     {"folke/tokyonight.nvim"},
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
--- }
+ lvim.plugins = {
+     {'kristijanhusak/vim-dadbod-completion'},
+     {'kristijanhusak/vim-dadbod-ui'},
+     {'tpope/vim-dadbod'},
+     {'kdheepak/lazygit.nvim'},
+     {"folke/tokyonight.nvim"},
+     {
+       "folke/trouble.nvim",
+       cmd = "TroubleToggle",
+     },
+ }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
 -- }
+

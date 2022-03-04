@@ -49,6 +49,26 @@ lvim.builtin.which_key.mappings["d"] = {
   d = { "<cmd>DBUIToggle<CR>", "ToggleUi" },
   s = { "<Plug>(DBUI_ExecuteQuery)", "Execute Query" }
 }
+lvim.builtin.which_key.mappings["s"]["l"] = {
+  "<cmd>noh<CR>", "Disable Highlight"
+}
+
+
+
+
+lvim.builtin.which_key.mappings["b"] = {
+  name = "+Nvim-DAP",
+  c = { "<cmd>lua require'dap'.continue()<CR>", "Continue"},
+  n = { "<cmd>lua require'dap'.step_over()<CR>", "Step Over"},
+  i = { "<cmd>lua require'dap'.step_into()<CR>", "Step Into"},
+  o = { "<cmd>lua require'dap'.step_out()<CR>", "Step Out"},
+  b = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Toggle Breakpoint"},
+  r = { "<cmd>lua require'dap'.repl.open()<CR>", "Toggle Breakpoint"}
+}
+
+vim.api.nvim_set_keymap('n', 'f', '/', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'F', '<cmd>Telescope live_grep<cr>', { noremap = true, silent = true })
+
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -63,6 +83,7 @@ lvim.builtin.which_key.mappings["d"] = {
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
+lvim.builtin.dap.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
 
@@ -156,19 +177,46 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- Additional Plugins
  lvim.plugins = {
-     {'kristijanhusak/vim-dadbod-completion'},
-     {'kristijanhusak/vim-dadbod-ui'},
-     {'tpope/vim-dadbod'},
-     {'kdheepak/lazygit.nvim'},
-     {"folke/tokyonight.nvim"},
-     {
-       "folke/trouble.nvim",
-       cmd = "TroubleToggle",
-     },
- }
+    {'theHamsta/nvim-dap-virtual-text'},
+    {'nvim-telescope/telescope-dap.nvim'},
+    {'kristijanhusak/vim-dadbod-completion'},
+    {'kristijanhusak/vim-dadbod-ui'},
+    {'tpope/vim-dadbod'},
+    {'kdheepak/lazygit.nvim'},
+    {"folke/tokyonight.nvim"},
+    {'kevinhwang91/nvim-bqf', ft = 'qf'},
+    {
+     "folke/trouble.nvim",
+     cmd = "TroubleToggle",
+    },
+}
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
 -- }
-
+local dap = require('dap')
+dap.adapters.node2 = {
+  type = 'executable',
+  command = 'node',
+  args = {os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js'},
+}
+dap.configurations.typescript = {
+  {
+    name = 'Launch',
+    type = 'node2',
+    request = 'launch',
+    program = '${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
+  },
+  {
+    -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+    name = 'Attach to process',
+    type = 'node2',
+    request = 'attach',
+    processId = require'dap.utils'.pick_process,
+  },
+}

@@ -16,8 +16,10 @@ maybePathAppend(){
 export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
+export PATH=/opt/homebrew/bin:$PATH
 
 maybePath ~/.local/bin
+alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
 
 
 export NVM_DIR="$HOME/.nvm"

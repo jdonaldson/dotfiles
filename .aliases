@@ -27,9 +27,6 @@ alias lunar='lvim'
 alias vim='lvim'
 alias lv='lvim'
 
-alias dfs='dotfiles status'
-alias dfu='dotfiles add -u && dotfiles status'
-alias dfn='dotfiles commit -m \"$@\" && dotfiles push'
 
 # Deactivates conda before running brew. 
 # Re-activates conda if it was active upon completion.
@@ -54,5 +51,9 @@ alias lv=lvim
 alias le=lvim
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+alias dfs='dotfiles status'
+alias dfu='dotfiles add -u && dotfiles status'
+alias dfn='dotfiles commit -m \"$@\" && dotfiles push'
 
 alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'

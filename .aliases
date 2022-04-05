@@ -23,7 +23,13 @@ fi
 # Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
 alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
 
-alias vim='nvim'
+alias lunar='lvim'
+alias vim='lvim'
+alias lv='lvim'
+
+alias dfs='dotfiles status'
+alias dfu='dotfiles add -u && dotfiles status'
+alias dfn='dotfiles commit -m \"$@\" && dotfiles push'
 
 # Deactivates conda before running brew. 
 # Re-activates conda if it was active upon completion.
@@ -41,7 +47,7 @@ brew() {
 
 alias gs='git status'
 alias gu='git add -u && git status'
-alias gu='git reset -u && git status'
+alias gr='git reset -u && git status'
 alias gn='git commit -m \"$@\" && git push'
 
 alias lv=lvim

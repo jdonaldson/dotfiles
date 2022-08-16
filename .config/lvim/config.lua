@@ -17,6 +17,8 @@ lvim.colorscheme = "onedarker"
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<space>"] = "/"
+lvim.keys.normal_mode[";"] = ":"
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping

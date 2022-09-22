@@ -18,6 +18,8 @@ lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<space>"] = "/"
+lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
+
 lvim.keys.normal_mode[";"] = ":"
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
@@ -43,7 +45,7 @@ lvim.keys.normal_mode[";"] = ":"
 -- }
 
 -- Use which-key to add extra bindings with the leader-key prefix
--- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -53,6 +55,8 @@ lvim.keys.normal_mode[";"] = ":"
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
 -- }
+
+lvim.builtin.which_key.mappings["t"] = { "<cmd>25split | terminal<CR>", "Terminal" }
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -145,6 +149,9 @@ require("lvim.lsp.manager").setup("pyright", opts)
 -- }
 
 -- Additional Plugins
+lvim.plugins = {
+  { "tpope/vim-vinegar" },
+}
 -- lvim.plugins = {
 --     {"folke/tokyonight.nvim"},
 --     {

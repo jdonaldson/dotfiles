@@ -1,5 +1,5 @@
 --[[
-lvim is the global options object
+
 
 Linters should be
 filled in as strings with either
@@ -20,7 +20,11 @@ lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<space>"] = "/"
+lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
+lvim.keys.normal_mode["<C-f>"] = ":Telescope find_files<cr>"
 lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
+lvim.keys.normal_mode["<C-h>"] = ":NvimTreeToggle<cr>"
+lvim.keys.normal_mode["<C-j>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 
 lvim.keys.normal_mode[";"] = ":"
 -- unmap a default keymapping
@@ -57,8 +61,6 @@ lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Project
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
 -- }
-
-lvim.builtin.which_key.mappings["t"] = { "<cmd>25split | terminal<CR>", "Terminal" }
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -159,13 +161,16 @@ require("lvim.lsp.manager").setup("pyright", opts)
 -- Additional Plugins
 lvim.plugins = {
   { "tpope/vim-vinegar" },
-
-  { "folke/tokyonight.nvim" },
-  {
-    "folke/trouble.nvim",
-    cmd = "TroubleToggle",
-  },
+  { "da-moon/telescope-toggleterm.nvim" },
+  { "rinx/nvim-minimap" }
 }
+-- lvim.plugins = {
+--     {"folke/tokyonight.nvim"},
+--     {
+--       "folke/trouble.nvim",
+--       cmd = "TroubleToggle",
+--     },
+-- }
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },

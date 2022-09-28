@@ -21,6 +21,8 @@ export PATH=/opt/homebrew/bin:$PATH
 maybePath ~/.local/bin
 alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
 
+maybeSource ~/.apikeys
+
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -181,23 +183,13 @@ bindkey -M vicmd 'j' history-substring-search-down
 # opam configuration
 [[ ! -r /Users/justindonaldson/.opam/opam-init/init.zsh ]] || source /Users/justindonaldson/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
-
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+if [[ $(uname -m) == 'arm64' ]]; then
+  source $HOME/.zshrc_m1
+else
+  source $HOME/.zshrc_intel
+fi

@@ -12,6 +12,10 @@ for opener in browser-exec xdg-open cmd.exe cygstart "start" open; do
 	fi
 done
 
+fakescan() {
+ 	convert -density 300 $1 -alpha remove -rotate 0.33 -attenuate 0.30 +noise Multiplicative +repage -monochrome -compress group4 $1.scanned.pdf
+}
+
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"

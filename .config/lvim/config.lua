@@ -25,9 +25,10 @@ lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
 lvim.keys.normal_mode["<C-g>"] = ":Telescope git_status<cr>"
 lvim.keys.normal_mode["<C-m>"] = ":Telescope marks<cr>"
 lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
-lvim.keys.normal_mode["<C-h>"] = ":NvimTreeToggle<cr>"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
+lvim.keys.normal_mode["-"] = ":lua require'nvim-tree'.open_replacing_current_buffer()<cr>"
+
 
 lvim.keys.normal_mode[";"] = ":"
 -- unmap a default keymapping
@@ -58,6 +59,26 @@ lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Project
 lvim.builtin.which_key.mappings["m"] = {
   name = "+Marks",
   d = { ":delmarks!<CR>", "Delete Marks" }
+}
+
+require "nvim-tree".setup {
+  view = {
+    mappings = {
+      list = {
+        { key = "<CR>", action = "edit_in_place" }
+      }
+    }
+  }
+}
+
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Telescope",
+  n = { ":Telescope notify<CR>", "Telescope notify" },
+  gf = { ":Telescope git_files<CR>", "Telescope git_files" },
+  gc = { ":Telescope git_commits<CR>", "Telescope git_commits" },
+  gb = { ":Telescope git_branches<CR>", "Telescope git_branches" },
+  gs = { ":Telescope git_status<CR>", "Telescope git_status" },
+  s = { ":Telescope symbols<CR>", "Telescope symbols" },
 }
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
@@ -166,7 +187,6 @@ require("lvim.lsp.manager").setup("pyright", opts)
 
 -- Additional Plugins
 lvim.plugins = {
-  { "tpope/vim-vinegar" },
   { "da-moon/telescope-toggleterm.nvim" },
   { "rinx/nvim-minimap" },
   { "axelf4/vim-strip-trailing-whitespace" },

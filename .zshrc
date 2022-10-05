@@ -13,6 +13,13 @@ maybePathAppend(){
    test -d $1 && export PATH=$PATH:$1
 }
 
+if [[ $(uname -m) == 'arm64' ]]; then
+  source $HOME/.zshrc_m1
+else
+  source $HOME/.zshrc_intel
+fi
+
+
 export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
@@ -89,6 +96,7 @@ WORDCHARS=${WORDCHARS//[\/]}
 # Use degit instead of git as the default tool to install and update modules.
 #zstyle ':zim:zmodule' use 'degit'
 
+
 # --------------------
 # Module configuration
 # --------------------
@@ -114,6 +122,7 @@ WORDCHARS=${WORDCHARS//[\/]}
 
 # Append `../` to your input for each `.` you type after an initial `..`
 #zstyle ':zim:input' double-dot-expand yes
+
 
 #
 # termtitle
@@ -187,9 +196,19 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# fix whitespace in current git index
+fixws(){
+  if (! git diff-files --quiet .) && \
+     (! git diff-index --quiet --cached HEAD) ; then \
+    git commit -m FIXWS_SAVE_INDEX && \
+    git stash save FIXWS_SAVE_TREE && \
+    git rebase --whitespace=fix HEAD~ && \
+    git stash pop && \
+    git reset --soft HEAD~ ; \
+  elif (! git diff-index --quiet --cached HEAD) ; then \
+    git commit -m FIXWS_SAVE_INDEX && \
+    git rebase --whitespace=fix HEAD~ && \
+    git reset --soft HEAD~ ; \
+  fi
+}
 
-if [[ $(uname -m) == 'arm64' ]]; then
-  source $HOME/.zshrc_m1
-else
-  source $HOME/.zshrc_intel
-fi

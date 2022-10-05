@@ -8,6 +8,10 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
+
+local util = require("util")
+
+
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
@@ -36,6 +40,14 @@ lvim.keys.normal_mode[";"] = ":"
 -- edit a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
 
+local function toggle(mode, lhs, rhs, opts)
+  local options = { noremap = true }
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
+  end
+  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
+
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 -- local _, actions = pcall(require, "telescope.actions")
@@ -61,6 +73,7 @@ lvim.builtin.which_key.mappings["m"] = {
   d = { ":delmarks!<CR>", "Delete Marks" }
 }
 
+
 require "nvim-tree".setup {
   view = {
     mappings = {
@@ -71,8 +84,8 @@ require "nvim-tree".setup {
   }
 }
 
-lvim.builtin.which_key.mappings["t"] = {
-  name = "+Telescope",
+lvim.builtin.which_key.mappings["f"] = {
+  name = "+Find",
   n = { ":Telescope notify<CR>", "Telescope notify" },
   gf = { ":Telescope git_files<CR>", "Telescope git_files" },
   gc = { ":Telescope git_commits<CR>", "Telescope git_commits" },
@@ -80,6 +93,57 @@ lvim.builtin.which_key.mappings["t"] = {
   gs = { ":Telescope git_status<CR>", "Telescope git_status" },
   s = { ":Telescope symbols<CR>", "Telescope symbols" },
 }
+
+
+
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Toggle",
+  h = {
+    function()
+      util.toggle("hlsearch")
+    end,
+    "Highlight",
+  },
+  n = {
+    function()
+      util.toggle("relativenumber", true)
+    end,
+    "Line Numbers",
+  },
+  s = {
+    function()
+      util.toggle("spell")
+    end,
+    "Spelling",
+  },
+  w = {
+    function()
+      util.toggle("wrap")
+    end,
+    "Word Wrap",
+  },
+  c = {
+    function()
+      local updated = util.update("scrolloff", 999)
+      if not updated then
+        util.update("scrolloff", 8)
+      end
+    end,
+    "Centered",
+  },
+  x = {
+    function()
+      local vscode = require('vscode')
+      if vim.g.vscode_style == "dark" then
+        vscode.change_style("light")
+      else
+        vscode.change_style("dark")
+      end
+    end,
+    "Colorscheme"
+  }
+}
+
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -190,9 +254,15 @@ lvim.plugins = {
   { "da-moon/telescope-toggleterm.nvim" },
   { "rinx/nvim-minimap" },
   { "axelf4/vim-strip-trailing-whitespace" },
-  { "beauwilliams/focus.nvim" },
-  { "chentoast/marks.nvim" }
+  { "chentoast/marks.nvim" },
+  {
+    "beauwilliams/focus.nvim",
+    config = function()
+      require("focus").setup()
+    end,
+  },
 }
+
 -- lvim.plugins = {
 --     {"folke/tokyonight.nvim"},
 --     {

@@ -21,10 +21,13 @@ lvim.leader = ","
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<space>"] = "/"
 lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
-lvim.keys.normal_mode["<C-f>"] = ":Telescope find_files<cr>"
+lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
+lvim.keys.normal_mode["<C-g>"] = ":Telescope git_status<cr>"
+lvim.keys.normal_mode["<C-m>"] = ":Telescope marks<cr>"
 lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-h>"] = ":NvimTreeToggle<cr>"
-lvim.keys.normal_mode["<C-j>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
+lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
+lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
 
 lvim.keys.normal_mode[";"] = ":"
 -- unmap a default keymapping
@@ -52,6 +55,10 @@ lvim.keys.normal_mode[";"] = ":"
 
 -- Use which-key to add extra bindings with the leader-key prefix
 lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["m"] = {
+  name = "+Marks",
+  d = { ":delmarks!<CR>", "Delete Marks" }
+}
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -68,8 +75,7 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
-lvim.builtin.nvimtree.setup.view.side = "left"
--- lvim.builtin.nvimtree.show_icons.git = 0
+lvim.builtin.nvimtree.active = true
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -162,7 +168,10 @@ require("lvim.lsp.manager").setup("pyright", opts)
 lvim.plugins = {
   { "tpope/vim-vinegar" },
   { "da-moon/telescope-toggleterm.nvim" },
-  { "rinx/nvim-minimap" }
+  { "rinx/nvim-minimap" },
+  { "axelf4/vim-strip-trailing-whitespace" },
+  { "beauwilliams/focus.nvim" },
+  { "chentoast/marks.nvim" }
 }
 -- lvim.plugins = {
 --     {"folke/tokyonight.nvim"},

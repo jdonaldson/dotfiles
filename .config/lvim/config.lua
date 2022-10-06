@@ -40,14 +40,6 @@ lvim.keys.normal_mode[";"] = ":"
 -- edit a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
 
-local function toggle(mode, lhs, rhs, opts)
-  local options = { noremap = true }
-  if opts then
-    options = vim.tbl_extend("force", options, opts)
-  end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 -- local _, actions = pcall(require, "telescope.actions")
@@ -74,6 +66,7 @@ lvim.builtin.which_key.mappings["m"] = {
 }
 
 
+-- vinegar-style browsing
 require "nvim-tree".setup {
   view = {
     mappings = {
@@ -104,6 +97,7 @@ lvim.builtin.which_key.mappings["t"] = {
     end,
     "Highlight",
   },
+  m = { ":MinimapToggle<CR>", "Minimap", },
   n = {
     function()
       util.toggle("relativenumber", true)
@@ -131,17 +125,6 @@ lvim.builtin.which_key.mappings["t"] = {
     end,
     "Centered",
   },
-  x = {
-    function()
-      local vscode = require('vscode')
-      if vim.g.vscode_style == "dark" then
-        vscode.change_style("light")
-      else
-        vscode.change_style("dark")
-      end
-    end,
-    "Colorscheme"
-  }
 }
 
 -- lvim.builtin.which_key.mappings["t"] = {
@@ -255,6 +238,7 @@ lvim.plugins = {
   { "rinx/nvim-minimap" },
   { "axelf4/vim-strip-trailing-whitespace" },
   { "chentoast/marks.nvim" },
+  { "rmagatti/auto-session" },
   {
     "beauwilliams/focus.nvim",
     config = function()

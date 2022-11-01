@@ -79,7 +79,6 @@ require "nvim-tree".setup {
 
 lvim.builtin.which_key.mappings["f"] = {
   name = "+Find",
-  n = { ":Telescope notify<CR>", "Telescope notify" },
   gf = { ":Telescope git_files<CR>", "Telescope git_files" },
   gc = { ":Telescope git_commits<CR>", "Telescope git_commits" },
   gb = { ":Telescope git_branches<CR>", "Telescope git_branches" },
@@ -141,7 +140,6 @@ lvim.builtin.which_key.mappings["t"] = {
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
-lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.active = true
 

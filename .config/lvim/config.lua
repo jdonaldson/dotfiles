@@ -66,15 +66,8 @@ lvim.builtin.which_key.mappings["m"] = {
 }
 
 
--- vinegar-style browsing
-require "nvim-tree".setup {
-  view = {
-    mappings = {
-      list = {
-        { key = "<CR>", action = "edit_in_place" }
-      }
-    }
-  }
+lvim.builtin.nvimtree.setup.view.mappings.list = {
+  { key = "<CR>", action = "edit_in_place" }
 }
 
 lvim.builtin.which_key.mappings["f"] = {

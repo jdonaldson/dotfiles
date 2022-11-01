@@ -231,6 +231,10 @@ lvim.plugins = {
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
   {
+    "krivahtoo/silicon.nvim",
+    run = "./install.sh"
+  },
+  {
     "beauwilliams/focus.nvim",
     config = function()
       require("focus").setup()

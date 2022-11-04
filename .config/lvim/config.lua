@@ -12,6 +12,10 @@ an executable
 local util = require("util")
 
 
+vim.opt.colorcolumn = "79"
+
+
+
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
@@ -20,10 +24,10 @@ lvim.colorscheme = "onedarker"
 -- lvim.use_icons = false
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
-lvim.leader = ","
+-- lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<space>"] = "/"
+-- lvim.keys.normal_mode["<space>"] = "/"
 lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
 lvim.keys.normal_mode["<C-g>"] = ":Telescope git_status<cr>"
@@ -70,19 +74,20 @@ lvim.builtin.nvimtree.setup.view.mappings.list = {
   { key = "<CR>", action = "edit_in_place" }
 }
 
-lvim.builtin.which_key.mappings["f"] = {
-  name = "+Find",
-  gf = { ":Telescope git_files<CR>", "Telescope git_files" },
-  gc = { ":Telescope git_commits<CR>", "Telescope git_commits" },
-  gb = { ":Telescope git_branches<CR>", "Telescope git_branches" },
-  gs = { ":Telescope git_status<CR>", "Telescope git_status" },
-  s = { ":Telescope symbols<CR>", "Telescope symbols" },
+lvim.builtin.which_key.mappings["<space>"] = { ":Telescope current_buffer_fuzzy_find<CR>", "Telescope current buffer" }
+
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Telescope",
+  f    = { ":Telescope git_files<CR>", "Telescope git_files" },
+  c    = { ":Telescope git_commits<CR>", "Telescope git_commits" },
+  b    = { ":Telescope git_branches<CR>", "Telescope git_branches" },
+  s    = { ":Telescope git_status<CR>", "Telescope git_status" },
 }
 
 
 
-lvim.builtin.which_key.mappings["t"] = {
-  name = "+Toggle",
+lvim.builtin.which_key.mappings["o"] = {
+  name = "+Toggle On/Off",
   h = {
     function()
       util.toggle("hlsearch")
@@ -230,6 +235,7 @@ lvim.plugins = {
   { "axelf4/vim-strip-trailing-whitespace" },
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
+  { "tpope/vim-surround" },
   {
     "krivahtoo/silicon.nvim",
     run = "./install.sh"
@@ -252,4 +258,3 @@ lvim.plugins = {
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
--- }

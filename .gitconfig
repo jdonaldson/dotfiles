@@ -8,19 +8,17 @@
 	name = Justin Donaldson
 	email = jdonaldson@gmail.com
 [github]
-        user = jdonaldson
-; [url "ssh://git@github.com/"]
-; 	insteadOf = https://github.com/
-[url "ssh://git@git.soma.salesforce.com/"]
-	insteadOf = https://git.soma.salesforce.com/
+  user = jdonaldson
+[includeIf "gitdir:~/Projects/com/"]
+  path = ~/Projects/com/.gitconfig
 [alias]
-    nit = "!f() { git commit -m \"$@\" && git push; }; f"
-    co = checkout
-    br = branch
-    ci = commit
-    s = status
-    u =  "!f() { git add -u && git status; }; f"
-    default = current
+  nit = "!f() { git commit -m \"$@\" && git push; }; f"
+  co = checkout
+  br = branch
+  ci = commit
+  s = status
+  u =  "!f() { git add -u && git status; }; f"
+  default = current
 [pull]
 	rebase = true
 [push]

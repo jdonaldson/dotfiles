@@ -1,0 +1,4 @@
+[url "ssh://git@github.com/"]
+ 	insteadOf = https://github.com/
+[url "ssh://git@git.soma.salesforce.com/"]
+	insteadOf = https://git.soma.salesforce.com/

@@ -74,7 +74,6 @@ lvim.builtin.nvimtree.setup.view.mappings.list = {
   { key = "<CR>", action = "edit_in_place" }
 }
 
-lvim.builtin.which_key.mappings["<space>"] = { ":Telescope current_buffer_fuzzy_find<CR>", "Telescope current buffer" }
 
 lvim.builtin.which_key.mappings["t"] = {
   name = "+Telescope",
@@ -83,7 +82,6 @@ lvim.builtin.which_key.mappings["t"] = {
   b    = { ":Telescope git_branches<CR>", "Telescope git_branches" },
   s    = { ":Telescope git_status<CR>", "Telescope git_status" },
 }
-
 
 
 lvim.builtin.which_key.mappings["o"] = {

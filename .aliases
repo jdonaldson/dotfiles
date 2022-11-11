@@ -61,3 +61,6 @@ alias dfu='dotfiles add -u && dotfiles status'
 alias dfn='dotfiles commit -m \"$@\" && dotfiles push'
 
 alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'
+alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
+alias lst="ls -lt"
+

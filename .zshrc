@@ -26,7 +26,6 @@ export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 export PATH=/opt/homebrew/bin:$PATH
 
 maybePath ~/.local/bin
-alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
 
 maybeSource ~/.apikeys
 

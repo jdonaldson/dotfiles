@@ -24,10 +24,10 @@ lvim.colorscheme = "onedarker"
 -- lvim.use_icons = false
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
--- lvim.leader = ","
+lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
--- lvim.keys.normal_mode["<space>"] = "/"
+lvim.keys.normal_mode["<space>"] = "/"
 lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
 lvim.keys.normal_mode["<C-g>"] = ":Telescope git_status<cr>"

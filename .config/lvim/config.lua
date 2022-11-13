@@ -247,6 +247,7 @@ lvim.plugins = {
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
   { "tpope/vim-surround" },
+  { "brentyi/isort.vim" },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",

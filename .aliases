@@ -30,6 +30,7 @@ alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Re
 alias lunar='lvim'
 alias vim='lvim'
 alias lv='lvim'
+alias v='lvim'
 
 
 # Deactivates conda before running brew. 

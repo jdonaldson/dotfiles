@@ -9,8 +9,6 @@
 	email = jdonaldson@gmail.com
 [github]
   user = jdonaldson
-[url "ssh://git@github.com/"]
- 	insteadOf = https://github.com/
 [includeIf "gitdir:~/Projects/com/"]
   path = ~/Projects/com/.gitconfig
 [alias]

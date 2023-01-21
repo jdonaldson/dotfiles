@@ -7,7 +7,10 @@ a global executable or a path to
 an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
+
+
 local util = require("util")
+
 
 -- general
 lvim.log.level = "warn"
@@ -17,10 +20,10 @@ lvim.colorscheme = "lunar"
 -- lvim.use_icons = false
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
--- lvim.leader = "space"
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<C-b>"] = ":Neomake!<cr>"
 lvim.keys.normal_mode["<space>"] = "/"
 lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
@@ -62,7 +65,7 @@ lvim.keys.normal_mode[";"] = ":"
 -- lvim.builtin.theme.options.style = "storm"
 
 -- Use which-key to add extra bindings with the leader-key prefix
--- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -72,6 +75,7 @@ lvim.keys.normal_mode[";"] = ":"
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
+
 
 lvim.builtin.which_key.mappings["m"] = {
   name = "+Marks",
@@ -90,6 +94,7 @@ lvim.builtin.which_key.mappings["t"] = {
   c    = { ":Telescope git_commits<CR>", "Telescope git_commits" },
   b    = { ":Telescope git_branches<CR>", "Telescope git_branches" },
   s    = { ":Telescope git_status<CR>", "Telescope git_status" },
+  o    = { ":Telescope oldfiles<CR>", "Telescope oldfiles" },
 }
 
 
@@ -161,10 +166,10 @@ lvim.builtin.treesitter.highlight.enable = true
 -- generic LSP settings
 
 -- -- make sure server will always be installed even if the server is in skipped_servers list
--- lvim.lsp.installer.setup.ensure_installed = {
---     "sumneko_lua",
---     "jsonls",
--- }
+lvim.lsp.installer.setup.ensure_installed = {
+    "sumneko_lua",
+    "jsonls",
+}
 -- -- change UI setting of `LspInstallInfo`
 -- -- see <https://github.com/williamboman/nvim-lsp-installer#default-configuration>
 -- lvim.lsp.installer.setup.ui.check_outdated_servers_on_open = false
@@ -233,37 +238,7 @@ lvim.builtin.treesitter.highlight.enable = true
 --   },
 -- }
 
--- Additional Plugins
--- lvim.plugins = {
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
--- }
 
-lvim.plugins = {
-  { "da-moon/telescope-toggleterm.nvim" },
-  { "rinx/nvim-minimap" },
-  { "axelf4/vim-strip-trailing-whitespace" },
-  { "chentoast/marks.nvim" },
-  { "rmagatti/auto-session" },
-  { "tpope/vim-surround" },
-  { "brentyi/isort.vim" },
-  {
-    "folke/trouble.nvim",
-    cmd = "TroubleToggle",
-  },
-  {
-    "krivahtoo/silicon.nvim",
-    run = "./install.sh"
-  },
-  {
-    "beauwilliams/focus.nvim",
-    config = function()
-      require("focus").setup()
-    end,
-  },
-}
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
@@ -277,5 +252,29 @@ lvim.plugins = {
 --     require("nvim-treesitter.highlight").attach(0, "bash")
 --   end,
 -- })
---
---
+lvim.plugins = {
+  { "da-moon/telescope-toggleterm.nvim" },
+  { "rinx/nvim-minimap" },
+  { "axelf4/vim-strip-trailing-whitespace" },
+  { "chentoast/marks.nvim" },
+  { "rmagatti/auto-session" },
+  { "tpope/vim-surround" },
+  { "tpope/vim-fugitive" },
+  { "brentyi/isort.vim" },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  {
+    "krivahtoo/silicon.nvim",
+    run = "./install.sh"
+  },
+  {"aduros/ai.vim"},
+  { "neomake/neomake"},
+  {
+    "beauwilliams/focus.nvim",
+    config = function()
+      require("focus").setup()
+    end,
+  },
+}

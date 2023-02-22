@@ -23,7 +23,7 @@ lvim.colorscheme = "lunar"
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<C-b>"] = ":Neomake!<cr>"
+lvim.keys.normal_mode["<C-b>"] = ":make<cr>"
 lvim.keys.normal_mode["<space>"] = "/"
 lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
@@ -151,6 +151,7 @@ lvim.builtin.treesitter.ensure_installed = {
   "javascript",
   "json",
   "lua",
+  "markdown",
   "python",
   "typescript",
   "tsx",
@@ -258,9 +259,14 @@ lvim.plugins = {
   { "axelf4/vim-strip-trailing-whitespace" },
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
-  { "tpope/vim-surround" },
   { "tpope/vim-fugitive" },
   { "brentyi/isort.vim" },
+  {
+    "glacambre/firenvim",
+    run = function()
+      vim.fn['firenvim#install'](0)
+    end
+  },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -269,8 +275,33 @@ lvim.plugins = {
     "krivahtoo/silicon.nvim",
     run = "./install.sh"
   },
-  {"aduros/ai.vim"},
-  { "neomake/neomake"},
+  {"aduros/ai.vim",
+    config = function()
+      vim.g["ai_timeout"] = 100
+    end
+  },
+  -- {"luk400/vim-jukit"},
+  {"neomake/neomake"},
+  {"quarto-dev/quarto-nvim",
+   config = function()
+     require 'quarto'.setup {
+       lspFeatures = {
+         enabled = true,
+         languages = { 'r', 'python', 'julia' },
+         diagnostics = {
+           enabled = true,
+           triggers = { "BufWrite" }
+         },
+         completion = {
+           enabled = true
+         }
+       }
+     }
+   end
+  },
+   {"jmbuhr/otter.nvim"},
+  -- {"jmbuhr/tmux-kickstarter"},
+  -- {"jmbuhr/quarto-nvim-kickstarter"},
   {
     "beauwilliams/focus.nvim",
     config = function()

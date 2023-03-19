@@ -262,12 +262,6 @@ lvim.plugins = {
   { "tpope/vim-fugitive" },
   { "brentyi/isort.vim" },
   {
-    "glacambre/firenvim",
-    run = function()
-      vim.fn['firenvim#install'](0)
-    end
-  },
-  {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },

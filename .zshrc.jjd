@@ -1,0 +1,57 @@
+
+source ~/.aliases
+export LESS=eFRX
+
+maybeSource(){
+   test -f $1 && . $1
+}
+
+maybePath(){
+   test -d $1 && export PATH=$1:$PATH
+}
+
+maybePathAppend(){
+   test -d $1 && export PATH=$PATH:$1
+}
+
+if [[ $(uname -m) == 'arm64' ]]; then
+  source $HOME/.zshrc_m1
+else
+  source $HOME/.zshrc_intel
+fi
+
+
+export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
+
+export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
+export PATH=/opt/homebrew/bin:$PATH
+
+maybePath ~/.local/bin
+
+maybeSource ~/.apikeys
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+maybeSource ~/.comrcsh
+
+session_name="default"
+
+# 1. First you check if a tmux session exists with a given name.
+tmux has-session -t=$session_name 2> /dev/null
+
+# # 2. Create the session if it doesn't exists.
+
+if [[ $? -ne 0 ]]; then
+   TMUX='' tmux new-session -d -s "$session_name"
+fi
+
+#   # 3. Attach if outside of tmux, switch if you're in tmux.
+
+if [[ -z "$TMUX" ]]; then
+    tmux attach -t "$session_name"
+else
+    tmux switch-client -t "$session_name"
+fi

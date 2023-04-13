@@ -1,61 +1,3 @@
-source ~/.aliases
-export LESS=eFRX
-
-maybeSource(){
-   test -f $1 && . $1
-}
-
-maybePath(){
-   test -d $1 && export PATH=$1:$PATH
-}
-
-maybePathAppend(){
-   test -d $1 && export PATH=$PATH:$1
-}
-
-if [[ $(uname -m) == 'arm64' ]]; then
-  source $HOME/.zshrc_m1
-else
-  source $HOME/.zshrc_intel
-fi
-
-
-export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
-
-export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
-export PATH=/opt/homebrew/bin:$PATH
-
-maybePath ~/.local/bin
-
-maybeSource ~/.apikeys
-
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-maybeSource ~/.comrcsh
-
-
-session_name="default"
-
-# 1. First you check if a tmux session exists with a given name.
-tmux has-session -t=$session_name 2> /dev/null
-
-# # 2. Create the session if it doesn't exists.
-
-if [[ $? -ne 0 ]]; then
-   TMUX='' tmux new-session -d -s "$session_name"
-fi
-
-#   # 3. Attach if outside of tmux, switch if you're in tmux.
-
-if [[ -z "$TMUX" ]]; then
-    tmux attach -t "$session_name"
-else
-    tmux switch-client -t "$session_name"
-fi
-
 # Start configuration added by Zim install {{{
 #
 # User configuration sourced by interactive shells
@@ -80,7 +22,7 @@ setopt HIST_IGNORE_ALL_DUPS
 bindkey -e
 
 # Prompt for spelling correction of commands.
-setopt CORRECT
+#setopt CORRECT
 
 # Customize spelling correction prompt.
 #SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
@@ -95,18 +37,9 @@ WORDCHARS=${WORDCHARS//[\/]}
 # Use degit instead of git as the default tool to install and update modules.
 #zstyle ':zim:zmodule' use 'degit'
 
-
 # --------------------
 # Module configuration
 # --------------------
-
-#
-# completion
-#
-
-# Set a custom path for the completion dump file.
-# If none is provided, the default ${ZDOTDIR:-${HOME}}/.zcompdump is used.
-#zstyle ':zim:completion' dumpfile "${ZDOTDIR:-${HOME}}/.zcompdump-${ZSH_VERSION}"
 
 #
 # git
@@ -122,7 +55,6 @@ WORDCHARS=${WORDCHARS//[\/]}
 # Append `../` to your input for each `.` you type after an initial `..`
 #zstyle ':zim:input' double-dot-expand yes
 
-
 #
 # termtitle
 #
@@ -135,6 +67,10 @@ WORDCHARS=${WORDCHARS//[\/]}
 #
 # zsh-autosuggestions
 #
+
+# Disable automatic widget re-binding on each precmd. This can be set when
+# zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 
 # Customize the style that the suggestions are shown with.
 # See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
@@ -157,10 +93,22 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # Initialize modules
 # ------------------
 
+ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  if (( ${+commands[curl]} )); then
+    curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  else
+    mkdir -p ${ZIM_HOME} && wget -nv -O ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  fi
+fi
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
 if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
-  # Update static initialization script if it does not exist or it's outdated, before sourcing it
   source ${ZIM_HOME}/zimfw.zsh init -q
 fi
+# Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
 # ------------------------------
@@ -171,46 +119,14 @@ source ${ZIM_HOME}/init.zsh
 # zsh-history-substring-search
 #
 
-# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-# Bind up and down keys
 zmodload -F zsh/terminfo +p:terminfo
-if [[ -n ${terminfo[kcuu1]} && -n ${terminfo[kcud1]} ]]; then
-  bindkey ${terminfo[kcuu1]} history-substring-search-up
-  bindkey ${terminfo[kcud1]} history-substring-search-down
-fi
-
-bindkey '^P' history-substring-search-up
-bindkey '^N' history-substring-search-down
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
+# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
+for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
+for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
+for key ('k') bindkey -M vicmd ${key} history-substring-search-up
+for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+unset key
 # }}} End configuration added by Zim install
 
-# opam configuration
-[[ ! -r /Users/justindonaldson/.opam/opam-init/init.zsh ]] || source /Users/justindonaldson/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+source .zshrc.jjd
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# fix whitespace in current git index
-fixws(){
-  if (! git diff-files --quiet .) && \
-     (! git diff-index --quiet --cached HEAD) ; then \
-    git commit -m FIXWS_SAVE_INDEX && \
-    git stash save FIXWS_SAVE_TREE && \
-    git rebase --whitespace=fix HEAD~ && \
-    git stash pop && \
-    git reset --soft HEAD~ ; \
-  elif (! git diff-index --quiet --cached HEAD) ; then \
-    git commit -m FIXWS_SAVE_INDEX && \
-    git rebase --whitespace=fix HEAD~ && \
-    git reset --soft HEAD~ ; \
-  fi
-}
-
-export GOPATH=$(go env GOPATH)
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN

@@ -26,6 +26,9 @@ export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 export PATH=/opt/homebrew/bin:$PATH
 
+maybePath /opt/homebrew/anaconda3/bin
+
+
 maybePath ~/.local/bin
 
 maybeSource ~/.apikeys

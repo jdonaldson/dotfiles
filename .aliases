@@ -27,6 +27,18 @@ fi
 # Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
 alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
 
+alias ga="git add"
+alias gco="git checkout"
+alias gcob="git checkout -b"
+alias gb="git branch"
+alias gs="git status"
+alias gu= "!f() { git add -u && git status; }; f"
+
+alias dga="dotfiles add"
+alias dgb="dotfiles branch"
+alias dgs="dotfiles status"
+alias dgu="!f() { git add -u && git status; }; f"
+
 alias lunar='lvim'
 alias vim='lvim'
 alias lv='lvim'

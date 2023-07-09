@@ -36,13 +36,12 @@ maybePath ~/.cargo/bin
 maybeSource $HOME/.cargo/env
 
 maybeSource ~/.apikeys
+maybeSource ~/.comrc.sh
 
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-maybeSource ~/.comrcsh
 
 session_name="default"
 
@@ -62,3 +61,4 @@ if [[ -z "$TMUX" ]]; then
 else
     tmux switch-client -t "$session_name"
 fi
+

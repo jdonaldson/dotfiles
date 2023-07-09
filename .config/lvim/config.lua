@@ -32,7 +32,9 @@ lvim.keys.normal_mode["<C-m>"] = ":Telescope marks<cr>"
 lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
-lvim.keys.normal_mode["-"] = ":lua require'nvim-tree'.open_replacing_current_buffer()<cr>"
+lvim.keys.normal_mode["<CR>"] = ":Oil<CR>"
+lvim.keys.normal_mode["-"] = ":Oil<CR>"
+
 
 lvim.keys.normal_mode[";"] = ":"
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
@@ -65,7 +67,7 @@ lvim.keys.normal_mode[";"] = ":"
 -- lvim.builtin.theme.options.style = "storm"
 
 -- Use which-key to add extra bindings with the leader-key prefix
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+-- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 -- lvim.builtin.which_key.mappings["t"] = {
 --   name = "+Trouble",
 --   r = { "<cmd>Trouble lsp_references<cr>", "References" },
@@ -82,10 +84,6 @@ lvim.builtin.which_key.mappings["m"] = {
   d = { ":delmarks!<CR>", "Delete Marks" }
 }
 
-
-lvim.builtin.nvimtree.setup.view.mappings.list = {
-  { key = "<CR>", action = "edit_in_place" }
-}
 
 
 lvim.builtin.which_key.mappings["t"] = {
@@ -141,8 +139,6 @@ lvim.builtin.which_key.mappings["o"] = {
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
-lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -221,22 +217,22 @@ lvim.lsp.installer.setup.ensure_installed = {
 -- }
 
 -- -- set additional linters
--- local linters = require "lvim.lsp.null-ls.linters"
--- linters.setup {
---   { command = "flake8", filetypes = { "python" } },
---   {
---     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
---     command = "shellcheck",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--severity", "warning" },
---   },
---   {
---     command = "codespell",
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "javascript", "python" },
---   },
--- }
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+  { command = "ruff", filetypes = { "python" } },
+  {
+    -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+    command = "shellcheck",
+    ---@usage arguments to pass to the formatter
+    -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+    extra_args = { "--severity", "warning" },
+  },
+  {
+    command = "codespell",
+    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+    filetypes = { "javascript", "python" },
+  },
+}
 
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
@@ -253,13 +249,23 @@ lvim.lsp.installer.setup.ensure_installed = {
 --   end,
 -- })
 lvim.plugins = {
-  { "da-moon/telescope-toggleterm.nvim" },
+  -- { "da-moon/telescope-toggleterm.nvim" },
   { "rinx/nvim-minimap" },
   { "axelf4/vim-strip-trailing-whitespace" },
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
   { "tpope/vim-fugitive" },
+  { "stevearc/oil.nvim",
+    config = function()
+      require "oil".setup()
+    end
+  },
   { "brentyi/isort.vim" },
+  -- {'dart-lang/dart-vim-plugin'},
+  -- {'thosakwe/vim-flutter'},
+  -- {'natebosch/vim-lsc'},
+  -- {'natebosch/vim-lsc-dart'},
+  {'jackMort/ChatGPT.nvim'},
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -268,11 +274,11 @@ lvim.plugins = {
     "krivahtoo/silicon.nvim",
     build = "./install.sh"
   },
-  {"aduros/ai.vim",
-    config = function()
-      vim.g["ai_timeout"] = 100
-    end
-  },
+  -- {"aduros/ai.vim",
+  --   config = function()
+  --     vim.g["ai_timeout"] = 100
+  --   end
+  -- },
   -- {"luk400/vim-jukit"},
   {"neomake/neomake"},
   {"quarto-dev/quarto-nvim",

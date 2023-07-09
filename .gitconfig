@@ -6,7 +6,7 @@
 	pager = less -R
 [user]
 	name = Justin Donaldson
-	email = jdonaldson@gmail.com
+	email = justin@hush1one.com
 [github]
   user = jdonaldson
 [includeIf "gitdir:~/Projects/com/"]
@@ -14,10 +14,6 @@
 [alias]
   nit = "!f() { git commit -m \"$@\" && git push; }; f"
   co = checkout
-  br = branch
-  ci = commit
-  s = status
-  u =  "!f() { git add -u && git status; }; f"
   default = current
 [pull]
 	rebase = true
@@ -25,3 +21,8 @@
 	default = current
 ; [url "git@github.com:"]
 ; 	insteadOf = https://github.com/
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f

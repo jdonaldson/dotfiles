@@ -265,7 +265,12 @@ lvim.plugins = {
   -- {'thosakwe/vim-flutter'},
   -- {'natebosch/vim-lsc'},
   -- {'natebosch/vim-lsc-dart'},
-  {'jackMort/ChatGPT.nvim'},
+  {"MunifTanjim/nui.nvim"},
+  {'jackMort/ChatGPT.nvim',
+    config = function()
+      require("chatgpt").setup()
+    end,
+  },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",

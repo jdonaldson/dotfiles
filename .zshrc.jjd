@@ -14,8 +14,10 @@ maybePathAppend(){
 }
 
 if [[ $(uname -m) == 'arm64' ]]; then
+  echo "Loading Apple M1/M2 core environment"
   source $HOME/.zshrc_m1
 else
+  echo "Loading Intel environment"
   source $HOME/.zshrc_intel
 fi
 
@@ -24,10 +26,6 @@ export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 export PATH=/opt/homebrew/bin:$PATH
-
-maybePath /opt/homebrew/anaconda3/bin
-
-
 
 
 maybePath ~/.local/bin

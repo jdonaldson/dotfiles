@@ -33,11 +33,14 @@ alias gcob="git checkout -b"
 alias gb="git branch"
 alias gs="git status"
 alias gu= "!f() { git add -u && git status; }; f"
+alias gcm="git commit -m"
 
-alias dga="dotfiles add"
-alias dgb="dotfiles branch"
-alias dgs="dotfiles status"
-alias dgu="!f() { git add -u && git status; }; f"
+alias dfa="dotfiles add"
+alias dfb="dotfiles branch"
+alias dfs="dotfiles status"
+alias dfu="!f() { git add -u && git status; }; f"
+alias dfp="dotfiles push"
+alias dcm="dotfiles commit -m"
 
 alias lunar='lvim'
 alias vim='lvim'

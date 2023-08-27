@@ -257,7 +257,10 @@ lvim.plugins = {
   { "tpope/vim-fugitive" },
   { "stevearc/oil.nvim",
     config = function()
-      require "oil".setup()
+      require "oil".setup {
+        use_default_keymaps = false
+      }
+
     end
   },
   { "brentyi/isort.vim" },
@@ -313,3 +316,4 @@ lvim.plugins = {
     end,
   },
 }
+

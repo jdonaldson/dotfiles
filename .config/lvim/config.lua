@@ -32,8 +32,6 @@ lvim.keys.normal_mode["<C-m>"] = ":Telescope marks<cr>"
 lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
-lvim.keys.normal_mode["<CR>"] = ":Oil<CR>"
-lvim.keys.normal_mode["-"] = ":Oil<CR>"
 
 
 lvim.keys.normal_mode[";"] = ":"
@@ -255,14 +253,7 @@ lvim.plugins = {
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
   { "tpope/vim-fugitive" },
-  { "stevearc/oil.nvim",
-    config = function()
-      require "oil".setup {
-        use_default_keymaps = false
-      }
-
-    end
-  },
+  { "tpope/vim-vinegar" },
   { "brentyi/isort.vim" },
   -- {'dart-lang/dart-vim-plugin'},
   -- {'thosakwe/vim-flutter'},

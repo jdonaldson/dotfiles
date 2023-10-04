@@ -132,5 +132,4 @@ source ~/.zshrc.jjd
 
 # Use asdf
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
-source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
-eval "$(asdf exec direnv hook bash)"
+eval "$(asdf exec direnv hook zsh)"

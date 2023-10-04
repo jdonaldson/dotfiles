@@ -130,6 +130,5 @@ unset key
 
 source ~/.zshrc.jjd
 
-# Use asdf
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
-eval "$(asdf exec direnv hook zsh)"
+# direnv configuration
+eval "$(direnv hook zsh)"

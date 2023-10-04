@@ -22,14 +22,8 @@ endif
 
 ## Install basic environment
 environment:
-	brew install asdf
 	brew install direnv
-	asdf plugin-add direnv
-	asdf direnv setup --shell bash --version system
 
-## Clean environment
-clean:
-	rm -rf .asdf
 
 
 

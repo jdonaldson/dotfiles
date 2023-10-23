@@ -20,9 +20,13 @@ endif
 # COMMANDS                                                                      #
 #################################################################################
 
-## Install basic environment
+## Install basic brew environment
 environment:
-	brew install direnv
+	brew bundle install
+
+## Dump brew environment
+dump_environment:
+	brew bundle dump -f
 
 
 

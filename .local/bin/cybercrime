@@ -1,0 +1,16 @@
+# start the first program and fork it
+caffeinate &
+
+# store the process ID
+program_1_pid=$!
+
+
+
+# trap ctrl-c so that we can kill
+trap onexit INT
+function onexit() {
+  kill -9 $program_1_pid
+}
+
+# start the second program, don't fork it
+cmatrix

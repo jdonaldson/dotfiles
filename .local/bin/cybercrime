@@ -13,4 +13,4 @@ function onexit() {
 }
 
 # start the second program, don't fork it
-cmatrix
+cmatrix -C magenta

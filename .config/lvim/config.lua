@@ -199,20 +199,20 @@ lvim.lsp.installer.setup.ensure_installed = {
 -- end
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
--- local formatters = require "lvim.lsp.null-ls.formatters"
--- formatters.setup {
---   { command = "black", filetypes = { "python" } },
---   { command = "isort", filetypes = { "python" } },
---   {
---     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
---     command = "prettier",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--print-with", "100" },
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  { command = "black", filetypes = { "python" } },
+  { command = "isort", filetypes = { "python" } },
+  {
+    -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+    command = "prettier",
+    ---@usage arguments to pass to the formatter
+    -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+    extra_args = { "--print-with", "100" },
+    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+    filetypes = { "typescript", "typescriptreact" },
+  },
+}
 
 -- -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
@@ -273,13 +273,15 @@ lvim.plugins = {
     "krivahtoo/silicon.nvim",
     build = "./install.sh"
   },
-  -- {"aduros/ai.vim",
-  --   config = function()
-  --     vim.g["ai_timeout"] = 100
-  --   end
-  -- },
+  {"aduros/ai.vim",
+    config = function()
+      vim.g["ai_timeout"] = 100
+    end
+  },
+  {"zchee/vim-flatbuffers"},
   -- {"luk400/vim-jukit"},
   {"neomake/neomake"},
+  {"sbdchd/neoformat"},
   {"quarto-dev/quarto-nvim",
    config = function()
      require 'quarto'.setup {

@@ -1,4 +1,5 @@
 tap "homebrew/bundle"
+brew "cmatrix"
 brew "codespell"
 brew "direnv"
 brew "neovim"

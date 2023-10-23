@@ -28,6 +28,8 @@ fi
 alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
 
 alias ga="git add"
+alias gau="git add -u"
+alias gaa="git add -A"
 alias gco="git checkout"
 alias gcob="git checkout -b"
 alias gb="git branch"

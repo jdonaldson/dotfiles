@@ -6,7 +6,7 @@
 	pager = less -R
 [user]
 	name = Justin Donaldson
-	email = justin@hush1one.com
+	email = justin@hushh.ai
 [github]
   user = jdonaldson
 [includeIf "gitdir:~/Projects/com/"]
@@ -19,8 +19,6 @@
 	rebase = true
 [push]
 	default = current
-; [url "git@github.com:"]
-; 	insteadOf = https://github.com/
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
@@ -29,3 +27,5 @@
 
 [fetch]
   prune = true
+[url "ssh://git@github.com/"]
+  insteadOf = https://github.com/

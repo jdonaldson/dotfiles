@@ -116,6 +116,7 @@ lvim.builtin.which_key.mappings["o"] = {
     end,
     "Spelling",
   },
+  t = {":TransparentToggle<CR>", "Transparency"},
   w = {
     function()
       util.toggle("wrap")

@@ -15,7 +15,8 @@ local util = require("util")
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = false
-lvim.colorscheme = "lunar"
+-- lvim.colorscheme = "lunar"
+lvim.colorscheme = "tokyonight"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -255,6 +256,7 @@ lvim.plugins = {
   { "tpope/vim-fugitive" },
   { "tpope/vim-vinegar" },
   { "brentyi/isort.vim" },
+  { "xiyaowong/transparent.nvim" },
   -- {'dart-lang/dart-vim-plugin'},
   -- {'thosakwe/vim-flutter'},
   -- {'natebosch/vim-lsc'},

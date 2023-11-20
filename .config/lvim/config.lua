@@ -285,6 +285,7 @@ lvim.plugins = {
   -- {"luk400/vim-jukit"},
   {"neomake/neomake"},
   {"sbdchd/neoformat"},
+  {"gsuuon/llm.nvim"},
   {"quarto-dev/quarto-nvim",
    config = function()
      require 'quarto'.setup {
@@ -301,8 +302,10 @@ lvim.plugins = {
        }
      }
    end
+
   },
-   {"jmbuhr/otter.nvim"},
+  {"triglav/vim-visual-increment"},
+  {"jmbuhr/otter.nvim"},
   -- {"jmbuhr/tmux-kickstarter"},
   -- {"jmbuhr/quarto-nvim-kickstarter"},
   {

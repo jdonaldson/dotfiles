@@ -8,8 +8,8 @@ an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
-
 local util = require("util")
+vim.g.netrw_banner = 0
 
 
 -- general
@@ -34,8 +34,6 @@ lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
 lvim.keys.normal_mode["+"] = ":vsplit %:h/"
-vim.g.loaded_netrwPlugin = 0
-
 
 lvim.keys.normal_mode[";"] = ":"
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
@@ -257,37 +255,16 @@ lvim.plugins = {
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
   { "tpope/vim-fugitive" },
-  { "tpope/vim-vinegar" },
-  { "nvim-telescope/telescope-file-browser.nvim",
-    config = function()
-      require("telescope").setup {
-        extensions = {
-          file_browser = {
-            theme = "ivy",
-            -- disables netrw and use telescope-file-browser in its place
-            hijack_netrw = true,
-            mappings = {
-              ["i"] = {
-                -- your custom insert mode mappings
-              },
-              ["n"] = {
-                -- your custom normal mode mappings
-              },
-            },
-          },
-        },
-      }
-      require("telescope").load_extension "file_browser"
-    end
-  },
   { "brentyi/isort.vim" },
   { "xiyaowong/transparent.nvim" },
-  {"MunifTanjim/nui.nvim"},
-  {'jackMort/ChatGPT.nvim',
-    config = function()
-      require("chatgpt").setup()
-    end,
-  },
+  { "MunifTanjim/nui.nvim" },
+  { "tpope/vim-vinegar" },
+  { "prichrd/netrw.nvim" },
+  -- {'jackMort/ChatGPT.nvim',
+  --   config = function()
+  --     require("chatgpt").setup()
+  --   end,
+  -- },
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
@@ -296,11 +273,11 @@ lvim.plugins = {
     "krivahtoo/silicon.nvim",
     build = "./install.sh"
   },
-  {"aduros/ai.vim",
-    config = function()
-      vim.g["ai_timeout"] = 100
-    end
-  },
+  -- {"aduros/ai.vim",
+  --   config = function()
+  --     vim.g["ai_timeout"] = 100
+  --   end
+  -- },
   {"zchee/vim-flatbuffers"},
   -- {"luk400/vim-jukit"},
   {"neomake/neomake"},
@@ -324,7 +301,7 @@ lvim.plugins = {
    end
 
   },
-  {"triglav/vim-visual-increment"},
+  -- {"triglav/vim-visual-increment"},
   {"jmbuhr/otter.nvim"},
   -- {"jmbuhr/tmux-kickstarter"},
   -- {"jmbuhr/quarto-nvim-kickstarter"},

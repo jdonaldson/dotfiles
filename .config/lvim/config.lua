@@ -33,6 +33,8 @@ lvim.keys.normal_mode["<C-m>"] = ":Telescope marks<cr>"
 lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
+lvim.keys.normal_mode["+"] = ":vsplit %:h/"
+vim.g.loaded_netrwPlugin = 0
 
 
 lvim.keys.normal_mode[";"] = ":"
@@ -256,12 +258,30 @@ lvim.plugins = {
   { "rmagatti/auto-session" },
   { "tpope/vim-fugitive" },
   { "tpope/vim-vinegar" },
+  { "nvim-telescope/telescope-file-browser.nvim",
+    config = function()
+      require("telescope").setup {
+        extensions = {
+          file_browser = {
+            theme = "ivy",
+            -- disables netrw and use telescope-file-browser in its place
+            hijack_netrw = true,
+            mappings = {
+              ["i"] = {
+                -- your custom insert mode mappings
+              },
+              ["n"] = {
+                -- your custom normal mode mappings
+              },
+            },
+          },
+        },
+      }
+      require("telescope").load_extension "file_browser"
+    end
+  },
   { "brentyi/isort.vim" },
   { "xiyaowong/transparent.nvim" },
-  -- {'dart-lang/dart-vim-plugin'},
-  -- {'thosakwe/vim-flutter'},
-  -- {'natebosch/vim-lsc'},
-  -- {'natebosch/vim-lsc-dart'},
   {"MunifTanjim/nui.nvim"},
   {'jackMort/ChatGPT.nvim',
     config = function()

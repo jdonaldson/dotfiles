@@ -9,14 +9,15 @@ an executable
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
 
 local util = require("util")
-vim.g.netrw_banner = 0
 
 
 -- general
 lvim.log.level = "warn"
-lvim.format_on_save.enabled = false
+lvim.format_on_save.enabled = true
+lvim.format_on_save.pattern = { "*.py" }
+lvim.colorscheme = os.getenv("COLORSCHEME")
 -- lvim.colorscheme = "lunar"
-lvim.colorscheme = "tokyonight"
+-- lvim.colorscheme = "tokyonight"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -77,6 +78,13 @@ lvim.keys.normal_mode[";"] = ":"
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
 
+lvim.builtin.which_key.mappings["r"] = {
+    name = " Run",
+    p = {
+      "<cmd>TermExec cmd='python' open=0<CR><cmd>ToggleTermSendCurrentLine<CR><cmd>ToggleTerm<CR>",
+      "Python REPL",
+    }
+  }
 
 lvim.builtin.which_key.mappings["m"] = {
   name = "+Marks",
@@ -251,6 +259,7 @@ linters.setup {
 lvim.plugins = {
   -- { "da-moon/telescope-toggleterm.nvim" },
   { "rinx/nvim-minimap" },
+  { "edluffy/hologram.nvim" },
   { "axelf4/vim-strip-trailing-whitespace" },
   { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
@@ -259,7 +268,7 @@ lvim.plugins = {
   { "xiyaowong/transparent.nvim" },
   { "MunifTanjim/nui.nvim" },
   { "tpope/vim-vinegar" },
-  { "prichrd/netrw.nvim" },
+  { "fladson/vim-kitty" },
   -- {'jackMort/ChatGPT.nvim',
   --   config = function()
   --     require("chatgpt").setup()
@@ -311,5 +320,9 @@ lvim.plugins = {
       require("focus").setup()
     end,
   },
+  -- COLOR THEMES
+  { "tanvirtin/monokai.nvim" },
+  { "catppuccin/nvim" },
+  { "rebelot/kanagawa.nvim" },
+  { "ellisonleao/gruvbox.nvim" },
 }
-

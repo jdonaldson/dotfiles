@@ -1,6 +1,8 @@
 
-source ~/.aliases
-export LESS=eFRX
+source ~/.aliases export LESS=eFRX
+
+
+export XDG_CONFIG_HOME=~/.config
 
 maybeSource(){
    test -f $1 && . $1
@@ -68,3 +70,7 @@ fbd() {
   branch=$(echo "$branches" | fzf --multi ) &&
   git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
+export COLORSCHEME=monokai
+
+# kitten themes --reload-in=all dimmed $COLORSCHEME
+kitten themes --reload-in=all $COLORSCHEME

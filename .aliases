@@ -17,11 +17,13 @@ fakescan() {
 }
 
 # Detect which `ls` flavor is in use
-if ls --color > /dev/null 2>&1; then # GNU `ls`
-	colorflag="--color"
-else # OS X `ls`
-	colorflag="-G"
-fi
+# if ls --color > /dev/null 2>&1; then # GNU `ls`
+# 	colorflag="--color"
+# else # OS X `ls`
+# 	colorflag="-G"
+# fi
+#
+alias ls="lsd"
 
 # Merge PDF files
 # Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`

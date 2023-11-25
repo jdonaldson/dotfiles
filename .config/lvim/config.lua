@@ -334,4 +334,6 @@ lvim.plugins = {
   { "rebelot/kanagawa.nvim" },
   { "ellisonleao/gruvbox.nvim" },
   { "shaunsingh/nord.nvim" },
+  { "ericbn/vim-solarized" },
+  { "sainnhe/everforest" },
  }

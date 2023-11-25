@@ -71,7 +71,7 @@ fbd() {
   git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
-export COLORSCHEME="gruvbox dark"
+export COLORSCHEME="everforest dark hard"
 
 # kitten themes --reload-in=all dimmed $COLORSCHEME
 kitten themes --reload-in=all $COLORSCHEME

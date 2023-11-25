@@ -50,6 +50,7 @@ alias lunar='lvim'
 alias vim='lvim'
 alias lv='lvim'
 alias v='lvim'
+alias jjd="lvim ~/.zshrc.jjd"
 
 
 # Deactivates conda before running brew. 

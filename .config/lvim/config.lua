@@ -15,7 +15,15 @@ local util = require("util")
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = true
 lvim.format_on_save.pattern = { "*.py" }
-lvim.colorscheme = os.getenv("COLORSCHEME")
+
+local parts = vim.split(os.getenv("COLORSCHEME"):lower(), " ")
+lvim.colorscheme = parts[1]
+if parts[2] == "dark" then
+  vim.cmd("set background=dark")
+elseif parts[2] == "light" then
+  vim.cmd("set background=light")
+end
+
 -- lvim.colorscheme = "lunar"
 -- lvim.colorscheme = "tokyonight"
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -44,7 +52,7 @@ lvim.keys.normal_mode[";"] = ":"
 -- override a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>" -- or vim.keymap.set("n", "<C-q>", ":q<cr>" )
 
--- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
+-- Change Telescope navigation to use j and k for :setnavigation and n and p for history in both input and normal mode.
 -- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
 -- local _, actions = pcall(require, "telescope.actions")
 -- lvim.builtin.telescope.defaults.mappings = {
@@ -325,4 +333,5 @@ lvim.plugins = {
   { "catppuccin/nvim" },
   { "rebelot/kanagawa.nvim" },
   { "ellisonleao/gruvbox.nvim" },
-}
+  { "shaunsingh/nord.nvim" },
+ }

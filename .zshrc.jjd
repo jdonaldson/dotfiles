@@ -70,7 +70,8 @@ fbd() {
   branch=$(echo "$branches" | fzf --multi ) &&
   git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
-export COLORSCHEME=monokai
+
+export COLORSCHEME="gruvbox dark"
 
 # kitten themes --reload-in=all dimmed $COLORSCHEME
 kitten themes --reload-in=all $COLORSCHEME

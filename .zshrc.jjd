@@ -72,6 +72,7 @@ fbd() {
 }
 
 export COLORSCHEME="everforest dark hard"
+# export COLORSCHEME="solarized dark"
 
 # kitten themes --reload-in=all dimmed $COLORSCHEME
 kitten themes --reload-in=all $COLORSCHEME

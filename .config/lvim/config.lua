@@ -24,6 +24,8 @@ elseif parts[2] == "light" then
   vim.cmd("set background=light")
 end
 
+vim.g.transparent_enabled = true
+
 -- lvim.colorscheme = "lunar"
 -- lvim.colorscheme = "tokyonight"
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -336,4 +338,5 @@ lvim.plugins = {
   { "shaunsingh/nord.nvim" },
   { "ericbn/vim-solarized" },
   { "sainnhe/everforest" },
+  { "maxmx03/solarized.nvim" }
  }

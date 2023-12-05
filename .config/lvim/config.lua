@@ -338,5 +338,7 @@ lvim.plugins = {
   { "shaunsingh/nord.nvim" },
   { "ericbn/vim-solarized" },
   { "sainnhe/everforest" },
-  { "maxmx03/solarized.nvim" }
+  { "maxmx03/solarized.nvim" },
+  { "rainglow/vim" },
+  { "benlubas/molten-nvim"}
  }

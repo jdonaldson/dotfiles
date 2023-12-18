@@ -26,6 +26,43 @@ end
 
 vim.g.transparent_enabled = true
 
+
+-- python config
+lvim.builtin.dap.active = true
+local mason_path = vim.fn.glob(vim.fn.stdpath "data" .."/mason/")
+require("dap-python").setup(mason_path .. "pacakages/debugpy/venv/bin/python")
+
+-- setup testing
+require("neotest").setup({
+  adapters = {
+    require("neotest-python")({
+      -- Extra arguments for nvim-dap configuration
+      -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
+      dap = {
+        justMyCode = false,
+        console = "integratedTerminal",
+      },
+      args = { "--log-level", "DEBUG", "--quiet" },
+      runner = "pytest",
+    })
+  }
+})
+
+
+lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('neotest').run.run()<cr>",
+  "Test Method" }
+lvim.builtin.which_key.mappings["dM"] = { "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
+  "Test Method DAP" }
+lvim.builtin.which_key.mappings["df"] = {
+  "<cmd>lua require('neotest').run.run({vim.fn.expand('%')})<cr>", "Test Class" }
+lvim.builtin.which_key.mappings["dF"] = {
+  "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>", "Test Class DAP" }
+lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Test Summary" }
+
+
+
+
+
 -- lvim.colorscheme = "lunar"
 -- lvim.colorscheme = "tokyonight"
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -278,6 +315,9 @@ lvim.plugins = {
   { "xiyaowong/transparent.nvim" },
   { "MunifTanjim/nui.nvim" },
   { "tpope/vim-vinegar" },
+  { "mfussenegger/nvim-dap-python"},
+  { "nvim-neotest/neotest"},
+  { "nvim-neotest/neotest-python"},
   { "fladson/vim-kitty" },
   -- {'jackMort/ChatGPT.nvim',
   --   config = function()
@@ -301,7 +341,7 @@ lvim.plugins = {
   -- {"luk400/vim-jukit"},
   {"neomake/neomake"},
   {"sbdchd/neoformat"},
-  {"gsuuon/llm.nvim"},
+  {"huggingface/llm.nvim"},
   {"quarto-dev/quarto-nvim",
    config = function()
      require 'quarto'.setup {
@@ -342,3 +382,4 @@ lvim.plugins = {
   { "rainglow/vim" },
   { "benlubas/molten-nvim"}
  }
+

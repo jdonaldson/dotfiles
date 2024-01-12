@@ -306,6 +306,7 @@ linters.setup {
 lvim.plugins = {
   -- { "da-moon/telescope-toggleterm.nvim" },
   { "rinx/nvim-minimap" },
+  { "HakonHarnes/img-clip.nvim"},
   { "edluffy/hologram.nvim" },
   { "axelf4/vim-strip-trailing-whitespace" },
   { "chentoast/marks.nvim" },
@@ -315,7 +316,10 @@ lvim.plugins = {
   { "xiyaowong/transparent.nvim" },
   { "MunifTanjim/nui.nvim" },
   { "tpope/vim-vinegar" },
-  { "mfussenegger/nvim-dap-python"},
+  { "mfussenegger/nvim-dap-python", config = function()
+      require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+    end
+  },
   { "nvim-neotest/neotest"},
   { "nvim-neotest/neotest-python"},
   { "fladson/vim-kitty" },
@@ -341,7 +345,48 @@ lvim.plugins = {
   -- {"luk400/vim-jukit"},
   {"neomake/neomake"},
   {"sbdchd/neoformat"},
-  {"huggingface/llm.nvim"},
+  {"jdonaldson/ai.vim"},
+  {"huggingface/llm.nvim", config = function()
+      require('llm').setup({
+        api_token = nil, -- cf Install paragraph
+        model = "bigcode/starcoder", -- can be a model ID or an http(s) endpoint
+        tokens_to_clear = { "<|endoftext|>" }, -- tokens to remove from the model's output
+        -- parameters that are added to the request body
+        query_params = {
+          max_new_tokens = 60,
+          temperature = 0.2,
+          top_p = 0.95,
+          stop_tokens = nil,
+        },
+        -- set this if the model supports fill in the middle
+        fim = {
+          enabled = true,
+          prefix = "<fim_prefix>",
+          middle = "<fim_middle>",
+          suffix = "<fim_suffix>",
+        },
+        debounce_ms = 150,
+        accept_keymap = "<Tab>",
+        dismiss_keymap = "<S-Tab>",
+        tls_skip_verify_insecure = false,
+        -- llm-ls configuration, cf llm-ls section
+        lsp = {
+          bin_path = nil,
+          version = "0.4.0",
+        },
+        tokenizer = nil, -- cf Tokenizer paragraph
+        context_window = 8192, -- max number of tokens for the context window
+        enable_suggestions_on_startup = true,
+        enable_suggestions_on_files = "*", -- pattern matching syntax to enable suggestions on specific files, either a string or a list of strings
+      })
+    end
+  },
+  {'gsuuon/model.nvim', config = function()
+      require('model.providers.openai').initialize({
+          model = 'gpt-4'
+        })
+    end
+  },
   {"quarto-dev/quarto-nvim",
    config = function()
      require 'quarto'.setup {
@@ -380,6 +425,7 @@ lvim.plugins = {
   { "sainnhe/everforest" },
   { "maxmx03/solarized.nvim" },
   { "rainglow/vim" },
-  { "benlubas/molten-nvim"}
+  { "benlubas/molten-nvim"},
+  { "kdheepak/lazygit.nvim"}
  }
 

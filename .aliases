@@ -85,3 +85,4 @@ alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'
 alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
 alias lst="ls -lt"
 
+alias brewdeps='brew deps --formula --for-each $(brew leaves) | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'

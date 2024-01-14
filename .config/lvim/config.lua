@@ -29,24 +29,7 @@ vim.g.transparent_enabled = true
 
 -- python config
 lvim.builtin.dap.active = true
-local mason_path = vim.fn.glob(vim.fn.stdpath "data" .."/mason/")
-require("dap-python").setup(mason_path .. "pacakages/debugpy/venv/bin/python")
 
--- setup testing
-require("neotest").setup({
-  adapters = {
-    require("neotest-python")({
-      -- Extra arguments for nvim-dap configuration
-      -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
-      dap = {
-        justMyCode = false,
-        console = "integratedTerminal",
-      },
-      args = { "--log-level", "DEBUG", "--quiet" },
-      runner = "pytest",
-    })
-  }
-})
 
 
 lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('neotest').run.run()<cr>",
@@ -317,10 +300,28 @@ lvim.plugins = {
   { "MunifTanjim/nui.nvim" },
   { "tpope/vim-vinegar" },
   { "mfussenegger/nvim-dap-python", config = function()
-      require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+      local mason_path = vim.fn.glob(vim.fn.stdpath "data" .."/mason/")
+      require("dap-python").setup(mason_path .. "pacakages/debugpy/venv/bin/python")
     end
   },
-  { "nvim-neotest/neotest"},
+  { "nvim-neotest/neotest", config = function()
+    -- setup testing
+    require("neotest").setup({
+      adapters = {
+        require("neotest-python")({
+          -- Extra arguments for nvim-dap configuration
+          -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
+          dap = {
+            justMyCode = false,
+            console = "integratedTerminal",
+          },
+          args = { "--log-level", "DEBUG", "--quiet" },
+          runner = "pytest",
+        })
+      }
+    })
+  end
+  },
   { "nvim-neotest/neotest-python"},
   { "fladson/vim-kitty" },
   -- {'jackMort/ChatGPT.nvim',

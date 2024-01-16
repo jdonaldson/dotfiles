@@ -45,6 +45,21 @@ lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.t
 
 
 
+lvim.builtin.which_key.mappings["mm"] = { "<cmd>:Model<cr>",
+  "Execute Language Model" }
+
+lvim.builtin.which_key.mappings["mc"] = { "<cmd>:MChat<cr>",
+  "Chat with Language Model" }
+
+lvim.builtin.which_key.mappings["mx"] = { "<cmd>:MCancel<cr>",
+  "Cancel Language Model" }
+
+lvim.builtin.which_key.mappings["me"] = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>",
+  "Edit Custom Language Model Prompts" }
+
+lvim.builtin.which_key.mappings["ms"] = { "<cmd>:MSelect<cr>",
+  "Select Language Model Output" }
+
 
 -- lvim.colorscheme = "lunar"
 -- lvim.colorscheme = "tokyonight"
@@ -60,7 +75,6 @@ lvim.keys.normal_mode["<space>"] = "/"
 lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
 lvim.keys.normal_mode["<C-g>"] = ":Telescope git_status<cr>"
-lvim.keys.normal_mode["<C-m>"] = ":Telescope marks<cr>"
 lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
@@ -116,10 +130,6 @@ lvim.builtin.which_key.mappings["r"] = {
     }
   }
 
-lvim.builtin.which_key.mappings["m"] = {
-  name = "+Marks",
-  d = { ":delmarks!<CR>", "Delete Marks" }
-}
 
 
 
@@ -292,7 +302,6 @@ lvim.plugins = {
   { "HakonHarnes/img-clip.nvim"},
   { "edluffy/hologram.nvim" },
   { "axelf4/vim-strip-trailing-whitespace" },
-  { "chentoast/marks.nvim" },
   { "rmagatti/auto-session" },
   { "tpope/vim-fugitive" },
   { "brentyi/isort.vim" },
@@ -346,7 +355,6 @@ lvim.plugins = {
   -- {"luk400/vim-jukit"},
   {"neomake/neomake"},
   {"sbdchd/neoformat"},
-  {"jdonaldson/ai.vim"},
   {"huggingface/llm.nvim", config = function()
       require('llm').setup({
         api_token = nil, -- cf Install paragraph
@@ -406,6 +414,7 @@ lvim.plugins = {
    end
 
   },
+  { "tpope/vim-fugitive"},
   -- {"triglav/vim-visual-increment"},
   {"jmbuhr/otter.nvim"},
   -- {"jmbuhr/tmux-kickstarter"},
@@ -427,6 +436,5 @@ lvim.plugins = {
   { "maxmx03/solarized.nvim" },
   { "rainglow/vim" },
   { "benlubas/molten-nvim"},
-  { "kdheepak/lazygit.nvim"}
  }
 

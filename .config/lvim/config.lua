@@ -48,10 +48,10 @@ lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.t
 lvim.builtin.which_key.mappings["mm"] = { "<cmd>:Model<cr>",
   "Execute Language Model" }
 
-lvim.builtin.which_key.mappings["mc"] = { "<cmd>:MChat<cr>",
+lvim.builtin.which_key.mappings["mc"] = { "<cmd>:Mchat<cr>",
   "Chat with Language Model" }
 
-lvim.builtin.which_key.mappings["mx"] = { "<cmd>:MCancel<cr>",
+lvim.builtin.which_key.mappings["mx"] = { "<cmd>:Mcancel<cr>",
   "Cancel Language Model" }
 
 lvim.builtin.which_key.mappings["me"] = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>",
@@ -356,6 +356,11 @@ lvim.plugins = {
   {"neomake/neomake"},
   {"sbdchd/neoformat"},
   {"huggingface/llm.nvim", config = function()
+    vim.api.nvim_create_autocmd("FileType",
+    { pattern="mchat",
+      command="set nofoldenable"
+    })
+
       require('llm').setup({
         api_token = nil, -- cf Install paragraph
         model = "bigcode/starcoder", -- can be a model ID or an http(s) endpoint

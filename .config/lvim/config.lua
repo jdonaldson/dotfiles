@@ -1,5 +1,5 @@
 --[[
-lvim is the global options object
+lv is the global options object
 
 Linters should be
 filled in as strings with either
@@ -15,6 +15,7 @@ local util = require("util")
 lvim.log.level = "warn"
 lvim.format_on_save.enabled = true
 lvim.format_on_save.pattern = { "*.py" }
+vim.cmd("set nofoldenable")
 
 local parts = vim.split(os.getenv("COLORSCHEME"):lower(), " ")
 lvim.colorscheme = parts[1]
@@ -44,21 +45,20 @@ lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.t
 
 
 
+lvim.builtin.which_key.mappings["m"] = {
+  name = "+Model.nvim",
+  n = {"<cmd>:Model code<CR>", "Insert Code Completion" },
+  x = {"<cmd>:Mcancel<CR>", "Cancel Model Completion"},
+  e = {
+    name = "+Edit Prompts",
+    p = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>", "Edit Prompts"},
+    c = { "<cmd>:edit ~/.config/lvim/lua/util/chats.lua<cr>", "Edit Chats"},
+  },
+  o = {"<cmd>Mchat openai<cr><cmd>w openai.mchat<cr>", "Open Chat"},
+  c = {"<cmd>Mchat<CR>", "Invoke Chat"}
 
-lvim.builtin.which_key.mappings["mm"] = { "<cmd>:Model<cr>",
-  "Execute Language Model" }
+}
 
-lvim.builtin.which_key.mappings["mc"] = { "<cmd>:Mchat<cr>",
-  "Chat with Language Model" }
-
-lvim.builtin.which_key.mappings["mx"] = { "<cmd>:Mcancel<cr>",
-  "Cancel Language Model" }
-
-lvim.builtin.which_key.mappings["me"] = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>",
-  "Edit Custom Language Model Prompts" }
-
-lvim.builtin.which_key.mappings["ms"] = { "<cmd>:MSelect<cr>",
-  "Select Language Model Output" }
 
 
 -- lvim.colorscheme = "lunar"
@@ -70,7 +70,7 @@ lvim.builtin.which_key.mappings["ms"] = { "<cmd>:MSelect<cr>",
 lvim.leader = ","
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<C-b>"] = ":make<cr>"
+-- lvim.keys.normal_mode["<C-b>"] = ":make<cr>"
 lvim.keys.normal_mode["<space>"] = "/"
 lvim.keys.normal_mode["<C-space>"] = ":Telescope live_grep<cr>"
 lvim.keys.normal_mode["<C-p>"] = ":Telescope find_files<cr>"
@@ -143,7 +143,7 @@ lvim.builtin.which_key.mappings["t"] = {
 }
 
 
-lvim.builtin.which_key.mappings["o"] = {
+lvim.builtin.which_key.mappings["x"] = {
   name = "+Toggle On/Off",
   h = {
     function()
@@ -353,70 +353,54 @@ lvim.plugins = {
   -- },
   {"zchee/vim-flatbuffers"},
   -- {"luk400/vim-jukit"},
-  {"neomake/neomake"},
-  {"sbdchd/neoformat"},
-  {"huggingface/llm.nvim", config = function()
-    vim.api.nvim_create_autocmd("FileType",
-    { pattern="mchat",
-      command="set nofoldenable"
+
+  {"gsuuon/model.nvim", config = function()
+    local ollama = require("model.providers.ollama")
+    local prompts = require('util.prompts')
+    local chats = require('model.prompts.chats')
+    require("model").setup({
+      hl_group = "Comment",
+      prompts = prompts,
+      chats = chats,
+      default_prompt = {
+        provider = ollama,
+        builder = function(input)
+          return {
+            model = "codellama",
+            temperature = 0.3,
+            max_tokens = 400,
+            messages = {
+              {
+                role = "system",
+                content = "You are helpful assistant.",
+              },
+              { role = "user", content = input },
+            },
+          }
+        end,
+      },
     })
 
-      require('llm').setup({
-        api_token = nil, -- cf Install paragraph
-        model = "bigcode/starcoder", -- can be a model ID or an http(s) endpoint
-        tokens_to_clear = { "<|endoftext|>" }, -- tokens to remove from the model's output
-        -- parameters that are added to the request body
-        query_params = {
-          max_new_tokens = 60,
-          temperature = 0.2,
-          top_p = 0.95,
-          stop_tokens = nil,
-        },
-        -- set this if the model supports fill in the middle
-        fim = {
-          enabled = true,
-          prefix = "<fim_prefix>",
-          middle = "<fim_middle>",
-          suffix = "<fim_suffix>",
-        },
-        debounce_ms = 150,
-        accept_keymap = "<Tab>",
-        dismiss_keymap = "<S-Tab>",
-        tls_skip_verify_insecure = false,
-        -- llm-ls configuration, cf llm-ls section
-        lsp = {
-          bin_path = nil,
-          version = "0.4.0",
-        },
-        tokenizer = nil, -- cf Tokenizer paragraph
-        context_window = 8192, -- max number of tokens for the context window
-        enable_suggestions_on_startup = true,
-        enable_suggestions_on_files = "*", -- pattern matching syntax to enable suggestions on specific files, either a string or a list of strings
-      })
-    end
+  end
   },
-  {'gsuuon/model.nvim', config = function()
-      require('model.providers.openai').initialize({
-          model = 'gpt-4'
-        })
-    end
-  },
+  {"neomake/neomake"},
+  {"sbdchd/neoformat"},
   {"quarto-dev/quarto-nvim",
-   config = function()
-     require 'quarto'.setup {
-       lspFeatures = {
-         enabled = true,
-         languages = { 'r', 'python', 'julia' },
-         diagnostics = {
-           enabled = true,
-           triggers = { "BufWrite" }
-         },
-         completion = {
-           enabled = true
-         }
-       }
-     }
-   end
+    config = function()
+      require 'quarto'.setup {
+        lspFeatures = {
+          enabled = true,
+          languages = { 'r', 'python', 'julia' },
+          diagnostics = {
+            enabled = true,
+            triggers = { "BufWrite" }
+          },
+          completion = {
+            enabled = true
+          }
+        }
+      }
+    end
 
   },
   { "tpope/vim-fugitive"},
@@ -430,16 +414,16 @@ lvim.plugins = {
       require("focus").setup()
     end,
   },
+  { "benlubas/molten-nvim"},
   -- COLOR THEMES
   { "tanvirtin/monokai.nvim" },
   { "catppuccin/nvim" },
   { "rebelot/kanagawa.nvim" },
-  { "ellisonleao/gruvbox.nvim" },
+  -- { "ellisonleao/gruvbox.nvim" },
   { "shaunsingh/nord.nvim" },
   { "ericbn/vim-solarized" },
   { "sainnhe/everforest" },
   { "maxmx03/solarized.nvim" },
   { "rainglow/vim" },
-  { "benlubas/molten-nvim"},
- }
+}
 

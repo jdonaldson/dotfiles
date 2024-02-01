@@ -1,26 +1,39 @@
 local ollama = require("model.providers.ollama")
+-- local openai = require("model.providers.openai")
+-- local llama2_fmt = require('model.format.llama2')
+-- local starling_fmt = require('model.format.starling')
 
-local function input_if_selection(input, context)
-  return context.selection and input or ''
-end
+-- local function input_if_selection(input, context)
+--   return context.selection and input or ''
+-- end
 
 M = {
-  ['ollama:phi'] = {
+  code = {
     provider = ollama,
     params = {
-      model = 'phi',
+      model = 'codellama:70b',
     },
-    create = input_if_selection,
+    system = 'You are an intelligent programming assistant',
+    create = function(input, ctx)
+      return ctx.selection and input or ''
+    end,
     run = function(messages, config)
-      if config.system then
-        table.insert(messages, 1, {
-          role = 'system',
-          content = config.system,
-        })
+      local prompt = '<s>Source: system \n\n'
+
+      for _, msg in ipairs(messages) do
+        prompt = prompt
+          .. '\n\n### '
+          .. (msg.role == 'user' and 'Source: user\n\n' or 'Source: assistant\n\n')
+          .. '\n'
+          .. msg.content
       end
 
-      return { messages = messages }
+      prompt = prompt .. 'Source: assistant\nDestination: user\n\n'
+
+      return {
+        prompt = prompt,
+      }
     end,
-  },
+  }
 }
 return M

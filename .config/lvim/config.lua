@@ -54,11 +54,9 @@ lvim.builtin.which_key.mappings["m"] = {
     p = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>", "Edit Prompts"},
     c = { "<cmd>:edit ~/.config/lvim/lua/util/chats.lua<cr>", "Edit Chats"},
   },
-  o = {"<cmd>Mchat openai<cr><cmd>w openai.mchat<cr>", "Open Chat"},
-  c = {"<cmd>Mchat<CR>", "Invoke Chat"}
-
+  o = {"<cmd>:Mchat code<cr>w! code.mchat<cr>", "Open Chat"},
+  c = {"<cmd>:Mchat<cr>", "Invoke Chat"}
 }
-
 
 
 -- lvim.colorscheme = "lunar"
@@ -355,32 +353,18 @@ lvim.plugins = {
   -- {"luk400/vim-jukit"},
 
   {"gsuuon/model.nvim", config = function()
-    local ollama = require("model.providers.ollama")
-    local prompts = require('util.prompts')
-    local chats = require('model.prompts.chats')
+    -- local ollama = require("model.providers.ollama")
+    -- local prompts = require('util.prompts')
+    local prompts = require('model.util').module.autoload('util.prompts')
+    -- local chats = require('model.prompts.chats')
+    -- local chats_local = require('util.chats')
+    local chats_local = require('model.util').module.autoload('util.chats')
+    -- local chats_extended = vim.tbl_deep_extend('force', chats, chats_local)
     require("model").setup({
       hl_group = "Comment",
       prompts = prompts,
-      chats = chats,
-      default_prompt = {
-        provider = ollama,
-        builder = function(input)
-          return {
-            model = "codellama",
-            temperature = 0.3,
-            max_tokens = 400,
-            messages = {
-              {
-                role = "system",
-                content = "You are helpful assistant.",
-              },
-              { role = "user", content = input },
-            },
-          }
-        end,
-      },
+      chats = chats_local,
     })
-
   end
   },
   {"neomake/neomake"},

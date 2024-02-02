@@ -1,4 +1,5 @@
 local openai = require("model.providers.openai")
+local codellama = require("model.providers.codellama")
 local ollama = require("model.providers.ollama")
 local mode = require('model').mode
 local extract = require('model.prompts.extract')
@@ -63,6 +64,10 @@ M = {
     provider = ollama,
     params = {
       model = 'codellama:70b',
+      temperature = 0.1, -- Seems to rarely decode EOT if temp is high
+      top_p = 0.9,
+      n_predict = 256, -- Server seems to be ignoring this?
+      repeat_penalty = 1.2, -- infill really struggles with overgenerating
     },
     builder = function(input)
       return {

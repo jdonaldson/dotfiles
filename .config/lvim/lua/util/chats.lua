@@ -13,11 +13,11 @@ M = {
     params = {
       model = 'codellama:70b',
     },
-    system = 'You are an intelligent programming assistant',
+    system = 'You are an intelligent programming assistant, have a chat about the following:',
     create = function(input, ctx)
       return ctx.selection and input or ''
     end,
-    run = function(messages, config)
+    run = function(messages, _)
       local prompt = '<s>Source: system \n\n'
 
       for _, msg in ipairs(messages) do

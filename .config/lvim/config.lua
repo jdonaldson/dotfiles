@@ -55,7 +55,11 @@ lvim.builtin.which_key.mappings["m"] = {
     c = { "<cmd>:edit ~/.config/lvim/lua/util/chats.lua<cr>", "Edit Chats"},
   },
   o = {"<cmd>:Mchat code<cr>w! code.mchat<cr>", "Open Chat"},
-  c = {"<cmd>:Mchat<cr>", "Invoke Chat"}
+  ["<space>"] = {"<cmd>:Mchat<cr>", "Invoke Chat"}
+}
+
+lvim.builtin.which_key.vmappings["m"] = {
+  n = {"<cmd>:Model code<CR>", "Insert Code Completion" },
 }
 
 
@@ -77,6 +81,9 @@ lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
 lvim.keys.normal_mode["+"] = ":vsplit %:h/"
+lvim.keys.normal_mode["<C-M>d"] = ':Mdelete<cr>'
+lvim.keys.normal_mode["<C-M>s"] = ':Mselect<cr>'
+lvim.keys.normal_mode["<C-M><space>"] = ':Mchat<cr>'
 
 lvim.keys.normal_mode[";"] = ":"
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"

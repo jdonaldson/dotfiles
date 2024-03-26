@@ -1,6 +1,5 @@
 --[[
 lv is the global options object
-
 Linters should be
 filled in as strings with either
 a global executable or a path to
@@ -10,11 +9,10 @@ an executable
 
 local util = require("util")
 
+-- lvim.format_on_save.enabled = true
 
 -- general
 lvim.log.level = "warn"
-lvim.format_on_save.enabled = true
-lvim.format_on_save.pattern = { "*.py" }
 vim.cmd("set nofoldenable")
 
 local parts = vim.split(os.getenv("COLORSCHEME"):lower(), " ")
@@ -33,6 +31,7 @@ lvim.builtin.dap.active = true
 
 
 
+
 lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('neotest').run.run()<cr>",
   "Test Method" }
 lvim.builtin.which_key.mappings["dM"] = { "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
@@ -47,19 +46,19 @@ lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.t
 
 lvim.builtin.which_key.mappings["m"] = {
   name = "+Model.nvim",
-  n = {"<cmd>:Model code<CR>", "Insert Code Completion" },
-  x = {"<cmd>:Mcancel<CR>", "Cancel Model Completion"},
+  n = { "<cmd>:Model code<CR>", "Insert Code Completion" },
+  x = { "<cmd>:Mcancel<CR>", "Cancel Model Completion" },
   e = {
     name = "+Edit Prompts",
-    p = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>", "Edit Prompts"},
-    c = { "<cmd>:edit ~/.config/lvim/lua/util/chats.lua<cr>", "Edit Chats"},
+    p = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>", "Edit Prompts" },
+    c = { "<cmd>:edit ~/.config/lvim/lua/util/chats.lua<cr>", "Edit Chats" },
   },
-  o = {"<cmd>:Mchat code<cr>w! code.mchat<cr>", "Open Chat"},
-  ["<space>"] = {"<cmd>:Mchat<cr>", "Invoke Chat"}
+  o = { "<cmd>:Mchat code<cr>w! code.mchat<cr>", "Open Chat" },
+  ["<space>"] = { "<cmd>:Mchat<cr>", "Invoke Chat" }
 }
 
 lvim.builtin.which_key.vmappings["m"] = {
-  n = {"<cmd>:Model code<CR>", "Insert Code Completion" },
+  n = { "<cmd>:Model code<CR>", "Insert Code Completion" },
 }
 
 
@@ -128,12 +127,12 @@ lvim.keys.normal_mode[";"] = ":"
 -- }
 
 lvim.builtin.which_key.mappings["r"] = {
-    name = " Run",
-    p = {
-      "<cmd>TermExec cmd='python' open=0<CR><cmd>ToggleTermSendCurrentLine<CR><cmd>ToggleTerm<CR>",
-      "Python REPL",
-    }
+  name = " Run",
+  p = {
+    "<cmd>TermExec cmd='python' open=0<CR><cmd>ToggleTermSendCurrentLine<CR><cmd>ToggleTerm<CR>",
+    "Python REPL",
   }
+}
 
 
 
@@ -169,7 +168,7 @@ lvim.builtin.which_key.mappings["x"] = {
     end,
     "Spelling",
   },
-  t = {":TransparentToggle<CR>", "Transparency"},
+  t = { ":TransparentToggle<CR>", "Transparency" },
   w = {
     function()
       util.toggle("wrap")
@@ -217,7 +216,7 @@ lvim.builtin.treesitter.highlight.enable = true
 
 -- -- make sure server will always be installed even if the server is in skipped_servers list
 lvim.lsp.installer.setup.ensure_installed = {
-    "jsonls",
+  "jsonls",
 }
 -- -- change UI setting of `LspInstallInfo`
 -- -- see <https://github.com/williamboman/nvim-lsp-installer#default-configuration>
@@ -304,7 +303,7 @@ linters.setup {
 lvim.plugins = {
   -- { "da-moon/telescope-toggleterm.nvim" },
   { "rinx/nvim-minimap" },
-  { "HakonHarnes/img-clip.nvim"},
+  { "HakonHarnes/img-clip.nvim" },
   { "edluffy/hologram.nvim" },
   { "axelf4/vim-strip-trailing-whitespace" },
   { "rmagatti/auto-session" },
@@ -313,30 +312,35 @@ lvim.plugins = {
   { "xiyaowong/transparent.nvim" },
   { "MunifTanjim/nui.nvim" },
   { "tpope/vim-vinegar" },
-  { "mfussenegger/nvim-dap-python", config = function()
-      local mason_path = vim.fn.glob(vim.fn.stdpath "data" .."/mason/")
+  { "nvim-neotest/nvim-nio" },
+  {
+    "mfussenegger/nvim-dap-python",
+    config = function()
+      local mason_path = vim.fn.glob(vim.fn.stdpath "data" .. "/mason/")
       require("dap-python").setup(mason_path .. "pacakages/debugpy/venv/bin/python")
     end
   },
-  { "nvim-neotest/neotest", config = function()
-    -- setup testing
-    require("neotest").setup({
-      adapters = {
-        require("neotest-python")({
-          -- Extra arguments for nvim-dap configuration
-          -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
-          dap = {
-            justMyCode = false,
-            console = "integratedTerminal",
-          },
-          args = { "--log-level", "DEBUG", "--quiet" },
-          runner = "pytest",
-        })
-      }
-    })
-  end
+  {
+    "nvim-neotest/neotest",
+    config = function()
+      -- setup testing
+      require("neotest").setup({
+        adapters = {
+          require("neotest-python")({
+            -- Extra arguments for nvim-dap configuration
+            -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
+            dap = {
+              justMyCode = false,
+              console = "integratedTerminal",
+            },
+            args = { "--log-level", "DEBUG", "--quiet" },
+            runner = "pytest",
+          })
+        }
+      })
+    end
   },
-  { "nvim-neotest/neotest-python"},
+  { "nvim-neotest/neotest-python" },
   { "fladson/vim-kitty" },
   -- {'jackMort/ChatGPT.nvim',
   --   config = function()
@@ -356,27 +360,30 @@ lvim.plugins = {
   --     vim.g["ai_timeout"] = 100
   --   end
   -- },
-  {"zchee/vim-flatbuffers"},
+  { "zchee/vim-flatbuffers" },
   -- {"luk400/vim-jukit"},
 
-  {"gsuuon/model.nvim", config = function()
-    -- local ollama = require("model.providers.ollama")
-    -- local prompts = require('util.prompts')
-    local prompts = require('model.util').module.autoload('util.prompts')
-    -- local chats = require('model.prompts.chats')
-    -- local chats_local = require('util.chats')
-    local chats_local = require('model.util').module.autoload('util.chats')
-    -- local chats_extended = vim.tbl_deep_extend('force', chats, chats_local)
-    require("model").setup({
-      hl_group = "Comment",
-      prompts = prompts,
-      chats = chats_local,
-    })
-  end
+  {
+    "gsuuon/model.nvim",
+    config = function()
+      -- local ollama = require("model.providers.ollama")
+      -- local prompts = require('util.prompts')
+      local prompts = require('model.util').module.autoload('util.prompts')
+      -- local chats = require('model.prompts.chats')
+      -- local chats_local = require('util.chats')
+      local chats_local = require('model.util').module.autoload('util.chats')
+      -- local chats_extended = vim.tbl_deep_extend('force', chats, chats_local)
+      require("model").setup({
+        hl_group = "Comment",
+        prompts = prompts,
+        chats = chats_local,
+      })
+    end
   },
-  {"neomake/neomake"},
-  {"sbdchd/neoformat"},
-  {"quarto-dev/quarto-nvim",
+  { "neomake/neomake" },
+  { "sbdchd/neoformat" },
+  {
+    "quarto-dev/quarto-nvim",
     config = function()
       require 'quarto'.setup {
         lspFeatures = {
@@ -394,9 +401,39 @@ lvim.plugins = {
     end
 
   },
-  { "tpope/vim-fugitive"},
+
+  { "olimorris/codecompanion.nvim" },
+  config = function()
+    require("codecompanion").setup({
+      adapters = { -- anthropic|ollama|openai
+        chat = "ollama",
+        inline = "ollama",
+      },
+    })
+  end
+  ,
+  -- { "github/copilot.vim" },
+  -- {"huggingface/llm.nvim", config = function()
+  --   require("llm").setup({
+  --     tokens_to_clear = { "<EOT>" },
+  --     fim = {
+  --       enabled = true,
+  --       prefix = "<PRE> ",
+  --       middle = " <MID>",
+  --       suffix = " <SUF>",
+  --     },
+  --     model = "codellama/CodeLlama-13b-hf",
+  --     context_window = 4096,
+  --     tokenizer = {
+  --       repository = "codellama/CodeLlama-13b-hf",
+  --     }
+  --   })
+  -- end
+  -- },
+
+  { "tpope/vim-fugitive" },
   -- {"triglav/vim-visual-increment"},
-  {"jmbuhr/otter.nvim"},
+  { "jmbuhr/otter.nvim" },
   -- {"jmbuhr/tmux-kickstarter"},
   -- {"jmbuhr/quarto-nvim-kickstarter"},
   {
@@ -405,7 +442,7 @@ lvim.plugins = {
       require("focus").setup()
     end,
   },
-  { "benlubas/molten-nvim"},
+  { "benlubas/molten-nvim" },
   -- COLOR THEMES
   { "tanvirtin/monokai.nvim" },
   { "catppuccin/nvim" },
@@ -417,4 +454,3 @@ lvim.plugins = {
   { "maxmx03/solarized.nvim" },
   { "rainglow/vim" },
 }
-

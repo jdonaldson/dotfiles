@@ -42,6 +42,11 @@ lvim.builtin.which_key.mappings["dF"] = {
   "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>", "Test Class DAP" }
 lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Test Summary" }
 
+lvim.builtin.which_key.mappings["or"] = { "<cmd>!brew services restart ollama<cr>", "Restart Ollama" }
+lvim.builtin.which_key.mappings["oc"] = { "<cmd>:CodeCompanionChat<cr>", "Ollama Chat" }
+lvim.builtin.which_key.mappings["oi"] = { "<cmd>:CodeCompanion", "Ollama Chat" }
+
+vim.cmd([[cab cc CodeCompanion]])
 
 
 lvim.builtin.which_key.mappings["m"] = {
@@ -363,28 +368,9 @@ lvim.plugins = {
   { "zchee/vim-flatbuffers" },
   -- {"luk400/vim-jukit"},
 
-  {
-    "gsuuon/model.nvim",
-    config = function()
-      -- local ollama = require("model.providers.ollama")
-      -- local prompts = require('util.prompts')
-      local prompts = require('model.util').module.autoload('util.prompts')
-      -- local chats = require('model.prompts.chats')
-      -- local chats_local = require('util.chats')
-      local chats_local = require('model.util').module.autoload('util.chats')
-      -- local chats_extended = vim.tbl_deep_extend('force', chats, chats_local)
-      require("model").setup({
-        hl_group = "Comment",
-        prompts = prompts,
-        chats = chats_local,
-      })
-    end
-  },
   { "neomake/neomake" },
   { "sbdchd/neoformat" },
-  {
-    "quarto-dev/quarto-nvim",
-    config = function()
+  { "quarto-dev/quarto-nvim", config = function()
       require 'quarto'.setup {
         lspFeatures = {
           enabled = true,
@@ -399,38 +385,55 @@ lvim.plugins = {
         }
       }
     end
-
   },
-
-  { "olimorris/codecompanion.nvim" },
-  config = function()
-    require("codecompanion").setup({
-      adapters = { -- anthropic|ollama|openai
-        chat = "ollama",
-        inline = "ollama",
-      },
+  {"jdonaldson/codecompanion.nvim", config = function()
+      require("codecompanion").setup({
+        strategies = {
+          chat = "ollama",
+          inline = "ollama",
+        },
+        keymaps = {
+          ["gg"] = "keymaps.save",
+          ["gx"] = "keymaps.close",
+          ["q"] = "keymaps.cancel_request",
+          ["gc"] = "keymaps.clear",
+          ["ga"] = "keymaps.codeblock",
+          ["gs"] = "keymaps.save_chat",
+          ["]"] = "keymaps.next",
+          ["["] = "keymaps.previous",
+        },
     })
   end
-  ,
-  -- { "github/copilot.vim" },
-  -- {"huggingface/llm.nvim", config = function()
-  --   require("llm").setup({
-  --     tokens_to_clear = { "<EOT>" },
-  --     fim = {
-  --       enabled = true,
-  --       prefix = "<PRE> ",
-  --       middle = " <MID>",
-  --       suffix = " <SUF>",
-  --     },
-  --     model = "codellama/CodeLlama-13b-hf",
-  --     context_window = 4096,
-  --     tokenizer = {
-  --       repository = "codellama/CodeLlama-13b-hf",
-  --     }
-  --   })
-  -- end
-  -- },
+  },
+  {"huggingface/llm.nvim", config = function()
+    require("llm").setup({
+      -- model = "starcoder2",
+      model = "starcoder2",
+      backend = "ollama",
+      -- backend = "huggingface",
+      -- url = nil,
+      url = "http://localhost:11434/api/generate",
+      -- cf https://github.com/ollama/ollama/blob/main/docs/api.md#parameters
+      tokens_to_clear = { "<|endoftext|>" },
+      fim = {
+        enabled = true,
+        prefix = "<fim_prefix>",
+        middle = "<fim_middle>",
+        suffix = "<fim_suffix>",
+      },
+      request_body = {
+        -- Modelfile options for the model you use
+        options = {
+          temperature = 0.2,
+          top_p = 0.95,
+        }
+      },
+      enable_suggestions_on_files = {"*.py"},
+    })
+  end
+  },
 
+  { "stevearc/dressing.nvim"},
   { "tpope/vim-fugitive" },
   -- {"triglav/vim-visual-increment"},
   { "jmbuhr/otter.nvim" },

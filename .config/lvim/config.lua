@@ -85,9 +85,13 @@ lvim.keys.normal_mode["\\\\"] = "<Plug>(comment_toggle_linewise_current)"
 lvim.keys.normal_mode["<C-n>"] = ":ToggleTerm size=20 direction=horizontal<cr>"
 lvim.keys.normal_mode["gv"] = ":vsplit | lua vim.lsp.buf.definition()<CR>"
 lvim.keys.normal_mode["+"] = ":vsplit %:h/"
-lvim.keys.normal_mode["<C-M>d"] = ':Mdelete<cr>'
-lvim.keys.normal_mode["<C-M>s"] = ':Mselect<cr>'
-lvim.keys.normal_mode["<C-M><space>"] = ':Mchat<cr>'
+
+lvim.keys.visual_mode["^S"] = ':ws'
+
+lvim.keys.insert_mode["<C-'"] = '<ESC>:ws<CR>i'
+lvim.keys.insert_mode["<C-s>"] = '<ESC>:ws<CR>'
+
+lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"
 
 lvim.keys.normal_mode[";"] = ":"
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
@@ -393,7 +397,7 @@ lvim.plugins = {
           inline = "ollama",
         },
         keymaps = {
-          ["gg"] = "keymaps.save",
+          ["^S"] = "keymaps.save",
           ["gx"] = "keymaps.close",
           ["q"] = "keymaps.cancel_request",
           ["gc"] = "keymaps.clear",
@@ -404,6 +408,19 @@ lvim.plugins = {
         },
     })
   end
+  },
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+    opts = {
+      right = {
+        { ft = "codecompanion", title = "Code Companion Chat", size = { width = 0.45 } },
+      }
+    }
   },
   {"huggingface/llm.nvim", config = function()
     require("llm").setup({

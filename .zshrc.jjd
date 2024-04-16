@@ -68,9 +68,16 @@ fbd() {
   git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
+eval "$(fzf --zsh)"
+
+
 export COLORSCHEME="everforest dark hard"
 # export COLORSCHEME="earthsong"
 # export COLORSCHEME="solarized dark"
 
 # kitten themes --reload-in=all dimmed $COLORSCHEME
 kitten themes --reload-in=all $COLORSCHEME
+
+# direnv configuration
+eval "$(direnv hook zsh)"
+# add this note for posterity

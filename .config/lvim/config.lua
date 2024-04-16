@@ -49,24 +49,6 @@ lvim.builtin.which_key.mappings["oi"] = { "<cmd>:CodeCompanion", "Ollama Chat" }
 vim.cmd([[cab cc CodeCompanion]])
 
 
-lvim.builtin.which_key.mappings["m"] = {
-  name = "+Model.nvim",
-  n = { "<cmd>:Model code<CR>", "Insert Code Completion" },
-  x = { "<cmd>:Mcancel<CR>", "Cancel Model Completion" },
-  e = {
-    name = "+Edit Prompts",
-    p = { "<cmd>:edit ~/.config/lvim/lua/util/prompts.lua<cr>", "Edit Prompts" },
-    c = { "<cmd>:edit ~/.config/lvim/lua/util/chats.lua<cr>", "Edit Chats" },
-  },
-  o = { "<cmd>:Mchat code<cr>w! code.mchat<cr>", "Open Chat" },
-  ["<space>"] = { "<cmd>:Mchat<cr>", "Invoke Chat" }
-}
-
-lvim.builtin.which_key.vmappings["m"] = {
-  n = { "<cmd>:Model code<CR>", "Insert Code Completion" },
-}
-
-
 -- lvim.colorscheme = "lunar"
 -- lvim.colorscheme = "tokyonight"
 -- to disable icons and use a minimalist setup, uncomment the following
@@ -92,6 +74,7 @@ lvim.keys.insert_mode["<C-'"] = '<ESC>:ws<CR>i'
 lvim.keys.insert_mode["<C-s>"] = '<ESC>:ws<CR>'
 
 lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"
+lvim.keys.normal_mode["..."] = ":CodeCompanionActions<CR>"
 
 lvim.keys.normal_mode[";"] = ":"
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
@@ -310,7 +293,7 @@ linters.setup {
 --   end,
 -- })
 lvim.plugins = {
-  -- { "da-moon/telescope-toggleterm.nvim" },
+  -- { "da-moon/telescope-todgleterm.nvim" },
   { "rinx/nvim-minimap" },
   { "HakonHarnes/img-clip.nvim" },
   { "edluffy/hologram.nvim" },
@@ -405,9 +388,9 @@ lvim.plugins = {
           ["gs"] = "keymaps.save_chat",
           ["]"] = "keymaps.next",
           ["["] = "keymaps.previous",
-        },
-    })
-  end
+        }
+      })
+    end
   },
   {
     "folke/edgy.nvim",
@@ -447,7 +430,7 @@ lvim.plugins = {
           stop = {"\nprint", "\n/"}
         }
       },
-      enable_suggestions_on_files = {"*.py"},
+      enable_suggestions_on_files = {"*.py", "*.qmd"},
     })
   end
   },

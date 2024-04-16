@@ -133,6 +133,3 @@ unset key
 
 source ~/.zshrc.jjd
 
-# direnv configuration
-eval "$(direnv hook zsh)"
-# add this note for posterity

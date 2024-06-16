@@ -38,6 +38,7 @@ alias gb="git branch"
 alias gs="git status"
 alias gu= "!f() { git add -u && git status; }; f"
 alias gcm="git commit -m"
+alias gp="git push"
 
 alias dfa="dotfiles add"
 alias dfb="dotfiles branch"
@@ -86,3 +87,4 @@ alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chro
 alias lst="ls -lt"
 
 alias brewdeps='brew deps --formula --for-each $(brew leaves) | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
+alias mamba=micromamba

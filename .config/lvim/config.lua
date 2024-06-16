@@ -42,9 +42,13 @@ lvim.builtin.which_key.mappings["dF"] = {
   "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>", "Test Class DAP" }
 lvim.builtin.which_key.mappings["dS"] = { "<cmd>lua require('neotest').summary.toggle()<cr>", "Test Summary" }
 
-lvim.builtin.which_key.mappings["or"] = { "<cmd>!brew services restart ollama<cr>", "Restart Ollama" }
-lvim.builtin.which_key.mappings["oc"] = { "<cmd>:CodeCompanionChat<cr>", "Ollama Chat" }
-lvim.builtin.which_key.mappings["oi"] = { "<cmd>:CodeCompanion", "Ollama Chat" }
+lvim.builtin.which_key.mappings["o"] = {
+  name = "Ollama",
+  c = { "<cmd>:CodeCompanionChat<cr>", "Ollama Chat" },
+  r = { "<cmd>!brew services restart ollama<cr>", "Restart Ollama" },
+  s = { "<cmd>:CodeCompanion<CR>", "Ollama Chat" }
+}
+
 
 vim.cmd([[cab cc CodeCompanion]])
 
@@ -70,13 +74,14 @@ lvim.keys.normal_mode["+"] = ":vsplit %:h/"
 
 lvim.keys.visual_mode["^S"] = ':ws'
 
-lvim.keys.insert_mode["<C-'"] = '<ESC>:ws<CR>i'
-lvim.keys.insert_mode["<C-s>"] = '<ESC>:ws<CR>'
+-- lvim.keys.insert_mode["<C-'"] = '<ESC>:ws<CR>i'
+lvim.keys.insert_mode["<C-l>"] = '<ESC>:ws<CR>'
 
 lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"
 lvim.keys.normal_mode["..."] = ":CodeCompanionActions<CR>"
 
 lvim.keys.normal_mode[";"] = ":"
+
 -- lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 -- lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- unmap a default keymapping
@@ -358,21 +363,10 @@ lvim.plugins = {
   { "neomake/neomake" },
   { "sbdchd/neoformat" },
   { "quarto-dev/quarto-nvim", config = function()
-      require 'quarto'.setup {
-        lspFeatures = {
-          enabled = true,
-          languages = { 'r', 'python', 'julia' },
-          diagnostics = {
-            enabled = true,
-            triggers = { "BufWrite" }
-          },
-          completion = {
-            enabled = true
-          }
-        }
-      }
+      require 'quarto'.setup()
     end
   },
+  {"kylechui/nvim-surround"},
   {"jdonaldson/codecompanion.nvim", config = function()
       require("codecompanion").setup({
         strategies = {
@@ -380,15 +374,16 @@ lvim.plugins = {
           inline = "ollama",
         },
         keymaps = {
-          ["^S"] = "keymaps.save",
-          ["gx"] = "keymaps.close",
-          ["q"] = "keymaps.cancel_request",
-          ["gc"] = "keymaps.clear",
-          ["ga"] = "keymaps.codeblock",
-          ["gs"] = "keymaps.save_chat",
-          ["]"] = "keymaps.next",
-          ["["] = "keymaps.previous",
-        }
+          ["<C-s>"] = "keymaps.save", -- Save the chat buffer and trigger the API
+          ["<C-l>"] = "keymaps.save", -- Save the chat buffer and trigger the API
+          ["<C-c>"] = "keymaps.save", -- Save the chat buffer
+          ["q"] = "keymaps.cancel_request", -- Cancel the currently streaming request
+          ["gc"] = "keymaps.clear", -- Clear the contents of the chat
+          ["ga"] = "keymaps.codeblock", -- Insert a codeblock into the chat
+          ["gs"] = "keymaps.save_chat", -- Save the current chat
+          ["]"] = "keymaps.next", -- Move to the next header in the chat
+          ["["] = "keymaps.previous", -- Move to the previous header in the chat
+        },
       })
     end
   },
@@ -414,9 +409,10 @@ lvim.plugins = {
       -- url = nil,
       url = "http://localhost:11434/api/generate",
       -- cf https://github.com/ollama/ollama/blob/main/docs/api.md#parameters
-      tokens_to_clear = { "<|endoftext|>" },
+      tokens_to_clear = { "<|endoftext|>", "<file_sep>"},
       fim = {
         enabled = true,
+        file_sep = "<file_sep>",
         prefix = "<fim_prefix>",
         middle = "<fim_middle>",
         suffix = "<fim_suffix>",
@@ -430,7 +426,7 @@ lvim.plugins = {
           stop = {"\nprint", "\n/"}
         }
       },
-      enable_suggestions_on_files = {"*.py", "*.qmd"},
+      enable_suggestions_on_files = {"*.py", "*.qmd", "pyproject.toml"},
     })
   end
   },

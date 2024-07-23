@@ -87,4 +87,8 @@ alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chro
 alias lst="ls -lt"
 
 alias brewdeps='brew deps --formula --for-each $(brew leaves) | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
+
+alias genkey='openssl rand -base64 48'
+
+alias genargonkey= 'argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4'
 alias mamba=micromamba

@@ -13,3 +13,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+if ! pgrep -f "python.*rumpus" > /dev/null; then
+  rumpus --directory ~/notes --file_types md txt &
+fi

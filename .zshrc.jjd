@@ -81,3 +81,7 @@ kitten themes --reload-in=all $COLORSCHEME
 # direnv configuration
 eval "$(direnv hook zsh)"
 # add this note for posterity
+#
+
+
+

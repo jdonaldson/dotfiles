@@ -400,36 +400,6 @@ lvim.plugins = {
       }
     }
   },
-  {"huggingface/llm.nvim", config = function()
-    require("llm").setup({
-      -- model = "starcoder2",
-      model = "starcoder2:7b",
-      backend = "ollama",
-      -- backend = "huggingface",
-      -- url = nil,
-      url = "http://localhost:11434/api/generate",
-      -- cf https://github.com/ollama/ollama/blob/main/docs/api.md#parameters
-      tokens_to_clear = { "<|endoftext|>", "<file_sep>"},
-      fim = {
-        enabled = true,
-        file_sep = "<file_sep>",
-        prefix = "<fim_prefix>",
-        middle = "<fim_middle>",
-        suffix = "<fim_suffix>",
-      },
-      request_body = {
-        -- Modelfile options for the model you use
-        options = {
-          temperature = 0.2,
-          top_p = 0.95,
-          num_predict = 60,
-          stop = {"\nprint", "\n/"}
-        }
-      },
-      enable_suggestions_on_files = {"*.py", "*.qmd", "pyproject.toml"},
-    })
-  end
-  },
 
   { "stevearc/dressing.nvim"},
   { "tpope/vim-fugitive" },

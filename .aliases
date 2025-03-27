@@ -47,11 +47,9 @@ alias dfu="!f() { git add -u && git status; }; f"
 alias dfp="dotfiles push"
 alias dcm="dotfiles commit -m"
 
-alias lunar='lvim'
-alias vim='lvim'
-alias lv='lvim'
-alias v='lvim'
-alias jjd="lvim ~/.zshrc.jjd"
+alias vim='nvim'
+alias nv='nvim'
+alias v='nvim'
 
 
 # Deactivates conda before running brew. 
@@ -88,7 +86,10 @@ alias lst="ls -lt"
 
 alias brewdeps='brew deps --formula --for-each $(brew leaves) | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'
 
+
 alias genkey='openssl rand -base64 48'
 
 alias genargonkey= 'argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4'
 alias mamba=micromamba
+
+alias llms="llama-server --fim-qwen-7b-default"

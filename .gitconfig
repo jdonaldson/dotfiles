@@ -6,7 +6,7 @@
 	pager = less -R
 [user]
 	name = Justin Donaldson
-	email = justin@hushh.ai
+	email = jjd@jjd.io
 [github]
   user = jdonaldson
 [includeIf "gitdir:~/Projects/com/"]

@@ -71,8 +71,8 @@ alias gu='git add -u && git status'
 alias gr='git reset -u && git status'
 alias gn='git commit -m \"$@\" && git push'
 
-alias lv=lvim
-alias le=lvim
+alias lv=vim
+alias le=vim
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
@@ -93,3 +93,17 @@ alias genargonkey= 'argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 
 alias mamba=micromamba
 
 alias llms="llama-server --fim-qwen-7b-default"
+
+
+aws-mfa-login() {
+  read "mfa_code?Enter MFA code: "
+  creds=$(aws sts get-session-token \
+    --serial-number $(aws iam list-mfa-devices --query "MFADevices[0].SerialNumber" --output text) \
+    --token-code $mfa_code \
+    --query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
+    --output text)
+  export AWS_ACCESS_KEY_ID=$(echo $creds | awk '{print $1}')
+  export AWS_SECRET_ACCESS_KEY=$(echo $creds | awk '{print $2}')
+  export AWS_SESSION_TOKEN=$(echo $creds | awk '{print $3}')
+  echo "✅ MFA session credentials set. Valid for up to 12 hours."
+}

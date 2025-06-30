@@ -107,3 +107,6 @@ aws-mfa-login() {
   export AWS_SESSION_TOKEN=$(echo $creds | awk '{print $3}')
   echo "✅ MFA session credentials set. Valid for up to 12 hours."
 }
+
+
+alias owu='DATA_DIR=~/.open-webui uvx --python 3.11 open-webui serve'

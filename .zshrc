@@ -133,3 +133,5 @@ unset key
 
 source ~/.zshrc.jjd
 
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit

@@ -83,5 +83,38 @@ eval "$(direnv hook zsh)"
 # add this note for posterity
 #
 
+export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
+export SPARK_HOME=/Users/jdonaldson/spark-2.4.3-bin-hadoop2.8
+export PATH=$SPARK_HOME/bin:$PATH
 
+# Claude Code Helper Functions
+claude-shutdown() {
+  echo "🔄 Preparing for Claude Code shutdown..."
+  echo ""
+  echo "📝 Tell Claude:"
+  echo '   "Update the resume context in CLAUDE.md"'
+  echo ""
+  echo "This will update the ## 🔄 RESUME CONTEXT section with:"
+  echo "  • Current status"
+  echo "  • What was accomplished"
+  echo "  • What's blocked/pending"
+  echo "  • Next actions"
+  echo ""
+  echo "When you restart, Claude will read and delete that section automatically."
+  echo ""
+  echo "✨ Ready!"
+}
 
+claude-resume-check() {
+  if [ -f "CLAUDE.md" ]; then
+    if grep -q "## 🔄 RESUME CONTEXT" CLAUDE.md; then
+      echo "✅ Resume context found in CLAUDE.md"
+      echo ""
+      grep -A 20 "## 🔄 RESUME CONTEXT" CLAUDE.md | head -25
+    else
+      echo "ℹ️  No resume context in CLAUDE.md (this is normal)"
+    fi
+  else
+    echo "⚠️  No CLAUDE.md found in current directory"
+  fi
+}

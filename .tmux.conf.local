@@ -332,6 +332,10 @@ set -g history-limit 10000
 # start with mouse mode enabled
 set -g mouse on
 
+# enable bell notifications
+set -g bell-action any
+set -g visual-bell off
+
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
 #set -g status-keys vi
@@ -437,3 +441,9 @@ bind -n M-9 select-window -t:$
 bind -n C-M-w kill-window
 bind -n C-M-q confirm -p "Kill this tmux session?" kill-session
 bind -n F11 resize-pane -Z
+
+# Claude Code pane border configuration
+set-option -g pane-border-status top
+set-option -g pane-border-format "#{pane_index}: #{pane_title}"
+set-option -g allow-rename off
+

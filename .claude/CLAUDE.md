@@ -1,3 +1,7 @@
+⚠️ **SECURITY NOTICE**: This file is private and located in `~/.claude/`. However, project-specific CLAUDE.md files (e.g., `~/Projects/*/CLAUDE.md`) ARE committed to GitHub repositories. Never put sensitive information (credentials, API keys, customer data, internal system details) in project CLAUDE.md files.
+
+---
+
 - don't add created by claude to the commit messages
 - prefer to use polars where possible.
 - when running long tasks in background, automatically set up a monitoring script that rings the tmux bell (using `tput bel`) when complete

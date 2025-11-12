@@ -2,15 +2,42 @@
 - prefer to use polars where possible.
 - when running long tasks in background, automatically set up a monitoring script that rings the tmux bell (using `tput bel`) when complete
 
-## Tmux Pane Title Management
-- Set descriptive tmux pane titles when starting new analyses or major work phases
-- Include: project/task name, key metrics (record counts, facility counts, etc.), and context usage
-- Format: `Task: key metrics | Context: XK/200K (X%)`
-- Update title when context usage crosses 25%, 50%, 75% thresholds
-- Command: `tmux select-pane -T "Your Title Here"`
-- Example: `UOM Analysis: 61M records, 462 facilities | Context: 100K/200K (50%)`
-- When completing major analysis phases, update title to include: what surprised you, what didn't surprise you, and what happens next
-- Example: `UOM: 86K products w/ variance (342x more!) | Surprised: CA→CS 4.1M transitions | Next: Comprehensive report`
+## Debrief Pattern
+Use for task completions, analysis phases, major work milestones:
+- **Surprised**: Unexpected findings
+- **Not surprised**: Expected outcomes
+- **Next**: What happens next
+
+**Usage:**
+1. User types "debrief" → Provide structured reflection (2-3 bullets per section)
+2. Major phase completion → Update tmux title with debrief format
+
+**Examples:**
+```
+# Command response:
+Surprised: .bin files corrupted, .vec worked perfectly
+Not surprised: 113K samples trained well with pretrained vectors
+Next: Monitor completes, evaluate model predictions
+
+# Tmux title:
+UOM: 86K products | Surprised: CA→CS 4.1M | Not: Variance common | Next: Report
+```
+
+## Tmux Configuration
+
+### Window Names
+- Set window name to `claude:<project>-<task>` on session start
+- Extract project name from working directory (e.g., "krapivin", "curvo", "bamf_docs")
+- Add task suffix to distinguish multiple sessions in same project (e.g., "-uom", "-duplicates", "-buckets")
+- Command: `tmux rename-window "claude:<project>-<task>"`
+- Helps distinguish between multiple concurrent Claude sessions
+- **Important**: When multiple Claude sessions work on the same project, each needs a unique task identifier to avoid confusion
+
+### Pane Titles
+- Set when starting major work: `Task: metrics | Context: XK/200K (X%)`
+- Update at 25%, 50%, 75% context thresholds
+- On completion: Use debrief format (see above)
+- Command: `tmux select-pane -T "Your Title"`
 
 ---
 

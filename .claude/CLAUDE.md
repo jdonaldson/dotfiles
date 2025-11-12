@@ -5,6 +5,19 @@
 - don't add created by claude to the commit messages
 - prefer to use polars where possible.
 - when running long tasks in background, automatically set up a monitoring script that rings the tmux bell (using `tput bel`) when complete
+- **Terminal**: Using Kitty terminal with image display support
+  - For plots/visualizations: Use `chafa --format symbols --symbols block --size 100x30 <file> && tput sgr0` to display inline
+  - **IMPORTANT**: Always run `tput sgr0` after chafa to reset terminal colors
+  - Alternative: Generate plots and user views with `kitty +kitten icat <file>` or `open <file>` manually (user runs these)
+  - **CLI sparklines**: For quick data viz in bash output (which shows only 3 lines), use compact sparklines:
+    ```python
+    # Line 1: Header with key values
+    # Line 2: Unicode sparkline (█▇▆▅▄▃▂▁ blocks)
+    # Line 3: Summary stats (range, mean, total)
+    ```
+    - Install plotext for ASCII plots: `pip install plotext`
+    - For bash-friendly output, prefer simple Unicode bars over plotext (ANSI codes clutter bash output)
+    - Example: `print("Data: val1, val2, val3\n█▃▁\nRange: X-Y")`
 
 ## Debrief Pattern
 Use for task completions, analysis phases, major work milestones:

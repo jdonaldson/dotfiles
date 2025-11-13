@@ -4,6 +4,10 @@
 
 - don't add created by claude to the commit messages
 - prefer to use polars where possible.
+- **NEVER use `cd` to change directories in Bash commands** - always use absolute paths instead
+  - ❌ Bad: `cd exploration && quarto render file.qmd`
+  - ✅ Good: `quarto render /Users/jdonaldson/Projects/vespa/exploration/file.qmd`
+  - Reason: Changing directories causes confusion and makes it hard to track working directory state
 - when running long tasks in background, automatically set up a monitoring script that rings the tmux bell (using `tput bel`) when complete
 - **Terminal**: Using Kitty terminal with image display support
   - For plots/visualizations: Use `chafa --format symbols --symbols block --size 100x30 <file> && tput sgr0` to display inline

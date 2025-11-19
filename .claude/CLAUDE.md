@@ -8,6 +8,13 @@
   - ❌ Bad: `cd exploration && quarto render file.qmd`
   - ✅ Good: `quarto render /Users/jdonaldson/Projects/vespa/exploration/file.qmd`
   - Reason: Changing directories causes confusion and makes it hard to track working directory state
+- **STRONGLY prefer make/task commands over scratch scripts**
+  - ✅ Good: `make train`, `make deploy`, `make test`
+  - ⚠️ Acceptable: Temporary scratch scripts in `/tmp/` for exploration or one-off analysis
+  - ❌ Bad: Creating scripts for training/deploying/testing instead of using make targets
+  - **Rule**: If a script is part of training, deploying, testing, building, or any repeatable workflow, it MUST be in a make/task command
+  - **Why**: Make targets are documented, repeatable, version-controlled, and discoverable
+  - **Exception**: Temporary exploration scripts in `/tmp/` are OK for analysis, but move to make if reused
 - when running long tasks in background, automatically set up a monitoring script that rings the tmux bell (using `tput bel`) when complete
 - **Report Visualizations**: When generating reports (Quarto, markdown, etc.), proactively propose and create visualizations using existing data
   - Use Python code chunks in Quarto reports with matplotlib/seaborn for static visualizations
@@ -17,7 +24,6 @@
     - Timeline plots: For any date-based data (acquisitions over time, transactions, events)
     - Combination plots: Histograms with timelines (e.g., bar chart + line overlay)
   - Other common visualizations: bar charts for top categories, scatter plots for correlations, heatmaps for confusion matrices
-  - Always use Curvo orange (#E47B39) as primary color when applicable
 - **Quarto Reports**: Always let Quarto handle section numbering automatically
   - Set `number-sections: true` in YAML frontmatter
   - NEVER manually number headers (e.g., use `## Title` not `## 2. Title`)
@@ -43,84 +49,6 @@
     - For bash-friendly output, prefer simple Unicode bars over plotext (ANSI codes clutter bash output)
     - Example: `print("Data: val1, val2, val3\n█▃▁\nRange: X-Y")`
 
-## Curvo Labs Standard Quarto Report Styling
-
-**Standard Files** (copy to project root when creating reports):
-- `featured_curvo_logo.png` - Curvo Labs logo (15 KB)
-- `curvo_report_styles.css` - Standard CSS with orange branding
-
-**Curvo Brand Colors**:
-- Primary: `#E47B39` (Curvo Orange)
-- Light: `#F8B862`
-- Mid: `#D96833`
-- Dark: `#D35134`
-- Darker: `#B8442A`
-
-**Standard YAML Frontmatter**:
-```yaml
----
-title: "Report Title"
-subtitle: "Report Subtitle - Project Context"
-author: "J. Justin Donaldson, Ph.D."
-date: "YYYY-MM-DD"
-format:
-  html:
-    theme: lumen
-    toc: true
-    toc-depth: 3
-    toc-location: left
-    toc-title: "Contents"
-    number-sections: true
-    code-fold: true
-    code-tools: true
-    code-copy: true
-    embed-resources: true
-    page-layout: article
-    fig-width: 8
-    fig-height: 5
-    fig-align: center
-    fig-responsive: true
-    df-print: paged
-    title-block-banner: true
-    title-block-banner-color: "#E47B39"
-    css: curvo_report_styles.css
-execute:
-  echo: false
-  warning: false
-  message: false
----
-
-::: {.content-visible when-format="html"}
-<div align="center">
-  <img src="featured_curvo_logo.png" alt="Curvo Labs" width="300" style="margin-bottom: 2rem;"/>
-</div>
-:::
-```
-
-**Python Visualization Setup**:
-```python
-import matplotlib.pyplot as plt
-
-# Curvo brand color
-CURVO_ORANGE = '#E47B39'
-
-# Configure matplotlib
-plt.rcParams['figure.dpi'] = 100
-plt.rcParams['savefig.dpi'] = 100
-plt.rcParams['font.size'] = 10
-```
-
-**CSS Features** (from curvo_report_styles.css):
-- Orange-to-dark-orange gradient title banner (left to right)
-- White text on orange gradient banner
-- Orange accents: headers (border-bottom), tables (header border), links, code blocks (left border), active TOC items
-- Responsive image constraints (max-width: 100%)
-- Table hover effects (light gray)
-
-**Source Locations**:
-- Master logo: `/Users/jdonaldson/Projects/vespa/featured_curvo_logo.png`
-- Example: `/Users/jdonaldson/Projects/bamf_docs/supplier_normalization_report.qmd`
-
 ## Quarto Report Rendering Tips
 
 **Quick Commands**:
@@ -143,6 +71,60 @@ plt.rcParams['font.size'] = 10
 - Always test bullet point rendering after adding new lists
 - Figure size of 8x5 inches works well for most visualizations
 - All 10 code cells should execute successfully before final render
+
+## Workflow DAG Visualization Pattern
+
+**Pattern for complex workflow documentation:**
+
+When documenting complex workflows with multiple interconnected components (like Make targets, CI/CD pipelines, data pipelines):
+
+1. **Create separate DAG.qmd file** (not embedded in CLAUDE.md)
+   - Keeps CLAUDE.md clean and readable as plain markdown
+   - Allows Mermaid diagrams to render properly in Quarto
+   - Easy to update and maintain separately
+
+2. **Structure DAG.qmd with progressive disclosure:**
+   - Overview section explaining the document structure
+   - One section per workflow component with:
+     - Description of what the component does
+     - Small, focused Mermaid diagram showing just that component
+     - List of key targets/steps with brief explanations
+     - Color-coded nodes by workflow type
+   - Final section showing cross-component dependencies at high level
+   - Quick reference section with common commands
+
+3. **Reference from CLAUDE.md:**
+   ```markdown
+   ## Workflow DAG
+
+   Complete visualization of the pipeline showing all targets and dependencies.
+
+   **View the interactive diagram:**
+   ```bash
+   quarto render DAG.qmd && open _site/DAG.html
+   ```
+
+   **Diagram source:** See `DAG.qmd` for the Mermaid source.
+   ```
+
+4. **Add to Quarto website navigation** (_quarto.yml):
+   ```yaml
+   website:
+     navbar:
+       left:
+         - text: "Workflow DAG"
+           href: DAG.qmd
+   ```
+
+**Benefits:**
+- Each workflow component is introduced independently before showing connections
+- Easier to understand than one giant monolithic diagram
+- Mermaid diagrams render properly in Quarto
+- CLAUDE.md stays clean and readable
+- Color coding helps distinguish workflow types
+- Table of contents allows jumping to specific components
+
+**Example:** See `/Users/jdonaldson/Projects/vespa/DAG.qmd` for reference implementation
 
 ## Debrief Pattern
 Use for task completions, analysis phases, major work milestones:

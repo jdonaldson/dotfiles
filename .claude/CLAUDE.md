@@ -93,6 +93,13 @@ When documenting complex workflows with multiple interconnected components (like
    - Final section showing cross-component dependencies at high level
    - Quick reference section with common commands
 
+   **IMPORTANT - Mermaid Syntax in Quarto:**
+   - Use `{mermaid}` (with curly braces) for executable cells, NOT plain markdown code blocks
+   - ❌ Bad: ` ```mermaid`
+   - ✅ Good: ` ```{mermaid}`
+   - Quarto processes `{mermaid}` cells specially for native rendering
+   - See: https://quarto.org/docs/authoring/diagrams.html
+
 3. **Reference from CLAUDE.md:**
    ```markdown
    ## Workflow DAG

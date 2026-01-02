@@ -16,6 +16,9 @@
   - **Why**: Make targets are documented, repeatable, version-controlled, and discoverable
   - **Exception**: Temporary exploration scripts in `/tmp/` are OK for analysis, but move to make if reused
 - when running long tasks in background, automatically set up a monitoring script that rings the tmux bell (using `tput bel`) when complete
+- **When deleting files/directories, move to Trash instead of `rm -rf`**
+  - Use: `mv <path> ~/.Trash/`
+  - Reason: Allows recovery if something important was accidentally deleted
 
 ## Debrief Pattern
 Use for task completions, analysis phases, major work milestones:

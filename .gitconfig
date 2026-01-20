@@ -4,6 +4,7 @@
 	autocrlf = input
 	editor=nvim
 	pager = less -R
+	hooksPath = /Users/jdonaldson/.config/git/hooks
 [user]
 	name = Justin Donaldson
 	email = jjd@jjd.io
@@ -32,3 +33,5 @@
   insteadOf = https://github.com/
 [url "ssh://git@hf.co"]
   insteadOf = https://huggingface.co
+[includeIf "gitdir:~/Projects/work/"]
+  path = ~/Projects/work/.gitconfig

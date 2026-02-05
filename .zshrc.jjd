@@ -118,3 +118,6 @@ claude-resume-check() {
     echo "⚠️  No CLAUDE.md found in current directory"
   fi
 }
+#
+# Default Ollama model
+export OLLAMA_MODEL="gpt-oss:20b"

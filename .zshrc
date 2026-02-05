@@ -135,4 +135,4 @@ source ~/.zshrc.jjd
 
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
-export PATH="/Users/jdonaldson/.pixi/bin:$PATH"
+export PATH="$HOME/.pixi/bin:$PATH"

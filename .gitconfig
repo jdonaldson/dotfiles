@@ -4,7 +4,7 @@
 	autocrlf = input
 	editor=nvim
 	pager = less -R
-	hooksPath = /Users/jdonaldson/.config/git/hooks
+	hooksPath = ~/.config/git/hooks
 [user]
 	name = Justin Donaldson
 	email = jjd@jjd.io

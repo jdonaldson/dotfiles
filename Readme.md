@@ -31,7 +31,6 @@ dotfiles config status.showUntrackedFiles no
 | `.tmux.conf` | Tmux config |
 | `.config/kitty/kitty.conf` | Kitty terminal config |
 | `Brewfile` | Homebrew dependencies |
-| `Makefile` | Setup automation |
 
 ## Usage
 
@@ -61,4 +60,4 @@ dotfiles push
 - macOS
 - zsh
 - git
-- [Homebrew](https://brew.sh) (run `make brew` to install Brewfile)
+- [Homebrew](https://brew.sh) (run `brew bundle install` for dependencies)

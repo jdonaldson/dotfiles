@@ -1,40 +1,30 @@
+# Core tools - essentials for any dev setup
 tap "homebrew/bundle"
-brew "autoconf"
-brew "automake"
-brew "cmake"
-brew "cmatrix"
-brew "codespell"
+
+# Shell & Terminal
 brew "direnv"
-brew "fd"
-brew "flatbuffers"
 brew "fzf"
-brew "git-lfs"
-brew "haxe"
-brew "huggingface-cli"
-brew "isort"
-brew "lazygit"
-brew "libtool"
 brew "lsd"
-brew "neofetch"
-brew "neovim"
-brew "node"
-brew "python-filelock"
-brew "python-platformdirs"
-brew "pdm"
-brew "pkg-config"
-brew "poetry"
-brew "protobuf"
-brew "pyright"
-brew "ripgrep"
-brew "ruff"
-brew "rust"
-brew "sevenzip"
 brew "shellcheck"
-brew "swift"
 brew "tmux"
+
+# Search & Navigation
+brew "fd"
+brew "ripgrep"
+
+# Git
+brew "gh"
+brew "git-lfs"
+brew "lazygit"
+
+# Editors
+brew "neovim"
+
+# Utilities
+brew "htop"
+brew "tree"
 brew "wget"
-brew "yarn"
-cask "miniconda"
+
+# macOS Apps
 cask "raycast"
 cask "rectangle"
-cask "vlc"

@@ -1,0 +1,91 @@
+# Personal tools - extends Brewfile
+# Install with: brew bundle --file=Brewfile.personal
+
+# Build Tools
+brew "autoconf"
+brew "automake"
+brew "cmake"
+brew "libtool"
+brew "pkg-config"
+brew "swig"
+
+# Languages & Runtimes
+brew "go-task"
+brew "haxe"
+brew "luarocks"
+brew "node"
+brew "opam"
+brew "rust"
+brew "swift"
+brew "yarn"
+brew "zig"
+tap "oven-sh/bun"
+brew "oven-sh/bun/bun"
+
+# Python
+brew "black"
+brew "isort"
+brew "maturin"
+brew "pdm"
+brew "pipenv"
+brew "pipx"
+brew "poetry"
+brew "pyenv"
+brew "pyright"
+brew "ruff"
+brew "twine"
+
+# AI/ML
+brew "huggingface-cli"
+brew "llama.cpp"
+brew "ollama"
+
+# Data
+brew "duckdb"
+brew "miller"
+brew "postgresql@14"
+brew "visidata"
+
+# Cloud & DevOps
+brew "awscli"
+brew "aws-vault"
+brew "docker-compose"
+brew "trivy"
+
+# Document Processing
+brew "graphviz"
+brew "grip"
+brew "pandoc"
+brew "pdftk-java"
+brew "poppler"
+brew "texlive"
+brew "weasyprint"
+
+# Media
+brew "chafa"
+brew "ffmpeg"
+
+# Misc
+brew "argon2"
+brew "asimov"
+brew "codespell"
+brew "cmatrix"
+brew "flatbuffers"
+brew "git-filter-repo"
+brew "openvpn"
+brew "protobuf"
+brew "pv"
+brew "sevenzip"
+brew "watchman"
+brew "wimlib"
+
+# Apps
+cask "dbeaver-community"
+cask "gcloud-cli"
+cask "kitty"
+cask "lm-studio"
+cask "miniconda"
+cask "ngrok"
+cask "quarto"
+cask "signal"
+cask "vlc"

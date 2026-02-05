@@ -2,6 +2,8 @@
 
 Bare git repo dotfiles for macOS/zsh. Fork and customize.
 
+> **Branches**: `main` is a clean template. Personal configs live on named branches (e.g., `jdonaldson`).
+
 ## Quick Install
 
 ```bash
@@ -30,7 +32,9 @@ dotfiles config status.showUntrackedFiles no
 | `.gitconfig.local` | Personal git identity (not tracked) |
 | `.tmux.conf` | Tmux config |
 | `.config/kitty/kitty.conf` | Kitty terminal config |
-| `Brewfile` | Homebrew dependencies |
+| `.claude/CLAUDE.md` | Claude Code instructions |
+| `Brewfile` | Core Homebrew dependencies |
+| `Brewfile.personal` | Personal extras (jdonaldson branch only) |
 
 ## Usage
 
@@ -60,4 +64,8 @@ dotfiles push
 - macOS
 - zsh
 - git
-- [Homebrew](https://brew.sh) (run `brew bundle install` for dependencies)
+- [Homebrew](https://brew.sh)
+  ```bash
+  brew bundle install                         # core tools
+  brew bundle install --file=Brewfile.personal  # extras (if present)
+  ```

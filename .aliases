@@ -29,24 +29,6 @@ alias ls="lsd"
 # Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
 alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
 
-alias ga="git add"
-alias gau="git add -u"
-alias gaa="git add -A"
-alias gco="git checkout"
-alias gcob="git checkout -b"
-alias gb="git branch"
-alias gs="git status"
-alias gu= "!f() { git add -u && git status; }; f"
-alias gcm="git commit -m"
-alias gp="git push"
-
-alias dfa="dotfiles add"
-alias dfb="dotfiles branch"
-alias dfs="dotfiles status"
-alias dfu="!f() { git add -u && git status; }; f"
-alias dfp="dotfiles push"
-alias dcm="dotfiles commit -m"
-
 alias vim='nvim'
 alias nv='nvim'
 alias v='nvim'
@@ -89,7 +71,7 @@ alias brewdeps='brew deps --formula --for-each $(brew leaves) | sed "s/^.*:/$(tp
 
 alias genkey='openssl rand -base64 48'
 
-alias genargonkey= 'argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4'
+alias genargonkey='argon2 "$(openssl rand -base64 32)" -e -id -k 65540 -t 3 -p 4'
 alias mamba=micromamba
 
 alias llms="llama-server --fim-qwen-7b-default"
@@ -110,3 +92,55 @@ aws-mfa-login() {
 
 
 alias owu='DATA_DIR=~/.open-webui uvx --python 3.11 open-webui serve'
+
+# Claude Code Helper Functions
+
+# Dev loop — restarts with --continue when Claude exits non-zero.
+# Touch the restart sentinel before exiting Claude to trigger a reload (e.g., for MCP env changes).
+# Clean exit (ctrl-c twice, /exit) stops the loop.
+claude-dev() {
+  local sentinel="/tmp/claude_restart_$$"
+  echo "claude-dev: starting loop (sentinel: $sentinel)"
+  echo "  To restart: ask Claude to touch $sentinel, then /exit"
+  echo "  To quit:    /exit normally (without sentinel)"
+  while true; do
+    rm -f "$sentinel"
+    claude --continue "$@"
+    [ ! -f "$sentinel" ] && break
+    echo "claude-dev: reloading..."
+    sleep 1
+  done
+  rm -f "$sentinel"
+  echo "claude-dev: stopped"
+}
+
+claude-shutdown() {
+  echo "🔄 Preparing for Claude Code shutdown..."
+  echo ""
+  echo "📝 Tell Claude:"
+  echo '   "Update the resume context in CLAUDE.md"'
+  echo ""
+  echo "This will update the ## 🔄 RESUME CONTEXT section with:"
+  echo "  • Current status"
+  echo "  • What was accomplished"
+  echo "  • What's blocked/pending"
+  echo "  • Next actions"
+  echo ""
+  echo "When you restart, Claude will read and delete that section automatically."
+  echo ""
+  echo "✨ Ready!"
+}
+
+claude-resume-check() {
+  if [ -f "CLAUDE.md" ]; then
+    if grep -q "## 🔄 RESUME CONTEXT" CLAUDE.md; then
+      echo "✅ Resume context found in CLAUDE.md"
+      echo ""
+      grep -A 20 "## 🔄 RESUME CONTEXT" CLAUDE.md | head -25
+    else
+      echo "ℹ️  No resume context in CLAUDE.md (this is normal)"
+    fi
+  else
+    echo "⚠️  No CLAUDE.md found in current directory"
+  fi
+}

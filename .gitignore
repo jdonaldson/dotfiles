@@ -3,3 +3,4 @@ package-lock.json
 .apikeys
 .direnv
 *.mchat
+.DS_Store

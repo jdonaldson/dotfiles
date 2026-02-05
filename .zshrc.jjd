@@ -1,5 +1,6 @@
 
-source ~/.aliases export LESS=eFRX
+source ~/.aliases
+export LESS=eFRX
 
 
 export XDG_CONFIG_HOME=~/.config
@@ -27,7 +28,6 @@ fi
 export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
-export PATH=/opt/homebrew/bin:$PATH
 
 
 maybePath ~/.local/bin
@@ -41,23 +41,14 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-session_name="default"
-
-# 1. First you check if a tmux session exists with a given name.
-tmux has-session -t=$session_name 2> /dev/null
-
-# # 2. Create the session if it doesn't exists.
-
-if [[ $? -ne 0 ]]; then
-   TMUX='' tmux new-session -d -s "$session_name"
-fi
-
-#   # 3. Attach if outside of tmux, switch if you're in tmux.
-
-if [[ -z "$TMUX" ]]; then
-    tmux attach -t "$session_name"
-else
-    tmux switch-client -t "$session_name"
+# Auto-attach to tmux (skip in IDE terminals or if ~/.no-tmux exists)
+if [[ ! -f ~/.no-tmux && -z "$TMUX" && -z "$INSIDE_EMACS" && -z "$VSCODE_PID" && -z "$TERM_PROGRAM_VERSION" ]]; then
+  session_name="default"
+  tmux has-session -t=$session_name 2> /dev/null
+  if [[ $? -ne 0 ]]; then
+     TMUX='' tmux new-session -d -s "$session_name"
+  fi
+  tmux attach -t "$session_name"
 fi
 
 # fbd - delete git branch (including remote branches)
@@ -83,41 +74,7 @@ eval "$(direnv hook zsh)"
 # add this note for posterity
 #
 
-export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
-export SPARK_HOME=/Users/jdonaldson/spark-2.4.3-bin-hadoop2.8
-export PATH=$SPARK_HOME/bin:$PATH
 
-# Claude Code Helper Functions
-claude-shutdown() {
-  echo "🔄 Preparing for Claude Code shutdown..."
-  echo ""
-  echo "📝 Tell Claude:"
-  echo '   "Update the resume context in CLAUDE.md"'
-  echo ""
-  echo "This will update the ## 🔄 RESUME CONTEXT section with:"
-  echo "  • Current status"
-  echo "  • What was accomplished"
-  echo "  • What's blocked/pending"
-  echo "  • Next actions"
-  echo ""
-  echo "When you restart, Claude will read and delete that section automatically."
-  echo ""
-  echo "✨ Ready!"
-}
-
-claude-resume-check() {
-  if [ -f "CLAUDE.md" ]; then
-    if grep -q "## 🔄 RESUME CONTEXT" CLAUDE.md; then
-      echo "✅ Resume context found in CLAUDE.md"
-      echo ""
-      grep -A 20 "## 🔄 RESUME CONTEXT" CLAUDE.md | head -25
-    else
-      echo "ℹ️  No resume context in CLAUDE.md (this is normal)"
-    fi
-  else
-    echo "⚠️  No CLAUDE.md found in current directory"
-  fi
-}
 #
 # Default Ollama model
 export OLLAMA_MODEL="gpt-oss:20b"

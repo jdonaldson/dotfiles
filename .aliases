@@ -62,6 +62,16 @@ alias dfs='dotfiles status'
 alias dfu='dotfiles add -u && dotfiles status'
 alias dfn='dotfiles commit -m \"$@\" && dotfiles push'
 
+dotfiles-update() {
+  local stash_result
+  stash_result=$(dotfiles stash)
+  dotfiles pull --rebase
+  if [[ "$stash_result" != "No local changes to save" ]]; then
+    dotfiles stash pop
+  fi
+  echo "Dotfiles updated."
+}
+
 alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'
 alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
 alias lst="ls -lt"

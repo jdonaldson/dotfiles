@@ -26,7 +26,6 @@ dotfiles config status.showUntrackedFiles no
 |------|---------|
 | `.zshrc` | Main zsh config |
 | `.zshrc.local` | Personal customizations (edit this) |
-| `.zshrc_m1` / `.zshrc_intel` | Architecture-specific config |
 | `.aliases` | Shell aliases and functions |
 | `.gitconfig` | Git config (includes `.gitconfig.local`) |
 | `.gitconfig.local` | Personal git identity (not tracked) |
@@ -56,7 +55,7 @@ dotfiles push
 - Bare repo pattern (no symlinks)
 - Auto-attach to tmux (disable with `touch ~/.no-tmux`)
 - Kitty theme switching: `set-theme` or `set-theme "theme name"`
-- Architecture detection (Apple Silicon vs Intel)
+- Auto-detects conda location
 - Conda-safe brew wrapper
 
 ## Requirements

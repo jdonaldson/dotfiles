@@ -2,6 +2,8 @@
 
 Bare git repo dotfiles for macOS/zsh. Fork and customize.
 
+> **Branches**: `main` is a clean template. Personal configs live on named branches (e.g., `jdonaldson`).
+
 ## Quick Install
 
 ```bash
@@ -30,6 +32,7 @@ dotfiles config status.showUntrackedFiles no
 | `.gitconfig.local` | Personal git identity (not tracked) |
 | `.tmux.conf` | Tmux config |
 | `.config/kitty/kitty.conf` | Kitty terminal config |
+| `.claude/CLAUDE.md` | Claude Code instructions |
 | `Brewfile` | Homebrew dependencies |
 
 ## Usage

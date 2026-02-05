@@ -1,45 +1,38 @@
+# Personal zsh configuration
+# Edit this file to customize your shell environment
 
 source ~/.aliases
 export LESS=eFRX
 
-
 export XDG_CONFIG_HOME=~/.config
 
-maybeSource(){
-   test -f $1 && . $1
-}
-maybePath(){
-   test -d $1 && export PATH=$1:$PATH
-}
+# Helper functions for conditional sourcing/pathing
+maybeSource() { test -f $1 && . $1; }
+maybePath() { test -d $1 && export PATH=$1:$PATH; }
+maybePathAppend() { test -d $1 && export PATH=$PATH:$1; }
 
-maybePathAppend(){
-   test -d $1 && export PATH=$PATH:$1
-}
-
+# Architecture-specific config
 if [[ $(uname -m) == 'arm64' ]]; then
-  echo "Loading Apple M1/M2 core environment"
+  echo "Loading Apple Silicon environment"
   source $HOME/.zshrc_m1
 else
   echo "Loading Intel environment"
   source $HOME/.zshrc_intel
 fi
 
-
-export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
-
+# Homebrew
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 
-
+# Local binaries
 maybePath ~/.local/bin
 
+# API keys (not tracked)
 maybeSource ~/.apikeys
-maybeSource ~/.comrc.sh
 
-code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
-
+# NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Auto-attach to tmux (skip in IDE terminals or if ~/.no-tmux exists)
 if [[ ! -f ~/.no-tmux && -z "$TMUX" && -z "$INSIDE_EMACS" && -z "$VSCODE_PID" && -z "$TERM_PROGRAM_VERSION" ]]; then
@@ -51,31 +44,17 @@ if [[ ! -f ~/.no-tmux && -z "$TMUX" && -z "$INSIDE_EMACS" && -z "$VSCODE_PID" &&
   tmux attach -t "$session_name"
 fi
 
-# fbd - delete git branch (including remote branches)
-fbd() {
-  local branches branch
-  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
-  branch=$(echo "$branches" | fzf --multi ) &&
-  git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
-}
-
+# FZF
 eval "$(fzf --zsh)"
 
-
+# Kitty theme
 export COLORSCHEME="everforest dark hard"
-
-# Set kitty theme (run manually with `set-theme` or `set-theme <name>`)
 set-theme() {
   local theme="${1:-$COLORSCHEME}"
   kitten themes --reload-in=all "$theme"
 }
 
-# direnv configuration
+# Direnv
 eval "$(direnv hook zsh)"
-# add this note for posterity
-#
 
-
-#
-# Default Ollama model
-export OLLAMA_MODEL="gpt-oss:20b"
+# --- Add your customizations below ---

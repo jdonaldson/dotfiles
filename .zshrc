@@ -131,7 +131,7 @@ for key ('j') bindkey -M vicmd ${key} history-substring-search-down
 unset key
 # }}} End configuration added by Zim install
 
-source ~/.zshrc.jjd
+source ~/.zshrc.local
 
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit

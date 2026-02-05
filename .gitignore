@@ -4,3 +4,4 @@ package-lock.json
 .direnv
 *.mchat
 .DS_Store
+.gitconfig.local

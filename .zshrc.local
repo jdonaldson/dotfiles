@@ -11,14 +11,19 @@ maybeSource() { test -f $1 && . $1; }
 maybePath() { test -d $1 && export PATH=$1:$PATH; }
 maybePathAppend() { test -d $1 && export PATH=$PATH:$1; }
 
-# Architecture-specific config
-if [[ $(uname -m) == 'arm64' ]]; then
-  echo "Loading Apple Silicon environment"
-  source $HOME/.zshrc_m1
-else
-  echo "Loading Intel environment"
-  source $HOME/.zshrc_intel
-fi
+# Conda initialization (checks common locations)
+for conda_path in /opt/homebrew/Caskroom/miniconda/base $HOME/miniconda3; do
+  if [ -f "$conda_path/bin/conda" ]; then
+    __conda_setup="$("$conda_path/bin/conda" 'shell.zsh' 'hook' 2>/dev/null)"
+    if [ $? -eq 0 ]; then
+      eval "$__conda_setup"
+    else
+      [ -f "$conda_path/etc/profile.d/conda.sh" ] && . "$conda_path/etc/profile.d/conda.sh"
+    fi
+    unset __conda_setup
+    break
+  fi
+done
 
 # Homebrew
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"

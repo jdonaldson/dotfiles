@@ -63,11 +63,12 @@ eval "$(fzf --zsh)"
 
 
 export COLORSCHEME="everforest dark hard"
-# export COLORSCHEME="earthsong"
-# export COLORSCHEME="solarized dark"
 
-# kitten themes --reload-in=all dimmed $COLORSCHEME
-kitten themes --reload-in=all $COLORSCHEME
+# Set kitty theme (run manually with `set-theme` or `set-theme <name>`)
+set-theme() {
+  local theme="${1:-$COLORSCHEME}"
+  kitten themes --reload-in=all "$theme"
+}
 
 # direnv configuration
 eval "$(direnv hook zsh)"

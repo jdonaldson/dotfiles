@@ -1,10 +1,22 @@
 #!/bin/bash
 #
-# Global commit-msg hook: Block commits with Claude/AI signatures
+# Global commit-msg hook:
+# 1. Auto-prefix with issue key from branch name (e.g., DEG-1553)
+# 2. Block commits with Claude/AI signatures
 #
 
 commit_msg_file="$1"
 commit_msg=$(cat "$commit_msg_file")
+
+# --- Auto-prefix with issue key from branch name ---
+branch=$(git branch --show-current 2>/dev/null)
+key=$(echo "$branch" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+
+# Add prefix if: key exists, message doesn't have one, and not a merge commit
+if [[ -n "$key" ]] && ! [[ "$commit_msg" =~ ^[A-Z]+-[0-9]+ ]] && ! [[ "$commit_msg" =~ ^Merge ]]; then
+  echo "$key: $commit_msg" > "$commit_msg_file"
+  commit_msg=$(cat "$commit_msg_file")
+fi
 
 # Patterns to block
 bad_patterns=(

@@ -141,6 +141,8 @@ claude-shutdown() {
   echo "✨ Ready!"
 }
 
+alias clc='claude --continue'
+
 claude-resume-check() {
   if [ -f "CLAUDE.md" ]; then
     if grep -q "## 🔄 RESUME CONTEXT" CLAUDE.md; then

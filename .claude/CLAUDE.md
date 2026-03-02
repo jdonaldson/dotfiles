@@ -33,6 +33,16 @@
 - Delete via Trash: `mv <path> ~/.Trash/` (not `rm -rf`)
 - **Never move/delete working directory** - breaks session
 
+## Git Rebase Conflict Resolution
+
+When resolving merge conflicts during a rebase, **understand both changesets holistically before touching any conflict**:
+1. Read both complete file versions (`git show base:file` and `git show branch:file`)
+2. Understand the semantic intent of each side's changes as a whole
+3. Design the merged result — anticipate signature changes, duplicate definitions, downstream effects
+4. Resolve all conflicts in one coherent pass
+
+Never resolve conflicts piecemeal — that leads to discovering problems after the fact (duplicate functions, arity mismatches, etc.).
+
 ## Debrief Pattern
 
 On "debrief" or major phase completion, provide:

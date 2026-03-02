@@ -136,3 +136,4 @@ source ~/.zshrc.local
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 export PATH="$HOME/.pixi/bin:$PATH"
+export PATH="$HOME/.aftman/bin:$PATH"

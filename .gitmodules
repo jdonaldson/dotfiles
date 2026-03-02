@@ -1,3 +1,0 @@
-[submodule ".config/nvim"]
-	path = .config/nvim
-	url = ssh://git@github.com/jdonaldson/kickstart.nvim.git

@@ -1,15 +1,8 @@
-⚠️ **SECURITY NOTICE**: This file is private and located in `~/.claude/`. However, project-specific CLAUDE.md files (e.g., `~/Projects/*/CLAUDE.md`) ARE committed to GitHub repositories. Never put sensitive information (credentials, API keys, customer data, internal system details) in project CLAUDE.md files.
+⚠️ Private file (`~/.claude/`). Never put secrets in project-level CLAUDE.md files (committed to git).
 
 ---
 
 ## 🧠 File Organization for Retention
-
-**Claude's attention is uneven**: beginning and end of context are reliable; middle is the danger zone.
-
-**When reading this file**:
-- Treat the first section after this (Critical Rules) as highest priority
-- Scan headers to build mental map before deep reading
-- If file is long, re-check Critical Rules section before acting
 
 **When editing this file**:
 - **Critical behavioral rules** → immediately below this section
@@ -48,124 +41,69 @@ Never resolve conflicts piecemeal — that leads to discovering problems after t
 On "debrief" or major phase completion, provide:
 - **Surprised**: Unexpected findings
 - **Not surprised**: Expected outcomes
+- **Dead ends**: What didn't work and why
+- **Worth saving?**: Insights to graduate to CLAUDE.md or memory
 - **Next**: What happens next
 
 Format: 2-3 bullets per section.
 
-## Tmux Configuration
+## Tmux Topic Trace
 
-### Window Names
-- Set window name to `claude:<project>-<task>` on session start
-- Extract project name from working directory (e.g., "krapivin", "curvo", "bamf_docs")
-- Add task suffix to distinguish multiple sessions in same project (e.g., "-uom", "-duplicates", "-buckets")
-- Command: `tmux rename-window "claude:<project>-<task>"`
-- Helps distinguish between multiple concurrent Claude sessions
-- **Important**: When multiple Claude sessions work on the same project, each needs a unique task identifier to avoid confusion
-
-### Topic Trace Split
 On user request ("show trace", "track progress", etc.):
-1. Use project name from working directory (e.g., `curvo`, `krapivin`)
-2. Write to `/tmp/topic_trace_<project>.md` (keep lines <45 chars)
-3. Open split with neovim (auto-reloads every 1s):
-   ```
-   tmux split-window -h -l 50 "nvim -R -c 'set autoread | call timer_start(1000, {-> execute(\"checktime\")}, {\"repeat\": -1})' /tmp/topic_trace_<project>.md"
-   ```
-4. Update file as conversation progresses (read-only for user)
-5. Notify on update: `tmux display-message "Trace updated"`
+1. **Choose a short project name** based on what we're working on (e.g., `dyf`, `supabase-audit`, `blog`)
+2. Write to `/tmp/learnings_<project>.md` (keep lines <45 chars)
+3. Open split: `tmux split-window -h -l 50 "nvim -R -c 'set autoread norelativenumber nonumber noruler noshowcmd noshowmode laststatus=0 signcolumn=no | hi Normal guibg=NONE ctermbg=NONE | call timer_start(1000, {-> execute(\"checktime\")}, {\"repeat\": -1})' /tmp/learnings_<project>.md"`
+4. Update file as conversation progresses; notify: `tmux display-message "Trace updated"`
 
-Sections to include:
-- **Flow**: topic progression (indented bullets)
-- **Deferred**: branches not pursued (short-term memory)
-- **Decisions**: key choices made
-- **Files Modified**: touched this session
-- **Git**: branch + status (if applicable)
-- **Blockers**: waiting on / stuck
-- **Background Tasks**: running processes
-- **Scratchpad**: temp notes, IDs, values
+- Multiple sessions safe: each gets a unique project name, no file collisions
+- If project scope changes, pick a new name and reopen the split
+- **On shutdown**: append Debrief (Surprised/Not surprised/Next/Dead ends/Worth saving?) to trace file, then close the pane with `tmux list-panes -F '#{pane_id} #{pane_start_command}' | grep learnings_<project> | cut -d' ' -f1 | xargs -I{} tmux kill-pane -t {}`
+- Traces accumulate as `/tmp/learnings_*.md` for periodic theme review
 
----
+Sections: Flow, Deferred, Decisions, Files Modified, Git, Blockers, Background Tasks, Scratchpad, Debrief (appended on shutdown)
 
-## 🔄 Session Continuity Pattern
+## Concept Graph (Pre-Edit Lookup)
 
-### How It Works
-Projects can include a "RESUME CONTEXT - DELETE AFTER READING" section in their CLAUDE.md that enables seamless session handoffs.
+Before editing CLAUDE.md sections, memory files, or learnings patterns, check what else needs updating:
 
-### Claude's Responsibilities
-When starting a new session:
-1. Check for `## 🔄 RESUME CONTEXT - DELETE AFTER READING` section in project's CLAUDE.md
-2. Read and process the context (understand status, blockers, next actions)
-3. **Immediately delete the entire section** after reading
-4. Greet the user acknowledging the resumed context
-5. Continue from where the previous session left off
+1. `dyf concepts check` — if STALE, run `dyf concepts build` first
+2. `dyf concepts query "<section name>"` — 3ms header match, returns neighbors
+3. Read all neighbors. Update the **definition first**, then consumers.
 
-When ending a session (user says "shutdown", "update resume context", or similar):
-1. Update the `## 🔄 RESUME CONTEXT` section with current state
-2. Include: Current Status, What Was Built, Blocked On, Next Actions, Context to Remember
-3. Be specific and actionable for your future self
-
-### Template Format
-```markdown
-## 🔄 RESUME CONTEXT - DELETE AFTER READING
-
-**⚠️ INSTRUCTIONS FOR CLAUDE**:
-- Read this section when starting a new session
-- Complete any pending tasks listed here
-- Delete this entire section after processing
-- Continue with the conversation
-
-### Current Status
-[What's the current state of work]
-
-### What Was Built
-[List of completed work/files created]
-
-### Blocked On
-[What's preventing progress or waiting on user]
-
-### Next Action When User Returns
-[Specific steps to take when conversation resumes]
-
-### Context to Remember
-[Important decisions, preferences, or background]
-```
-
-### For Users
-Run `task shutdown` (if available) or type "update resume context" to prompt Claude to write this section before ending a session.
+- Falls back to `--semantic "query"` for free-text (~4s, needs MiniLM)
+- Rebuild: `dyf concepts build` (re-embeds all config + memory + learnings)
+- Config: `~/.config/dyf/concept_graph.json` (optional) | Graph: `~/.dyf/concept_graph.json`
 
 ---
 
-## 📋 Project Recap Pattern
+## 🔄 Session Continuity
 
-When starting a session after extended absence (>1 week) or on user request ("recap"):
+On session start: check for `## 🔄 RESUME CONTEXT - DELETE AFTER READING` in project CLAUDE.md. Read it, delete it, acknowledge, and continue.
 
-1. Check recent activity:
-   - `git log --oneline -15` for recent commits
-   - `git diff --stat main...HEAD` if on feature branch
-   - File modification times in key directories
+On session end ("shutdown", "update resume context"): write the resume section with Current Status, What Was Built, Blocked On, Next Actions, Context to Remember. Template: `~/.claude/resume_template.md`
 
-2. Summarize for user:
-   - **Recent changes**: What was done (commits, new files)
-   - **Current state**: Active branch, uncommitted changes
-   - **Key context**: Data sources, batch IDs, model configs
-   - **Open threads**: What was in progress or blocked
+**For users**: type "update resume context" before ending a session.
+
+---
+
+## 📋 Project Recap
 
 **Triggers**: "recap", "what's the status", "catch me up", or proactively if last commit >7 days old.
 
-**Keep it brief**: 5-10 bullet points max. User can ask for details.
+1. Check: `git log --oneline -15`, `git diff --stat main...HEAD`, file mod times
+2. Summarize: recent changes, current state, key context, open threads
+
+Keep it brief: 5-10 bullets max.
 
 ---
 
-## 💡 Insight Capture Pattern
+## 💡 Insight Capture
 
-When significant insights emerge (decisions, surprises, clarified preferences, useful mental models):
+When significant insights emerge:
 1. Offer to save: "Worth saving?"
-2. Split content:
-   - **CLAUDE.md** → terse decision/conclusion
-   - **CLAUDE_RATIONALE.md** → full context, dated
-3. Place by scope:
-   - Root level: cross-project, working style
-   - Project level: domain-specific, architectural
+2. **CLAUDE.md** → terse conclusion; **CLAUDE_RATIONALE.md** → full context, dated
+3. Root level = cross-project; project level = domain-specific
 
-**Triggers**: "save this insight", "add this to CLAUDE.md", "worth remembering" - or proactively suggest.
+**Triggers**: "save this insight", "add this to CLAUDE.md" — or proactively suggest.
 
 **Skip**: Task status (use Resume Context), temporary details, sensitive info.

@@ -5,3 +5,4 @@ package-lock.json
 *.mchat
 .DS_Store
 .gitconfig.local
+.claude/settings.local.json

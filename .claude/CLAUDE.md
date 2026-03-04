@@ -25,6 +25,7 @@
 - Background tasks: ring tmux bell (`tput bel`) on complete
 - Delete via Trash: `mv <path> ~/.Trash/` (not `rm -rf`)
 - **Never move/delete working directory** - breaks session
+- **Dotfiles**: bare repo at `~/.dotfiles`, work tree `$HOME`. Use `git --git-dir=~/.dotfiles --work-tree=~ <cmd> -- <path>`
 
 ## Git Rebase Conflict Resolution
 

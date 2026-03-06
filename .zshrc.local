@@ -37,6 +37,7 @@ export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 
 
 maybePath ~/.local/bin
+maybePath ~/bin
 
 maybeSource ~/.apikeys
 maybeSource ~/.comrc.sh
@@ -56,6 +57,16 @@ if [[ ! -f ~/.no-tmux && -z "$TMUX" && -z "$INSIDE_EMACS" && -z "$VSCODE_PID" &&
   fi
   tmux attach -t "$session_name"
 fi
+
+# Auto-name tmux windows based on git repo or directory
+_tmux_auto_title() {
+  [[ -z "$TMUX" ]] && return
+  local name
+  name=$(git rev-parse --show-toplevel 2>/dev/null | xargs basename) \
+    || name=$(basename "$PWD")
+  tmux rename-window "$name"
+}
+precmd_functions+=(_tmux_auto_title)
 
 # fbd - delete git branch (including remote branches)
 fbd() {

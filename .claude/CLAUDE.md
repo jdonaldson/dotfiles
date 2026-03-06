@@ -48,20 +48,44 @@ On "debrief" or major phase completion, provide:
 
 Format: 2-3 bullets per section.
 
-## Tmux Topic Trace
+## Tmux Task Trace
 
-On user request ("show trace", "track progress", etc.):
+A live side panel showing a series of actions taken during a session.
+
+On user request ("show trace", "track progress", "task trace", etc.):
 1. **Choose a short project name** based on what we're working on (e.g., `dyf`, `supabase-audit`, `blog`)
-2. Write to `/tmp/learnings_<project>.md` (keep lines <45 chars)
-3. Open split: `tmux split-window -h -l 50 "nvim -R -c 'set autoread norelativenumber nonumber noruler noshowcmd noshowmode laststatus=0 signcolumn=no | hi Normal guibg=NONE ctermbg=NONE | call timer_start(1000, {-> execute(\"checktime\")}, {\"repeat\": -1})' /tmp/learnings_<project>.md"`
-4. Update file as conversation progresses; notify: `tmux display-message "Trace updated"`
+2. Write to `/tmp/tasktrace_<project>.md` (keep lines <45 chars)
+3. Open split and name the pane:
+   ```
+   tmux split-window -h -l 50 "nvim -R -c 'set autoread norelativenumber nonumber noruler noshowcmd noshowmode laststatus=0 signcolumn=no | hi Normal guibg=NONE ctermbg=NONE | call timer_start(1000, {-> execute(\"checktime\")}, {\"repeat\": -1})' /tmp/tasktrace_<project>.md"
+   tmux select-pane -T "trace:<project>"
+   ```
+4. Update file as actions complete; notify: `tmux display-message "Task trace updated"`
+
+**Format**: chronological list of actions with status
+```
+# Project Name — Task Trace
+
+## Actions
+- [x] Ported embedding_metrics into train.py
+- [x] Copied catalog_lookup.py + CSV
+- [x] Refactored train.py for variants
+- [x] Fixed stale BATCH_ID in .envrc
+- [ ] Run multi-variant training
+- [ ] Fix broken test_label_format.py
+
+## Decisions
+- vespa.toml is sole BATCH_ID source
+- Config gate: [training.pretrained]
+
+## Blocked
+- (none)
+```
 
 - Multiple sessions safe: each gets a unique project name, no file collisions
 - If project scope changes, pick a new name and reopen the split
-- **On shutdown**: append Debrief (Surprised/Not surprised/Next/Dead ends/Worth saving?) to trace file, then close the pane with `tmux list-panes -F '#{pane_id} #{pane_start_command}' | grep learnings_<project> | cut -d' ' -f1 | xargs -I{} tmux kill-pane -t {}`
-- Traces accumulate as `/tmp/learnings_*.md` for periodic theme review
-
-Sections: Flow, Deferred, Decisions, Files Modified, Git, Blockers, Background Tasks, Scratchpad, Debrief (appended on shutdown)
+- **On shutdown**: append Debrief to trace file, then close the pane: `tmux list-panes -a -F '#{pane_id} #{pane_title}' | grep "trace:<project>" | cut -d' ' -f1 | xargs -I{} tmux kill-pane -t {}`
+- Traces accumulate as `/tmp/tasktrace_*.md` for periodic theme review
 
 ## Concept Graph (Pre-Edit Lookup)
 

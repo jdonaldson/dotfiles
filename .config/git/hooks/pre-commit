@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# Global pre-commit hook
+#
+
+# --- Haxe repo: reject target-conditional gates in pure-Haxe issue tests ---
+# Pure Haxe tests should run on all targets — don't wrap them in #if lua / #if python etc.
+# Only use #if when the test imports target-specific APIs (e.g., lua.Table, python.Lib).
+
+if git diff --cached --name-only | grep -q 'tests/unit/src/unit/issues/'; then
+    for f in $(git diff --cached --name-only -- 'tests/unit/src/unit/issues/*.hx'); do
+        [ -f "$f" ] || continue
+        staged=$(git show ":$f")
+
+        if echo "$staged" | grep -qE '#if (lua|python|cpp|cs|java|jvm|js|flash|hl|neko|eval|lua_jit)'; then
+            if echo "$staged" | grep -qE 'import (lua|python|cpp|cs|java|jvm|js|flash|hl|neko|eval)\.'; then
+                continue
+            fi
+            echo ""
+            echo "ERROR: $f has a target conditional (#if ...) but no target-specific imports."
+            echo "  Pure Haxe tests should run on all targets — remove the #if gate."
+            echo "  Only use #if when the test uses target-specific APIs (e.g., lua.Table, python.Lib)."
+            echo ""
+            tput bel 2>/dev/null || true
+            exit 1
+        fi
+    done
+fi
+
+exit 0

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-cwd.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+"enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754081223717
+  },
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(python3:*)",
+      "Bash(ls:*)",
+      "Bash(tput:*)",
+      "Bash(printf:*)",
+      "Bash(kitty:*)",
+      "Bash(tmux display-popup:*)",
+      "Bash(tpopup:*)",
+      "Bash(tpython:*)",
+      "Bash(tdialog:*)",
+      "Write(~/.claude/popups/*)"
+    ]
+  },
+  "mcpServers": {
+    "zen": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/jdonaldson/Projects/maze/zen-mcp-server",
+        "run",
+        "zen-mcp-server"
+      ]
+    },
+    "Roblox Studio": {
+      "command": "/Applications/RobloxStudioMCP.app/Contents/MacOS/rbx-studio-mcp",
+      "args": [
+        "--stdio"
+      ]
+    },
+    "browser-screenshot": {
+      "command": "node",
+      "args": [
+        "/Users/jdonaldson/.claude/mcp-servers/browser-screenshot/index.js"
+      ]
+    }
+  }
+}

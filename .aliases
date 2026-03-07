@@ -141,6 +141,28 @@ claude-shutdown() {
   echo "✨ Ready!"
 }
 
+# Tmux popup helpers
+# Scripts live in ~/.claude/popups/ (persistent, easy to permission for Claude)
+export TPOPUP_DIR="$HOME/.claude/popups"
+
+# Launch any command in a tmux popup (90% width, 80% height)
+tpopup() {
+  local width="${TPOPUP_W:-90%}"
+  local height="${TPOPUP_H:-80%}"
+  tmux display-popup -w "$width" -h "$height" -E "$@"
+}
+
+# Launch a Python TUI in a tmux popup (uses direnv python)
+tpython() {
+  local py="${TPOPUP_PYTHON:-$(which python3)}"
+  tpopup "$py" "$@"
+}
+
+# Launch a dialog script in a tmux popup
+tdialog() {
+  tpopup bash "$@"
+}
+
 alias clc='claude --continue'
 
 claude-resume-check() {

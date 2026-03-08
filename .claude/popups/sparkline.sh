@@ -27,3 +27,26 @@ while read -r val; do
 done < "$HIST"
 
 printf '%s' "$spark"
+
+# Adaptive refresh: slow down when idle, stay fast when CPU hot
+idle=$(tmux display-message -p '#{client_idle}')
+current=$(tmux show -gv status-interval 2>/dev/null)
+load=$(( cpu * 100 / MAX ))
+
+if (( load > 50 )); then
+  target=1
+elif (( idle > 1200 )); then
+  target=10
+elif (( idle > 600 )); then
+  target=5
+elif (( idle > 300 )); then
+  target=3
+elif (( idle > 120 )); then
+  target=2
+else
+  target=1
+fi
+
+if [[ "$current" != "$target" ]]; then
+  tmux set -g status-interval "$target" >/dev/null 2>&1
+fi

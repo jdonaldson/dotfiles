@@ -16,7 +16,7 @@ state=$(osascript -e 'tell application "Spotify" to player state as string' 2>/d
 [ ${#track} -gt 20 ] && track="${track:0:19}…"
 
 if [ "$state" = "playing" ]; then
-    printf '%s' "$artist - $track"
+    printf '▶ %s' "$artist - $track"
 else
-    printf '%s' "$artist - $track"
+    printf '⏸ %s' "$artist - $track"
 fi

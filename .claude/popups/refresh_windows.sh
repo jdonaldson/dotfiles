@@ -10,6 +10,7 @@ LOCK="/tmp/refresh_windows.lock"
 if [ -f "$LOCK" ]; then exit 0; fi
 touch "$LOCK"
 trap 'rm -f "$LOCK"' EXIT
+set +e
 
 for idx in $($T list-windows -F '#{window_index}'); do
   # Check pane title first (strip spinner chars)
@@ -34,3 +35,4 @@ for idx in $($T list-windows -F '#{window_index}'); do
       ;;
   esac
 done
+exit 0

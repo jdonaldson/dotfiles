@@ -18,6 +18,7 @@
 
 ## Critical Rules
 
+- **Rules over suggestions**: When asked to permanently change behavior, enforce it with a mechanical check (pre-commit hook, linter, CI rule) rather than just a CLAUDE.md note. Instructions I can ignore aren't reliable guardrails.
 - No "created by claude" in commit messages
 - Prefer polars over pandas
 - **NEVER use `cd`** - use absolute paths
@@ -104,6 +105,8 @@ Before editing CLAUDE.md sections, memory files, or learnings patterns, check wh
 ## 🔄 Session Continuity
 
 On session start: check for `## 🔄 RESUME CONTEXT - DELETE AFTER READING` in project CLAUDE.md. Read it, delete it, acknowledge, and continue.
+
+**When editing another project's CLAUDE.md**: only add/modify your specific section. Never delete or alter existing content (resume context, other notes) that belongs to that project's sessions.
 
 On session end ("shutdown", "update resume context"): write the resume section with Current Status, What Was Built, Blocked On, Next Actions, Context to Remember. Template: `~/.claude/resume_template.md`
 

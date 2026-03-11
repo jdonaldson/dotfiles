@@ -38,6 +38,14 @@ When resolving merge conflicts during a rebase, **understand both changesets hol
 
 Never resolve conflicts piecemeal — that leads to discovering problems after the fact (duplicate functions, arity mismatches, etc.).
 
+## Commit Chunking
+
+When committing accumulated changes that span multiple features or sessions:
+1. **Map the dependency DAG** — identify which changes depend on which (e.g., new module → exports in `__init__.py` → CLI flags that use it)
+2. **Commit in topological order** — dependencies before dependents, so every commit builds/imports cleanly
+3. **One topic per commit** — infrastructure, then features, then data; not by session or by file
+4. If files have interleaved changes from multiple topics, commit the foundational layer first
+
 ## Debrief Pattern
 
 On "debrief" or major phase completion, provide:

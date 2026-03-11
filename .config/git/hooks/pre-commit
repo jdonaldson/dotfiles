@@ -3,6 +3,56 @@
 # Global pre-commit hook
 #
 
+# --- Haxe repo: validate CHANGES.txt section placement ---
+# Catches the common mistake of adding new features to "Bugfixes"
+# or bug fixes to "General improvements".
+
+if git diff --cached --name-only | grep -q '^extra/CHANGES.txt$'; then
+    staged_file=$(git show :extra/CHANGES.txt 2>/dev/null)
+    if [[ -n "$staged_file" ]]; then
+        added_lines=$(git diff --cached -U0 -- extra/CHANGES.txt | grep '^+[^+]' | sed 's/^+//')
+        errors=0
+
+        while IFS= read -r entry; do
+            if [[ "$entry" =~ ^[[:space:]]*$ ]]; then continue; fi
+            if echo "$entry" | grep -qE '^\s+[A-Z].*:$'; then continue; fi
+            if [[ "$entry" =~ ^[0-9]{4}- ]]; then continue; fi
+
+            line_num=$(echo "$staged_file" | grep -nF "$entry" | head -1 | cut -d: -f1)
+            if [[ -z "$line_num" ]]; then continue; fi
+
+            section=$(echo "$staged_file" | head -n "$line_num" | grep -E $'^\t[A-Z].*:$' | tail -1 | sed $'s/^\t//' | sed 's/:$//')
+            if [[ -z "$section" ]]; then continue; fi
+
+            entry_lower=$(echo "$entry" | tr '[:upper:]' '[:lower:]')
+
+            if [[ "$section" == "Bugfixes" ]]; then
+                if echo "$entry_lower" | grep -qiE '\badd[s ]|\bnew\b|\bsupport\b|\bimplement'; then
+                    echo "CHANGES.txt: entry looks like a feature but is in \"Bugfixes\":"
+                    echo "  $entry"
+                    echo "  -> Should this be in \"General improvements\"?"
+                    errors=$((errors + 1))
+                fi
+            elif [[ "$section" == "General improvements" ]]; then
+                if echo "$entry_lower" | grep -qE ': fix\b'; then
+                    echo "CHANGES.txt: entry looks like a bug fix but is in \"General improvements\":"
+                    echo "  $entry"
+                    echo "  -> Should this be in \"Bugfixes\"?"
+                    errors=$((errors + 1))
+                fi
+            fi
+        done <<< "$added_lines"
+
+        if [[ $errors -gt 0 ]]; then
+            echo ""
+            echo "Found $errors possible CHANGES.txt section misplacement(s)."
+            echo "If intentional, commit with --no-verify to bypass."
+            tput bel 2>/dev/null || true
+            exit 1
+        fi
+    fi
+fi
+
 # --- Haxe repo: reject target-conditional gates in pure-Haxe issue tests ---
 # Pure Haxe tests should run on all targets — don't wrap them in #if lua / #if python etc.
 # Only use #if when the test imports target-specific APIs (e.g., lua.Table, python.Lib).

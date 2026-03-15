@@ -5,12 +5,8 @@
 cmd="$1"
 title="$2"
 
-# Animation frame based on current second
-frame=$(( $(date +%s) % 6 ))
-
-# Animated sparkle cycle for Claude
-claude_frames=( '✳' '✽' '✦' '✶' '✴' '✹' )
-claude_icon() { printf '%s' "${claude_frames[$frame]}"; }
+# Claude gets same terminal icon as everything else
+claude_icon() { printf '\ue795'; }
 
 # Check pane title first
 case "$title" in

@@ -5,12 +5,17 @@
 STATUS_DIR="$HOME/.claude/popups/status"
 
 case "$1" in
-  alert)    icon="👋" ;;
-  compress) icon="🙏" ;;
-  wait)     icon="⏳" ;;
-  burn)     icon="💪" ;;
+  alert)    icon="🔔" ;;
+  spin)     icon="✳" ;;
+  compress) icon="♻️" ;;
+  wait)     icon="✳" ;;
+  burn)     icon="✳" ;;
+  read)     icon="✳" ;;
+  edit)     icon="✳" ;;
+  pencil)   icon="✏️" ;;
+  input)    icon="⏳" ;;
   clear)    icon="" ;;
-  *)        echo "Usage: pane_status.sh {alert|compress|wait|burn|clear}"; exit 1 ;;
+  *)        echo "Usage: pane_status.sh {alert|spin|compress|wait|burn|read|edit|input|clear}"; exit 1 ;;
 esac
 
 # Key by pane PID so it's stable and filename-safe

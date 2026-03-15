@@ -1,26 +1,50 @@
 #!/bin/bash
-# Opacity picker with live preview via fzf execute-silent
-SOCKET=$(ls /tmp/kitty-socket-* 2>/dev/null | head -1)
-[ -z "$SOCKET" ] && exit 0
+# Opacity picker with live preview for Ghostty
+# Edits ghostty config + sends SIGUSR2 to reload
 
-# Bake socket into helper so fzf can call it
-cat > /tmp/fzf_set_opacity.sh << EOF
+CONFIG="$HOME/.config/ghostty/config"
+[ ! -f "$CONFIG" ] && exit 1
+
+# Helper script for fzf to call on navigation
+cat > /tmp/fzf_set_opacity.sh << 'EOF'
 #!/bin/bash
-kitty @ --to "unix:$SOCKET" set-background-opacity "\$1"
+CONFIG="$HOME/.config/ghostty/config"
+sed -i '' "s/^background-opacity = .*/background-opacity = $1/" "$CONFIG"
+pkill -SIGUSR2 ghostty
 EOF
 chmod +x /tmp/fzf_set_opacity.sh
 
-# Save current opacity to revert on Escape
-CURRENT=$(kitty @ --to "unix:$SOCKET" get-background-opacity 2>/dev/null || echo "0.85")
+# Read current opacity to highlight and revert on Escape
+CURRENT=$(grep '^background-opacity' "$CONFIG" | awk '{print $3}')
+[ -z "$CURRENT" ] && CURRENT="1.0"
 
-CHOICE=$(printf '█████ 1.0\n████░ 0.9\n███░░ 0.8\n██░░░ 0.7\n█░░░░ 0.6\n░░░░░ 0.5' | \
-  fzf --reverse --no-info --pointer=' ' --prompt='' --no-separator --no-input \
+# Build list and find default position
+OPTIONS='█████ 1.0
+████░ 0.95
+████░ 0.9
+███░░ 0.85
+███░░ 0.8
+██░░░ 0.75
+██░░░ 0.7
+█░░░░ 0.65
+█░░░░ 0.6
+░░░░░ 0.55
+░░░░░ 0.5'
+
+# Find 1-indexed line of current opacity for fzf default position
+DEFAULT_POS=$(echo "$OPTIONS" | grep -n " ${CURRENT}$" | cut -d: -f1)
+[ -z "$DEFAULT_POS" ] && DEFAULT_POS=1
+
+CHOICE=$(echo "$OPTIONS" | \
+  fzf --reverse --no-info --pointer='▸' --prompt='' --no-separator --no-input \
+      --bind "start:pos($DEFAULT_POS)" \
       --bind 'up:up+execute-silent(/tmp/fzf_set_opacity.sh {2})' \
       --bind 'down:down+execute-silent(/tmp/fzf_set_opacity.sh {2})' \
       --bind 'k:up+execute-silent(/tmp/fzf_set_opacity.sh {2})' \
       --bind 'j:down+execute-silent(/tmp/fzf_set_opacity.sh {2})')
 
 if [ -z "$CHOICE" ]; then
-  # Escape — revert
-  kitty @ --to "unix:$SOCKET" set-background-opacity "$CURRENT"
+  # Escape — revert to original
+  sed -i '' "s/^background-opacity = .*/background-opacity = $CURRENT/" "$CONFIG"
+  pkill -SIGUSR2 ghostty
 fi

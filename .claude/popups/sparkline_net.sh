@@ -5,7 +5,10 @@
 HIST="/tmp/tmux_sparkline_net.dat"
 PREV="/tmp/tmux_sparkline_net_prev.dat"
 BARS=( ▁ ▂ ▃ ▄ ▅ ▆ ▇ █ )
-WIDTH=10
+COLS=$(tmux display-message -p '#{client_width}' 2>/dev/null || echo 200)
+if (( COLS < 120 )); then WIDTH=3
+elif (( COLS < 180 )); then WIDTH=5
+else WIDTH=10; fi
 
 # Get current total bytes (in + out) on en0
 read -r bytes_in bytes_out <<< "$(netstat -ib -I en0 2>/dev/null | awk 'NR==2 {print $7, $10}')"

@@ -4,7 +4,10 @@
 
 HIST="/tmp/tmux_sparkline_cpu.dat"
 BARS=( ▁ ▂ ▃ ▄ ▅ ▆ ▇ █ )
-WIDTH=10
+COLS=$(tmux display-message -p '#{client_width}' 2>/dev/null || echo 200)
+if (( COLS < 120 )); then WIDTH=3
+elif (( COLS < 180 )); then WIDTH=5
+else WIDTH=10; fi
 NCPU=$(sysctl -n hw.ncpu 2>/dev/null || echo 8)
 MAX=$((NCPU * 100))
 

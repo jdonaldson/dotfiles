@@ -1,0 +1,46 @@
+#!/bin/bash
+# Simple AWS MFA script - refreshes [mfa] profile using [default] base credentials
+
+MFA_SERIAL="arn:aws:iam::350159409691:mfa/iphone"
+DURATION=43200  # 12 hours
+
+echo -n "Enter MFA code: "
+read MFA_CODE
+
+if [ -z "$MFA_CODE" ]; then
+    echo "Error: MFA code required"
+    exit 1
+fi
+
+echo "Getting session token..."
+
+# Use --profile default to use base credentials (no session token)
+CREDS=$(aws sts get-session-token \
+    --profile default \
+    --serial-number "$MFA_SERIAL" \
+    --token-code "$MFA_CODE" \
+    --duration-seconds "$DURATION" \
+    --output json 2>&1)
+
+if [ $? -ne 0 ]; then
+    echo "Error: $CREDS"
+    exit 1
+fi
+
+ACCESS_KEY=$(echo "$CREDS" | python3 -c "import sys,json; print(json.load(sys.stdin)['Credentials']['AccessKeyId'])")
+SECRET_KEY=$(echo "$CREDS" | python3 -c "import sys,json; print(json.load(sys.stdin)['Credentials']['SecretAccessKey'])")
+SESSION_TOKEN=$(echo "$CREDS" | python3 -c "import sys,json; print(json.load(sys.stdin)['Credentials']['SessionToken'])")
+EXPIRATION=$(echo "$CREDS" | python3 -c "import sys,json; print(json.load(sys.stdin)['Credentials']['Expiration'])")
+
+# Update [mfa] profile
+aws configure set aws_access_key_id "$ACCESS_KEY" --profile mfa
+aws configure set aws_secret_access_key "$SECRET_KEY" --profile mfa
+aws configure set aws_session_token "$SESSION_TOKEN" --profile mfa
+
+echo "Credentials updated in [mfa] profile. Expires: $EXPIRATION"
+echo ""
+echo "Use with: export AWS_PROFILE=mfa"
+echo "Or:       aws --profile mfa <command>"
+echo ""
+echo "Testing..."
+aws --profile mfa sts get-caller-identity

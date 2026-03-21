@@ -26,6 +26,7 @@
 - Background tasks: ring tmux bell (`tput bel`) on complete
 - Delete via Trash: `mv <path> ~/.Trash/` (not `rm -rf`)
 - **Never move/delete working directory** - breaks session
+- **Commit raw assets before transforming** — commit clean images/files before applying labels, resizing, etc. so originals are recoverable from git history
 - **Dotfiles**: bare repo at `~/.dotfiles`, work tree `$HOME`. Use `git --git-dir=~/.dotfiles --work-tree=~ <cmd> -- <path>`
 
 ## Git Rebase Conflict Resolution

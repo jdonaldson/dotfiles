@@ -53,10 +53,22 @@ On "debrief" or major phase completion, provide:
 - **Surprised**: Unexpected findings
 - **Not surprised**: Expected outcomes
 - **Dead ends**: What didn't work and why
+- **Pushback**: Where the user's workflow or instructions violated best practices this session. Be specific and honest — name the practice being violated, the concrete instance, and the consequence. Examples: evaluating on training data, accumulating uncommitted work, optimizing one task without measuring aggregate impact, ephemeral code for reproducible pipelines. This section exists because the default is to not push back.
 - **Worth saving?**: Insights to graduate to CLAUDE.md or memory
 - **Next**: What happens next
+- **Doc check**: Is the project CLAUDE.md (especially Current Frontier) still accurate? Flag if stale.
 
 Format: 2-3 bullets per section.
+
+## Three-Layer Documentation
+
+Maintain three layers of project context. Each serves a different audience (scope):
+
+1. **Ecosystem map** (`~/Projects/CLAUDE.md`) — cross-project dependency graph. Update when projects are created, archived, or change relationships.
+2. **Project CLAUDE.md** — architecture, current frontier, known issues. Update when capabilities land or priorities shift. Cross-reference upstream/downstream.
+3. **Memory files** — experimental history, findings, gotchas. Update during/after sessions. Mark ephemeral artifacts (tmp scripts) as historical.
+
+When any layer changes, check if the others need updating too.
 
 ## Tmux Task Trace
 

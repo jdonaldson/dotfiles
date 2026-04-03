@@ -1,5 +1,20 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(python3 ~/.claude/*)",
+      "Bash(ls:*)",
+      "Bash(tput:*)",
+      "Bash(printf:*)",
+      "Bash(kitty:*)",
+      "Bash(tmux display-popup:*)",
+      "Bash(tpopup:*)",
+      "Bash(tpython:*)",
+      "Bash(tdialog:*)",
+      "Write(~/.claude/popups/*)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -11,29 +26,79 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tool-status.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tool-status.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tool-status.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tool-status.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tool-status.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tool-status.sh",
+            "timeout": 5
+          }
+        ]
       }
     ]
   },
-"enabledPlugins": {
-    "pyright-lsp@claude-plugins-official": true
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754081223717
-  },
-  "permissions": {
-    "allow": [
-      "WebSearch",
-      "Bash(python3:*)",
-      "Bash(ls:*)",
-      "Bash(tput:*)",
-      "Bash(printf:*)",
-      "Bash(kitty:*)",
-      "Bash(tmux display-popup:*)",
-      "Bash(tpopup:*)",
-      "Bash(tpython:*)",
-      "Bash(tdialog:*)",
-      "Write(~/.claude/popups/*)"
-    ]
   },
   "mcpServers": {
     "zen": {

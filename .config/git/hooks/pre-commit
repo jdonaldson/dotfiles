@@ -3,6 +3,27 @@
 # Global pre-commit hook
 #
 
+# --- Haxe repo: block CHANGES.txt edits on feature branches ---
+# CHANGES.txt entries are added during merges to development, not on feature branches.
+
+if git diff --cached --name-only | grep -q '^extra/CHANGES.txt$'; then
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    case "$branch" in
+        development|main|master|HEAD)
+            ;;  # allow on main branches and during rebase/merge
+        *)
+            echo "ERROR: extra/CHANGES.txt should not be modified on feature branches."
+            echo "  CHANGES.txt entries are added during merges to development."
+            echo "  Branch: $branch"
+            echo ""
+            echo "To bypass (e.g. during rebase conflict resolution):"
+            echo "  git commit --no-verify"
+            tput bel 2>/dev/null || true
+            exit 1
+            ;;
+    esac
+fi
+
 # --- Haxe repo: validate CHANGES.txt section placement ---
 # Catches the common mistake of adding new features to "Bugfixes"
 # or bug fixes to "General improvements".

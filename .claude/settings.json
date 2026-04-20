@@ -122,5 +122,10 @@
         "/Users/jdonaldson/.claude/mcp-servers/browser-screenshot/index.js"
       ]
     }
+  },
+  "model": "us.anthropic.claude-opus-4-7",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-command.sh"
   }
 }

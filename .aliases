@@ -171,6 +171,19 @@ ta() {
 
 alias clc='claude --continue'
 
+# Session review: status cleanup + agent/trace stats
+treview() { tpopup bash ~/.claude/popups/review.sh "$@"; }
+
+# Agent monitor: open live agent activity pane
+tagents() {
+  local pane="${TMUX_PANE//[%]/}"
+  local f="/tmp/agent_monitor_${pane}.md"
+  [ -f "$f" ] || printf '# Agent Monitor\n\n_Waiting for agents..._\n' > "$f"
+  tmux split-window -h -l 50 "nvim -R -c 'set autoread norelativenumber nonumber noruler noshowcmd noshowmode laststatus=0 signcolumn=no | hi Normal guibg=NONE ctermbg=NONE | call timer_start(1000, {-> execute(\"checktime\")}, {\"repeat\": -1})' $f"
+  tmux select-pane -T "agents"
+  tmux select-pane -t '{left}'
+}
+
 claude-resume-check() {
   if [ -f "CLAUDE.md" ]; then
     if grep -q "## 🔄 RESUME CONTEXT" CLAUDE.md; then

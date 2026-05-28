@@ -19,7 +19,7 @@ case "$1" in
 esac
 
 # Key by pane PID so it's stable and filename-safe
-pane_pid=$(/opt/homebrew/bin/tmux display-message -p '#{pane_pid}')
+pane_pid=$(/opt/homebrew/bin/tmux display-message -t "${TMUX_PANE:-}" -p '#{pane_pid}')
 
 if [ -z "$icon" ]; then
   rm -f "$STATUS_DIR/$pane_pid"

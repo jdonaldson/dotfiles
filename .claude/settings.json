@@ -12,7 +12,13 @@
       "Bash(tpopup:*)",
       "Bash(tpython:*)",
       "Bash(tdialog:*)",
-      "Write(~/.claude/popups/*)"
+      "Write(~/.claude/popups/*)",
+      "Bash(uv:*)",
+      "Bash(uvx:*)",
+      "Bash(python /tmp/claude-*/*)",
+      "Bash(python3 /tmp/claude-*/*)",
+      "Bash(python /var/folders/*)",
+      "Bash(python3 /var/folders/*)"
     ]
   },
   "hooks": {
@@ -93,10 +99,51 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline-command.sh"
+  },
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true
   },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "network": {
+      "allowedDomains": [
+        "pypi.org",
+        "files.pythonhosted.org",
+        "raw.githubusercontent.com",
+        "objects.githubusercontent.com",
+        "codeload.github.com"
+      ]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/Projects",
+        "~/.cache",
+        "/tmp",
+        "/Volumes/Models",
+        "~/Library/Application Support/quarto",
+        "~/Library/Caches/quarto",
+        "~/.ipython",
+        "~/.jupyter"
+      ],
+      "denyRead": [
+        "~/.ssh",
+        "~/.aws",
+        "~/.config/gcloud",
+        "~/.netrc",
+        "~/.dotfiles"
+      ]
+    }
+  },
+  "additionalDirectories": [
+    "/tmp",
+    "/private/tmp",
+    "/Volumes/Models"
+  ],
   "feedbackSurveyState": {
     "lastShownTime": 1754081223717
   },
@@ -122,10 +169,5 @@
         "/Users/jdonaldson/.claude/mcp-servers/browser-screenshot/index.js"
       ]
     }
-  },
-  "model": "us.anthropic.claude-opus-4-7",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline-command.sh"
   }
 }

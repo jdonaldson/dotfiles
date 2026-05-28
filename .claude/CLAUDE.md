@@ -24,7 +24,7 @@
 - No "created by claude" in commit messages
 - Prefer polars over pandas
 - **NEVER use `cd`** - use absolute paths
-- **Prefer make/task over scripts** (temp scripts OK in `/tmp/`)
+- **Prefer make/task over scripts** (temp scripts OK in `$TMPDIR`, never bare `/tmp/`)
 - Background tasks: ring tmux bell (`tput bel`) on complete
 - Delete via Trash: `mv <path> ~/.Trash/` (not `rm -rf`)
 - **Never move/delete working directory** - breaks session

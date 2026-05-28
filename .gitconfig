@@ -28,3 +28,13 @@
 # Personal config (name, email, github user, project-specific includes)
 [include]
 	path = ~/.gitconfig.local
+[credential]
+	credentialStore = keychain
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+	azreposCredentialType = oauth
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+	interactive = auto
+[credential "azrepos:org/broadjumpllc"]
+	username = justin.donaldson@gocurvo.com

@@ -137,3 +137,6 @@ source ~/.zshrc.local
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 export PATH="$HOME/.pixi/bin:$PATH"
 export PATH="$HOME/.aftman/bin:$PATH"
+
+# The next line updates PATH for egcli command.
+if [ -f '/Users/jdonaldson/Library/Group Containers/FELUD555VC.group.com.egnyte.DesktopApp/CLI/egcli.inc' ]; then . '/Users/jdonaldson/Library/Group Containers/FELUD555VC.group.com.egnyte.DesktopApp/CLI/egcli.inc'; fi

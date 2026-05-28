@@ -19,6 +19,8 @@
 ## Critical Rules
 
 - **Rules over suggestions**: When asked to permanently change behavior, enforce it with a mechanical check (pre-commit hook, linter, CI rule) rather than just a CLAUDE.md note. Instructions I can ignore aren't reliable guardrails.
+- **Audit the generator, not the symptom**: an observed defect implicates the whole class produced by the same process P (shared assumption, batch, source, tool). On any error — mine or yours catching mine — name P, sweep all of S(P), then patch. Don't fix one item and move on. **Trigger: `frpr`** — re-derive the recent batch of my claims from first principles, prior reasoning suspended; report what survives.
+- **Render rich markdown via Quarto for viewing**: when sharing or opening markdown with mermaid charts, LaTeX, complex tables, or other rendered content, render it first: copy to `/tmp/`, swap any non-Quarto frontmatter for a Quarto block (`format: html, embed-resources: true, toc: true`), run `quarto render foo.qmd --to html`, then `open foo.html`. Plain `open foo.md` falls through to TextEdit and shows raw source — chart blocks become unrendered text. This applies to memory files (which carry their own `name/description/type` frontmatter), gallery output, any `synthesis_*.md` with embedded diagrams.
 - No "created by claude" in commit messages
 - Prefer polars over pandas
 - **NEVER use `cd`** - use absolute paths
@@ -46,6 +48,18 @@ When committing accumulated changes that span multiple features or sessions:
 2. **Commit in topological order** — dependencies before dependents, so every commit builds/imports cleanly
 3. **One topic per commit** — infrastructure, then features, then data; not by session or by file
 4. If files have interleaved changes from multiple topics, commit the foundational layer first
+
+## Signal Pipeline Auditing
+
+When investigating an existing signal/feature column whose generating code may be unavailable:
+1. **Decompose empirically** — correlate against its inputs and the target outcome
+2. **Grep for consumers** — read how downstream code uses it; column name + decomposition can mislead about intent
+
+Both steps required; either alone produces unverified claims about the pipeline.
+
+When a signal shows fold-by-fold instability, distinguish **detection broke** (structure/coverage degraded → tune resolution/threshold) from **calibration broke** (input→output mapping flipped → rolling window or regime-conditional mapping). Different lever for each — misattribution wastes the next iteration.
+
+When testing whether metric X carries information beyond mechanism Y, the noise null must **preserve Y while breaking only the structure X claims to detect**. A null that destroys both makes the test trivially significant in either direction. Example: testing whether persistent homology cycle counts measure "topology" — a column-shuffle null destroys clustering AND topology, so any clustered-vs-shuffled comparison just measures clustering. The right null preserves clustering (e.g., within-cluster shuffle) and tests only the residual claim.
 
 ## Debrief Pattern
 
@@ -109,6 +123,19 @@ On user request ("show trace", "track progress", "task trace", etc.):
 - **On shutdown**: append Debrief to trace file, then close the pane: `tmux list-panes -a -F '#{pane_id} #{pane_title}' | grep "trace:<project>" | cut -d' ' -f1 | xargs -I{} tmux kill-pane -t {}`
 - Traces accumulate as `/tmp/tasktrace_*.md` for periodic theme review
 
+## Tmux Pane Labels (multi-session disambiguation)
+
+`~/.claude/popups/update_labels.sh` computes per-pane status labels from `pane_title` + cwd. When multiple Claude sessions share a cwd basename, they all collapse to one label. Two features:
+
+- **Path-deepening fallback**: generic titles fall back to `parent/dirbase` (so `~/Projects/work/curvo/dex` shows as `curvo/dex`, not bare `dex`). Falls back to bare basename when parent is `$HOME` or `/`.
+- **Override**: write `~/.claude/popups/labels/<pid>.override` to pin a label. Survives the Claude spinner's `pane_title` race that defeats `tmux select-pane -T`.
+
+```bash
+echo 'workstream-name' > ~/.claude/popups/labels/$(tmux display-message -p '#{pane_pid}').override
+```
+
+Cleanup loop removes `<pid>` and `<pid>.override` when the pane dies. Set early in a session when running parallel Claude panes; bare `tmux select-pane -T` won't stick.
+
 ## Concept Graph (Pre-Edit Lookup)
 
 Before editing CLAUDE.md sections, memory files, or learnings patterns, check what else needs updating:
@@ -156,3 +183,19 @@ When significant insights emerge:
 **Triggers**: "save this insight", "add this to CLAUDE.md" — or proactively suggest.
 
 **Skip**: Task status (use Resume Context), temporary details, sensitive info.
+
+---
+
+## 🦴 Local model offload (DS4)
+
+`./ds4-server` exposes OpenAI/Anthropic APIs at `127.0.0.1:8000`. Slow (~16 t/s gen) but 1M ctx + on-disk KV cache. Reach for it when:
+
+- **Repo archaeology** — feed source, ask "where is X / what was the design" on dyf, shortorder, owlbear, cochlear after a break
+- **Long ML log triage** — inspectable-experiment outputs; grounded pointers to events
+- **`sec10quant` 10-Q summarization** — long filings, reading-heavy, privacy-bounded
+- **Cloud-API-off-limits material** — internal/NDA/personal; privacy moat changes the option set
+- **Overnight batch jobs** — tag, summarize, extract from corpora; 16 t/s is fine at 3am
+
+**Avoid**: code generation, SQL, schemas, math — anywhere precise output beats grounded reading.
+
+**Setup**: needs `iogpu.wired_limit_mb=92000` (LaunchDaemon installed); GGUF on `/Volumes/Models`.

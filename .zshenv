@@ -30,6 +30,13 @@ fpath=(
 
 typeset -aU path
 
+# Fall back when this host has no terminfo for the client's terminal
+# (e.g. SSH from Ghostty into a box without xterm-ghostty) — otherwise
+# tmux refuses to attach and curses apps break
+if [[ -n "$TERM" && "$TERM" != "dumb" ]] && ! infocmp "$TERM" >/dev/null 2>&1; then
+  export TERM=xterm-256color
+fi
+
 # Prefer nvim, fall back to vim/vi on machines without it
 if command -v nvim >/dev/null 2>&1; then
   export EDITOR='nvim'

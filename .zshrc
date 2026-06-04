@@ -135,7 +135,11 @@ unset key
 source ~/.zshrc.local
 
 
-fpath+=~/.zfunc; autoload -Uz compinit; compinit
+# Extra completions from ~/.zfunc — only re-run compinit where that dir exists
+# (Zim's completion module already ran it once)
+if [[ -d ~/.zfunc ]]; then
+  fpath+=~/.zfunc; autoload -Uz compinit; compinit
+fi
 export PATH="$HOME/.pixi/bin:$PATH"
 export PATH="$HOME/.aftman/bin:$PATH"
 

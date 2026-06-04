@@ -18,9 +18,27 @@
       "Bash(python /tmp/claude-*/*)",
       "Bash(python3 /tmp/claude-*/*)",
       "Bash(python /var/folders/*)",
-      "Bash(python3 /var/folders/*)"
+      "Bash(python3 /var/folders/*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr status:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh api repos/*/pulls*)",
+      "Bash(gh api repos/*/issues*)",
+      "Bash(gh api repos/*/commits*)",
+      "Bash(gh api repos/*/contents*)",
+      "Bash(gh api repos/*/actions/runs*)",
+      "Bash(gh api repos/*/releases*)",
+      "Bash(gh api repos/*/branches*)",
+      "Bash(gh api repos/*/tags*)",
+      "Bash(gh run view:*)",
+      "Bash(gh run list:*)"
     ]
   },
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -116,7 +134,8 @@
         "files.pythonhosted.org",
         "raw.githubusercontent.com",
         "objects.githubusercontent.com",
-        "codeload.github.com"
+        "codeload.github.com",
+        "api.github.com"
       ]
     },
     "filesystem": {

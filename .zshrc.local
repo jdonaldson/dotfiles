@@ -2,7 +2,6 @@
 source ~/.aliases
 export LESS=eFRX
 
-
 export XDG_CONFIG_HOME=~/.config
 
 maybeSource(){
@@ -102,3 +101,6 @@ command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 #
 # Default Ollama model
 export OLLAMA_MODEL="gpt-oss:20b"
+
+# Machine-/work-specific shell config (not tracked in public dotfiles).
+[[ -f ~/.zshrc.work ]] && source ~/.zshrc.work

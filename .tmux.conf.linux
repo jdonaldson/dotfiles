@@ -1,0 +1,29 @@
+# Linux/server-specific tmux configuration (sourced from ~/.tmux.conf)
+#
+# Servers keep the stock C-b prefix. When you SSH in from a Mac that's already
+# inside tmux (prefix C-a), the two prefixes don't collide: C-a drives the
+# outer/local tmux, C-b drives this one.
+set -g prefix C-b
+bind C-b send-prefix
+
+# Clipboard: no pbcopy/xclip on a headless box — use OSC 52 so yanks land in
+# the clipboard of whatever terminal you're SSH'd in from (kitty supports it).
+set -s set-clipboard on
+bind -T copy-mode-vi y send -X copy-pipe-and-cancel
+bind -T copy-mode-vi Enter send -X copy-pipe-and-cancel
+
+# Status left: hostname pill in RED — unmistakably the server, not your laptop
+set -g status-left '#[fg=#e67e80,bg=default]#[bg=#e67e80,fg=#232a2e,bold] 🔱 #h #[fg=#e67e80,bg=#374145]#[fg=#d3c6aa,bg=#374145] #S #[fg=#374145,bg=default] '
+set -g status-left-length 40
+
+# Status right: load + available memory straight from /proc, date, time pill
+set -g status-right '#[fg=#a7c080]⚙ #(cut -d" " -f1-3 /proc/loadavg) #[fg=#4f5b58]⡇ #[fg=#7fbbb3]☵ #(awk "/MemAvailable/{printf \"%.1fG free\", $2/1048576}" /proc/meminfo) #[fg=#4f5b58]⡇ #[fg=#859289]%d %b #[fg=#374145,bg=default] #[fg=#7fbbb3,bg=default]#[fg=#232a2e,bg=#7fbbb3,bold] %I:%M%p #[fg=#7fbbb3,bg=default] '
+set -g status-right-length 100
+set -g status-justify left
+
+# Window pills (same look as macOS, minus the popup label scripts)
+setw -g window-status-format '#[fg=#2e383c,bg=default]#[fg=#859289,bg=#2e383c] #I #W #[fg=#2e383c,bg=default]'
+setw -g window-status-current-format '#[fg=#a7c080,bg=default]#[fg=#232a2e,bg=#a7c080,bold] #I #W #[fg=#a7c080,bg=default]'
+
+# Status refresh: 5s is plenty for a server (no sparklines to animate)
+set -g status-interval 5

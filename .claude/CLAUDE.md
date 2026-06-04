@@ -20,13 +20,13 @@
 
 - **Rules over suggestions**: When asked to permanently change behavior, enforce it with a mechanical check (pre-commit hook, linter, CI rule) rather than just a CLAUDE.md note. Instructions I can ignore aren't reliable guardrails.
 - **Audit the generator, not the symptom**: an observed defect implicates the whole class produced by the same process P (shared assumption, batch, source, tool). On any error — mine or yours catching mine — name P, sweep all of S(P), then patch. Don't fix one item and move on. **Trigger: `frpr`** — re-derive the recent batch of my claims from first principles, prior reasoning suspended; report what survives.
-- **Render rich markdown via Quarto for viewing**: when sharing or opening markdown with mermaid charts, LaTeX, complex tables, or other rendered content, render it first: copy to `/tmp/`, swap any non-Quarto frontmatter for a Quarto block (`format: html, embed-resources: true, toc: true`), run `quarto render foo.qmd --to html`, then `open foo.html`. Plain `open foo.md` falls through to TextEdit and shows raw source — chart blocks become unrendered text. This applies to memory files (which carry their own `name/description/type` frontmatter), gallery output, any `synthesis_*.md` with embedded diagrams.
+- **Render rich markdown via Quarto for viewing** (macOS — needs `quarto` + `open`; skip on headless hosts): when sharing or opening markdown with mermaid charts, LaTeX, complex tables, or other rendered content, render it first: copy to `/tmp/`, swap any non-Quarto frontmatter for a Quarto block (`format: html, embed-resources: true, toc: true`), run `quarto render foo.qmd --to html`, then `open foo.html`. Plain `open foo.md` falls through to TextEdit and shows raw source — chart blocks become unrendered text. This applies to memory files (which carry their own `name/description/type` frontmatter), gallery output, any `synthesis_*.md` with embedded diagrams.
 - No "created by claude" in commit messages
 - Prefer polars over pandas
 - **NEVER use `cd`** - use absolute paths
 - **Prefer make/task over scripts** (temp scripts OK in `$TMPDIR`, never bare `/tmp/`)
 - Background tasks: ring tmux bell (`tput bel`) on complete
-- Delete via Trash: `mv <path> ~/.Trash/` (not `rm -rf`)
+- Delete via Trash: `mv <path> ~/.Trash/` (not `rm -rf`); on Linux hosts with no Trash, move to a `/tmp` holding dir or confirm before `rm`
 - **Never move/delete working directory** - breaks session
 - **Commit raw assets before transforming** — commit clean images/files before applying labels, resizing, etc. so originals are recoverable from git history
 - **Dotfiles**: bare repo at `~/.dotfiles`, work tree `$HOME`. Use `git --git-dir=~/.dotfiles --work-tree=~ <cmd> -- <path>`

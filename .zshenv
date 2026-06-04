@@ -30,6 +30,13 @@ fpath=(
 
 typeset -aU path
 
-export EDITOR='nvim'
-export GIT_EDITOR='nvim'
-. "$HOME/.cargo/env"
+# Prefer nvim, fall back to vim/vi on machines without it
+if command -v nvim >/dev/null 2>&1; then
+  export EDITOR='nvim'
+elif command -v vim >/dev/null 2>&1; then
+  export EDITOR='vim'
+else
+  export EDITOR='vi'
+fi
+export GIT_EDITOR="$EDITOR"
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"

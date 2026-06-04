@@ -42,14 +42,20 @@ maybePath ~/bin
 maybeSource ~/.apikeys
 maybeSource ~/.comrc.sh
 
-code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+[[ "$OSTYPE" == darwin* ]] && code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Auto-attach to tmux (skip in IDE terminals or if ~/.no-tmux exists)
-if [[ ! -f ~/.no-tmux && -z "$TMUX" && -z "$INSIDE_EMACS" && -z "$VSCODE_PID" && -z "$TERM_PROGRAM_VERSION" ]]; then
+# On Linux boxes, only auto-attach for SSH logins — keeps local/console and
+# non-interactive shells out of tmux, and avoids surprise nesting.
+if [[ "$OSTYPE" != darwin* && -z "$SSH_TTY" ]]; then
+  : # not an SSH session on a server: skip auto-attach
+elif ! command -v tmux >/dev/null 2>&1; then
+  : # no tmux on this machine
+elif [[ ! -f ~/.no-tmux && -z "$TMUX" && -z "$INSIDE_EMACS" && -z "$VSCODE_PID" && -z "$TERM_PROGRAM_VERSION" ]]; then
   session_name="default"
   tmux has-session -t=$session_name 2> /dev/null
   if [[ $? -ne 0 ]]; then
@@ -76,7 +82,7 @@ fbd() {
   git branch -D $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
-eval "$(fzf --zsh)"
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --zsh)"
 
 
 export COLORSCHEME="everforest dark hard"
@@ -88,7 +94,7 @@ set-theme() {
 }
 
 # direnv configuration
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 # add this note for posterity
 #
 

@@ -16,27 +16,36 @@ fakescan() {
  	convert -density 300 $1 -alpha remove -rotate 0.33 -attenuate 0.30 +noise Multiplicative +repage -monochrome -compress group4 $1.scanned.pdf
 }
 
-# Detect which `ls` flavor is in use
-# if ls --color > /dev/null 2>&1; then # GNU `ls`
-# 	colorflag="--color"
-# else # OS X `ls`
-# 	colorflag="-G"
-# fi
-#
-alias ls="lsd"
+# Prefer lsd when available, else GNU ls colors
+if command -v lsd >/dev/null 2>&1; then
+	alias ls="lsd"
+elif ls --color >/dev/null 2>&1; then
+	alias ls="ls --color=auto"
+fi
 
-# Merge PDF files
-# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
-alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
+# macOS-only helpers
+if [[ "$OSTYPE" == darwin* ]]; then
+	# Merge PDF files
+	# Usage: `mergepdf -o output.pdf input{1,2,3}.pdf`
+	alias mergepdf='/System/Library/Automator/Combine\ PDF\ Pages.action/Contents/Resources/join.py'
+	alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
+fi
 
-alias vim='nvim'
-alias nv='nvim'
-alias v='nvim'
+# Prefer nvim when available, else vim
+if command -v nvim >/dev/null 2>&1; then
+	alias vim='nvim'
+	alias nv='nvim'
+	alias v='nvim'
+elif command -v vim >/dev/null 2>&1; then
+	alias nv='vim'
+	alias v='vim'
+fi
 
 
-# Deactivates conda before running brew. 
+# Deactivates conda before running brew.
 # Re-activates conda if it was active upon completion.
 
+command -v brew >/dev/null 2>&1 && \
 brew() {
     local conda_env="$CONDA_DEFAULT_ENV"
     while [ "$CONDA_SHLVL" -gt 0  ]; do
@@ -73,7 +82,6 @@ dotfiles-update() {
 }
 
 alias pipnuke='pip freeze | grep -v @ | grep -v "^-e" | xargs pip uninstall -y'
-alias chrome="/Applications/Google\\ \\Chrome.app/Contents/MacOS/Google\\ \\Chrome"
 alias lst="ls -lt"
 
 alias brewdeps='brew deps --formula --for-each $(brew leaves) | sed "s/^.*:/$(tput setaf 4)&$(tput sgr0)/"'

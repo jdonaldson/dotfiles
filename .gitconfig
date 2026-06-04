@@ -1,8 +1,10 @@
 [core]
-	excludesfile = /Users/jdonaldson/.config/git/ignore
+	excludesfile = ~/.config/git/ignore
 	quotepath = false
 	autocrlf = input
-	editor = nvim
+	# vim as lowest common denominator; GIT_EDITOR (set in .zshenv) upgrades
+	# this to nvim on machines that have it
+	editor = vim
 	pager = less -R
 	hooksPath = ~/.config/git/hooks
 [alias]

@@ -2,7 +2,8 @@
 #
 # Global commit-msg hook:
 # 1. Auto-prefix with issue key from branch name (e.g., DEG-1553)
-# 2. Block commits with Claude/AI signatures
+# 2. Block commits with Claude/AI signatures (except in ~/Projects/work/, which
+#    has its own policy allowing Co-Authored-By trailers for AI assistance)
 #
 
 commit_msg_file="$1"
@@ -17,6 +18,17 @@ if [[ -n "$key" ]] && ! [[ "$commit_msg" =~ ^[A-Z]+-[0-9]+ ]] && ! [[ "$commit_m
   echo "$key: $commit_msg" > "$commit_msg_file"
   commit_msg=$(cat "$commit_msg_file")
 fi
+
+# --- AI-signature block ---
+# Skip the block if this commit is being made under ~/Projects/work/. That tree
+# has its own policy allowing Co-Authored-By trailers for AI-assistance
+# visibility (see ~/Projects/work/CLAUDE.md).
+toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
+case "$toplevel" in
+    "$HOME/Projects/work"|"$HOME/Projects/work"/*)
+        exit 0
+        ;;
+esac
 
 # Patterns to block
 bad_patterns=(

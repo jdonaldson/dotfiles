@@ -20,7 +20,7 @@ else
 fi
 
 # Resource sections (always shown)
-RESOURCES="#[fg=#374145,bg=default]${PL}#[bg=#374145]#[range=user|slack]#[fg=#e67e80,bg=#374145] ${SLACK}#[fg=#d3c6aa] #(bash ~/.claude/popups/slack_unread.sh) #[norange]#[fg=#4f5b58]⡇ #[range=user|cpu]#[fg=#a7c080]${CPU} #(bash ~/.claude/popups/sparkline.sh)#[norange] #[fg=#4f5b58]⡇ #[range=user|net]#[fg=#e69875]${WIFI} #(bash ~/.claude/popups/sparkline_net.sh)#[norange] #[fg=#4f5b58]⡇ #[range=user|mem]#[fg=#7fbbb3]${MEM} #(bash ~/.claude/popups/sparkline_mem.sh)#[norange] #[fg=#4f5b58]⡇"
+RESOURCES="#[fg=#374145,bg=default]${PL}#[bg=#374145]#[range=user|slack]#[fg=#e67e80,bg=#374145] ${SLACK}#[fg=#d3c6aa] #(bash ~/.claude/popups/slack_unread.sh) #[norange]#[fg=#4f5b58]⡇ #[range=user|cpu]#[fg=#a7c080]${CPU} #(bash ~/.claude/popups/sparkline.sh) #(~/.claude/popups/.venv/bin/python ~/.claude/popups/core_meter.py)#[fg=#a7c080]#[norange] #[fg=#4f5b58]⡇ #[range=user|net]#[fg=#e69875]${WIFI} #(bash ~/.claude/popups/sparkline_net.sh)#[norange] #[fg=#4f5b58]⡇ #[range=user|wifi]#(~/.claude/popups/.venv/bin/python ~/.claude/popups/wifi_meter.py)#[fg=#a7c080]#[norange] #[fg=#4f5b58]⡇ #[range=user|mem]#[fg=#7fbbb3]${MEM} #(bash ~/.claude/popups/sparkline_mem.sh)#[norange] #[fg=#4f5b58]⡇"
 
 # Time pill (always shown)
 TIME_PILL="#[fg=#374145,bg=default]${PR} #[fg=#7fbbb3,bg=default]${PL}#[fg=#232a2e,bg=#7fbbb3,bold]"

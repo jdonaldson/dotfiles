@@ -38,7 +38,6 @@
       "Bash(gh run list:*)"
     ]
   },
-  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -47,6 +46,11 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/guard-cwd.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-heredoc.sh",
             "timeout": 5
           }
         ]
@@ -158,6 +162,7 @@
       ]
     }
   },
+  "tui": "fullscreen",
   "additionalDirectories": [
     "/tmp",
     "/private/tmp",
@@ -188,5 +193,6 @@
         "/Users/jdonaldson/.claude/mcp-servers/browser-screenshot/index.js"
       ]
     }
-  }
+  },
+  "model": "claude-fable-5[1m]"
 }

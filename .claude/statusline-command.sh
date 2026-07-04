@@ -11,6 +11,9 @@ used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 quota_5h=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 quota_7d=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 
+# Current git branch of the working directory (empty if not a repo)
+branch=$(git -C "$cwd" branch --show-current 2>/dev/null)
+
 # Shorten home directory
 cwd="${cwd/#$HOME/~}"
 
@@ -46,6 +49,11 @@ pct_color() {
 
 printf "\033[38;5;75m%s %s\033[0m  %s  \033[38;5;245m%s\033[0m" \
   "$api_indicator" "$api_label" "$model" "$cwd"
+
+# 🌿 git branch of the working directory
+if [ -n "$branch" ]; then
+  printf "  \033[38;5;114m🌿%s\033[0m" "$branch"
+fi
 
 # 🧠 context window
 if [ -n "$used_pct" ]; then

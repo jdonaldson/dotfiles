@@ -23,8 +23,10 @@
 - **Render rich markdown via Quarto for viewing** (macOS — needs `quarto` + `open`; skip on headless hosts): when sharing or opening markdown with mermaid charts, LaTeX, complex tables, or other rendered content, render it first: copy to `/tmp/`, swap any non-Quarto frontmatter for a Quarto block (`format: html, embed-resources: true, toc: true`), run `quarto render foo.qmd --to html`, then `open foo.html`. Plain `open foo.md` falls through to TextEdit and shows raw source — chart blocks become unrendered text. This applies to memory files (which carry their own `name/description/type` frontmatter), gallery output, any `synthesis_*.md` with embedded diagrams.
 - No "created by claude" in commit messages — **except** under `~/Projects/work/`, which has its own policy using `Co-Authored-By: Claude` trailers with `Claude-Model:` + `Claude-Provider:` (bedrock/vertex/foundry/anthropic, auto-detected from `CLAUDE_CODE_USE_*` env). Details live in `~/Projects/work/CLAUDE.md`; global hook has a carve-out for that path.
 - Prefer polars over pandas
+- **Prefer `mlr` (Miller) over `awk` for CSV one-liners**. awk splits on every delimiter and silently misreads quoted fields containing commas/newlines, which can blank out a file before the failure is visible. `mlr` is CSV-aware: `mlr --csv filter '$id != "1"' f.csv`, `mlr --csv join -j key -f left.csv right.csv`, `mlr --csv cat --from f1.csv --from f2.csv`. Worth the small DSL learning curve; can also convert CSV ↔ TSV ↔ JSON in one step.
 - **NEVER use `cd`** - use absolute paths
 - **Prefer make/task over scripts** (temp scripts OK in `$TMPDIR`, never bare `/tmp/`)
+- **Never put `!` (esp. `!=`) in a heredoc / double-quoted shell string** — zsh history-expands `!` to `\!`, silently corrupting the content (Python then dies with `SyntaxError: unexpected character after line continuation`). Write the script with the Write tool instead of a heredoc, or rephrase (`not (x == y)`). Same trap with `noclobber`: `>` won't overwrite an existing temp file — use a fresh name or `rm` first.
 - Background tasks: ring tmux bell (`tput bel`) on complete
 - Delete via Trash: `mv <path> ~/.Trash/` (not `rm -rf`); on Linux hosts with no Trash, move to a `/tmp` holding dir or confirm before `rm`
 - **Never move/delete working directory** - breaks session
@@ -73,6 +75,32 @@ On "debrief" or major phase completion, provide:
 - **Doc check**: Is the project CLAUDE.md (especially Current Frontier) still accurate? Flag if stale.
 
 Format: 2-3 bullets per section.
+
+## Bearing Check
+
+The directional sibling of "debrief". A debrief is retrospective (what happened);
+a bearing check is **course-relative** — does the accumulated evidence still point
+at the destination, and what's pushing toward or away from it. On "bearing check":
+
+- **Heading**: one line restating the trajectory/destination, so the rest has something concrete to measure against
+- **Tailwinds**: findings/decisions pushing toward the heading
+- **Headwinds**: findings undermining or complicating it
+- **Net bearing**: on course / drifting / off-course + the single biggest strategic risk
+- **Course correction**: the highest-leverage next move
+
+Rule that keeps it useful: winds are scored *relative to the stated heading* (a
+finding isn't good or bad in the abstract — it's a tail/headwind given where you're
+going), and **the Tailwinds list gets no padding**. The moment it reads as
+everything-is-going-great, it's worthless.
+
+## Load-Bearing Pass
+
+Validate long-form prose (blog posts, reports, docs) by checking a compact **skeleton**, not by re-reading the draft — re-reads burn tokens and still miss stale claims. Two invariants:
+
+- **Grounded (vertical, ⊨)**: every quantitative/factual claim traces to a source of truth — a results file, a measured number, a prior result. Build a **claim ledger** (`claim → source → value`); hunt orphan numbers (a figure with no live source).
+- **Builds (horizontal, ⊢)**: every paragraph is load-bearing on the previous — it follows from it or advances it. Build a **paragraph spine** (one line each); delete-test for filler, check line *n* connects to *n−1* for flow gaps.
+
+When a number changes, patch the ledger and every dependent claim is visible at once — don't re-scan prose hoping to spot the stale one. Regenerate prose *from* a validated spine rather than editing in place. **Trigger: "load-bearing pass"** (or "lbp"). Origin: a stale "movie is a wall" claim survived three re-read passes on a blog draft until the user caught it.
 
 ## Three-Layer Documentation
 
@@ -152,13 +180,17 @@ Before editing CLAUDE.md sections, memory files, or learnings patterns, check wh
 
 ## 🔄 Session Continuity
 
-On session start: check for `## 🔄 RESUME CONTEXT - DELETE AFTER READING` in project CLAUDE.md. Read it, delete it, acknowledge, and continue.
+Per-thread resume files at `<project>/.resume/<thread>.md` — gitignored, never committed. Thread = short work-area identifier ("mercy", "engineering-sweep", "kpmg-sample"). Declare the thread on start; ask the user if unclear.
 
-**When editing another project's CLAUDE.md**: only add/modify your specific section. Never delete or alter existing content (resume context, other notes) that belongs to that project's sessions.
+**Start**: list `<project>/.resume/`, read your thread's file, acknowledge, delete it. Also consume any legacy `## 🔄 RESUME CONTEXT - DELETE AFTER READING` blocks in project CLAUDE.md the same way. Resume blocks are one-shot — the next session on the same thread reads and deletes.
 
-On session end ("shutdown", "update resume context"): write the resume section with Current Status, What Was Built, Blocked On, Next Actions, Context to Remember. Template: `~/.claude/resume_template.md`
+**End** ("shutdown", "update resume context"): promote durable content to memory FIRST, then write `.resume/<thread>.md` covering Current Status, What Was Built, Blocked On, Next Actions, Context to Remember. Template: `~/.claude/resume_template.md`. Keep it under ~500 lines — longer means content should have been promoted to memory. Stale orphan files (>2 weeks, no obvious owner) → promote anything useful to memory and trash.
 
-**For users**: type "update resume context" before ending a session.
+**Parallel sessions**: write only to your own thread's file. Never modify another thread's resume — including the global rule that you don't alter resume context belonging to another session.
+
+**First-time setup in a project**: `mkdir <project>/.resume/` and add `.resume/` to that project's `.gitignore`.
+
+**For users**: type "update resume context" before ending; optionally "update resume context for <thread>".
 
 ---
 
@@ -199,3 +231,10 @@ When significant insights emerge:
 **Avoid**: code generation, SQL, schemas, math — anywhere precise output beats grounded reading.
 
 **Setup**: needs `iogpu.wired_limit_mb=92000` (LaunchDaemon installed); GGUF on `/Volumes/Models`.
+
+---
+
+## 🪪 Accounts & Handles
+
+- **Hugging Face**: user `jdonaldson` (org `Hushh`). Spaces/models → `huggingface.co/{spaces,}/jdonaldson/<name>`. Needs a **write**-scoped token for repo/space creation (`hf auth login`).
+- **GitHub**: `jdonaldson`.

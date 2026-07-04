@@ -58,7 +58,7 @@ elif [[ ! -f ~/.no-tmux && -z "$TMUX" && -z "$INSIDE_EMACS" && -z "$VSCODE_PID" 
   session_name="default"
   tmux has-session -t=$session_name 2> /dev/null
   if [[ $? -ne 0 ]]; then
-     TMUX='' tmux new-session -d -s "$session_name"
+     TMUX='' tmux new-session -d -s "$session_name" -c "$HOME"
   fi
   tmux attach -t "$session_name"
 fi

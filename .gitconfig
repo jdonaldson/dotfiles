@@ -40,3 +40,6 @@
 	interactive = auto
 [credential "azrepos:org/broadjumpllc"]
 	username = justin.donaldson@gocurvo.com
+	azureAuthority = https://login.microsoftonline.com/eeeae8e9-73bc-4aca-8e3b-fdaeadfc4e3a
+[credential "https://huggingface.co"]
+	provider = generic

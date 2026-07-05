@@ -5,10 +5,10 @@ Reads the signal/noise cache written by wifi_refresh.sh (instant). If the cache 
 stale (> REFRESH_S) or missing, kicks off a DETACHED background refresh and renders
 the last known value -- the ~8s system_profiler probe never blocks the status tick.
 
-Render: signal glyph + one braille char whose LEFT column = signal strength (0-4)
-and RIGHT column = noise quality (quieter = taller), then dim "<signal>/<noise>".
-Glyph + braille colored by signal quality. Emits tmux #[fg] escapes; set
-WIFI_METER_NOCOLOR=1 for plain output.
+Render: one braille char whose LEFT column = signal strength (0-4) and RIGHT
+column = noise quality (quieter = taller), colored by signal quality; the
+segment's wifi icon is supplied by adaptive_status.sh. Emits tmux #[fg]
+escapes; set WIFI_METER_NOCOLOR=1 for plain output.
 """
 import os
 import subprocess
@@ -69,12 +69,11 @@ def main():
     age, sigs, noises = read_cache()
     maybe_refresh(age)
     if sigs == "NA":
-        sys.stdout.write(col(SIGNAL + " ⠀", DIM))  # blank braille = disconnected
+        sys.stdout.write(col("⠀", DIM))  # blank braille = disconnected
         return
     rssi, noise = int(sigs), int(noises)
     bits = sum(DOT["L"][i] for i in range(sig_level(rssi))) + sum(DOT["R"][i] for i in range(noise_q(noise)))
-    glyph = col(SIGNAL + " " + chr(0x2800 + bits), sig_color(rssi))
-    sys.stdout.write(glyph + col(f" {rssi}/{noise}", DIM))
+    sys.stdout.write(col(chr(0x2800 + bits), sig_color(rssi)))
 
 
 if __name__ == "__main__":

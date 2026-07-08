@@ -30,9 +30,15 @@ for conda_path in /opt/homebrew/Caskroom/miniconda/base $HOME/miniconda3; do
 done
 
 
-export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
+# Homebrew (Apple Silicon or Intel) — runs only where brew exists;
+# sets PATH/MANPATH/INFOPATH/HOMEBREW_PREFIX correctly.
+for _brew in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+  [[ -x $_brew ]] && eval "$("$_brew" shellenv)" && break
+done
+unset _brew
 
-export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
+# Haxe stdlib — only if present
+[[ -d /opt/homebrew/lib/haxe/std ]] && export HAXE_STD_PATH="/opt/homebrew/lib/haxe/std"
 
 
 maybePath ~/.local/bin

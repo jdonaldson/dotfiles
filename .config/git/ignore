@@ -13,3 +13,5 @@ package-lock.json
 # Machine-/work-local shell overlays (sourced by ~/.aliases and ~/.zshrc.local)
 .aliases.work
 .zshrc.work
+
+**/.claude/.cc-writes/

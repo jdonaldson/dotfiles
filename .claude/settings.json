@@ -140,7 +140,16 @@
         "raw.githubusercontent.com",
         "objects.githubusercontent.com",
         "codeload.github.com",
-        "api.github.com"
+        "api.github.com",
+        "fda.gov",
+        "www.fda.gov",
+        "api.fda.gov",
+        "open.fda.gov",
+        "accessgudid.nlm.nih.gov",
+        "hrsa.gov",
+        "www.hrsa.gov",
+        "data.cms.gov",
+        "www.cms.gov"
       ]
     },
     "filesystem": {

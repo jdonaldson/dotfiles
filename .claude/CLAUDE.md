@@ -183,7 +183,7 @@ Before editing CLAUDE.md sections, memory files, or learnings patterns, check wh
 
 Per-thread resume files at `<project>/.resume/<thread>.md` — gitignored, never committed. Thread = short work-area identifier ("mercy", "engineering-sweep", "kpmg-sample"). Declare the thread on start; ask the user if unclear.
 
-**Start**: list `<project>/.resume/`, read your thread's file, acknowledge, delete it. Also consume any legacy `## 🔄 RESUME CONTEXT - DELETE AFTER READING` blocks in project CLAUDE.md the same way. Resume blocks are one-shot — the next session on the same thread reads and deletes.
+**Start**: list `<project>/.resume/`, read your thread's file, acknowledge it. **Do NOT delete on read** — the resume file is a *living working document*, not a one-shot token. Deleting up front is destructive: a mid-session crash then loses the thread entirely, and there's no value in destroying the file before the work it tracks is done. Instead, keep it and **update it in place** as work progresses; only **collapse/edit/remove** it once the task it describes is actually complete (see End). Legacy `## 🔄 RESUME CONTEXT - DELETE AFTER READING` blocks in project CLAUDE.md: read and acknowledge, then rewrite them non-destructively rather than consuming.
 
 **End** ("shutdown", "update resume context"): promote durable content to memory FIRST, then write `.resume/<thread>.md` covering Current Status, What Was Built, Blocked On, Next Actions, Context to Remember. Template: `~/.claude/resume_template.md`. Keep it under ~500 lines — longer means content should have been promoted to memory. Stale orphan files (>2 weeks, no obvious owner) → promote anything useful to memory and trash.
 

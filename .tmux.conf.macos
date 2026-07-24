@@ -1,7 +1,7 @@
 # macOS-specific tmux configuration (sourced from ~/.tmux.conf)
 
 # Default session
-new-session -d -s lillypad 2>/dev/null
+new-session -d -s jdonaldson 2>/dev/null
 
 # Prefix key
 set -g prefix C-a

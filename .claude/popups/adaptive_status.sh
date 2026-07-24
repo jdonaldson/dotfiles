@@ -27,12 +27,12 @@ TIME_PILL="#[fg=#374145,bg=default]${PR} #[fg=#7fbbb3,bg=default]${PL}#[fg=#232a
 
 if (( COLS >= 180 )); then
     tmux set -g status-left \
-        "#(bash ~/.claude/popups/update_labels.sh >/dev/null)#[fg=#a7c080,bg=default]${PL}#[bg=#a7c080,fg=#232a2e,bold] 🐸 #S #[fg=#a7c080,bg=#374145]${PR}#[fg=#d3c6aa,bg=#374145] 💻 #h #[fg=#374145,bg=default]${PR} "
+        "#(bash ~/.claude/popups/update_labels.sh >/dev/null)#[fg=#a7c080,bg=default]${PL}#[bg=#a7c080,fg=#232a2e,bold] 🧵 #S #[fg=#a7c080,bg=#374145]${PR}#[fg=#d3c6aa,bg=#374145] 💻 #h #[fg=#374145,bg=default]${PR} "
     tmux set -g status-right \
         "${SPOTIFY_SEC}${RESOURCES} #[fg=#dbbc7f]#(bash ~/.claude/popups/weather.sh) #[fg=#4f5b58]⡇ #[fg=#859289] %d %b ${TIME_PILL} #(bash ~/.claude/popups/clock_emoji.sh) %I:%M%p #[fg=#7fbbb3,bg=default]${PR} "
 else
     tmux set -g status-left \
-        "#(bash ~/.claude/popups/update_labels.sh >/dev/null)#[fg=#a7c080,bg=default]${PL}#[bg=#a7c080,fg=#232a2e,bold] 🐸 #[fg=#a7c080,bg=default]${PR} "
+        "#(bash ~/.claude/popups/update_labels.sh >/dev/null)#[fg=#a7c080,bg=default]${PL}#[bg=#a7c080,fg=#232a2e,bold] 🧵 #[fg=#a7c080,bg=default]${PR} "
     tmux set -g status-right \
         "${SPOTIFY_SEC}${RESOURCES} #[fg=#859289] %d %b ${TIME_PILL} %I:%M%p #[fg=#7fbbb3,bg=default]${PR} "
 fi

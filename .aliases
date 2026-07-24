@@ -173,7 +173,7 @@ tdialog() {
 
 # Attach to tmux session, or create it if it doesn't exist
 ta() {
-  local session="${1:-lillypad}"
+  local session="${1:-jdonaldson}"
   tmux attach -t "$session" 2>/dev/null || tmux new-session -s "$session"
 }
 

@@ -38,6 +38,7 @@
       "Bash(gh run list:*)"
     ]
   },
+  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -193,6 +194,5 @@
         "/Users/jdonaldson/.claude/mcp-servers/browser-screenshot/index.js"
       ]
     }
-  },
-  "model": "claude-fable-5[1m]"
+  }
 }

@@ -58,14 +58,12 @@ bind S run-shell "bash ~/.claude/popups/slack_toggle_presence.sh"
 # Opacity picker (fzf live preview)
 bind o display-popup -E -w 30 -h 14 -T " Opacity " "bash ~/.claude/popups/opacity_picker.sh"
 
-# Status left: adaptive — set by ~/.claude/popups/adaptive_status.sh
-# Narrow (<180 cols): just frog emoji pill. Wide (>=180): frog + session name + hostname pill.
-set -g status-left '#(bash ~/.claude/popups/update_labels.sh >/dev/null)#[fg=#a7c080,bg=default]#[bg=#a7c080,fg=#232a2e,bold] 🐸 #S #[fg=#a7c080,bg=#374145]#[fg=#d3c6aa,bg=#374145] 💻 #h #[fg=#374145,bg=default] '
+# Status left + right: single source of truth is ~/.claude/popups/adaptive_status.sh
+# (also re-run by the client-resized / session-created hooks above). Do NOT set
+# status-left/status-right literals here — they drift and the hooks clobber them.
 set -g status-left-length 80
-
-# Status right: sparkline + date in gray, time in blue pill — rounded outer edges
-set -g status-right '#[fg=#374145,bg=default]#[range=user|spotify]#[fg=#1DB954,bg=#374145]  #[fg=#d699b6]#(bash ~/.claude/popups/now_playing.sh) #[norange]#[fg=#374145,bg=default] #[fg=#374145,bg=default]#[bg=#374145]#[range=user|slack]#[fg=#e67e80,bg=#374145] #(printf '\uf198')#[fg=#d3c6aa] #(bash ~/.claude/popups/slack_unread.sh) #[norange]#[fg=#4f5b58]⡇ #[range=user|cpu]#[fg=#a7c080]#(printf '\uf2db') #(bash ~/.claude/popups/sparkline.sh)#[norange] #[fg=#4f5b58]⡇ #[range=user|net]#[fg=#e69875]#(printf '\uf1eb') #(bash ~/.claude/popups/sparkline_net.sh)#[norange] #[fg=#4f5b58]⡇ #[range=user|mem]#[fg=#7fbbb3]#(printf '\uf233') #(bash ~/.claude/popups/sparkline_mem.sh)#[norange] #[fg=#4f5b58]⡇ #[fg=#dbbc7f]#(bash ~/.claude/popups/weather.sh) #[fg=#4f5b58]⡇ #[fg=#859289] %d %b #[fg=#374145,bg=default] #[fg=#7fbbb3,bg=default]#[fg=#232a2e,bg=#7fbbb3,bold] #(bash ~/.claude/popups/clock_emoji.sh) %I:%M%p #[fg=#7fbbb3,bg=default] '
 set -g status-right-length 180
+run-shell -b "bash ~/.claude/popups/adaptive_status.sh"
 set -g status-justify left
 
 # Inactive windows: muted pills with rounded edges

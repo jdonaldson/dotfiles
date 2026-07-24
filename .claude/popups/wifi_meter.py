@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Wi-Fi signal/noise indicator for the tmux status bar (braille S|N style).
+"""Wi-Fi current-SNR indicator for the tmux status bar (one braille char).
 
 Reads the signal/noise cache written by wifi_refresh.sh (instant). If the cache is
 stale (> REFRESH_S) or missing, kicks off a DETACHED background refresh and renders
 the last known value -- the ~8s system_profiler probe never blocks the status tick.
 
-Render: one braille char whose LEFT column = signal strength (0-4) and RIGHT
-column = noise quality (quieter = taller), colored by signal quality; the
-segment's wifi icon is supplied by adaptive_status.sh. Emits tmux #[fg]
-escapes; set WIFI_METER_NOCOLOR=1 for plain output.
+Render: one thick braille bar whose TWO columns can sit at slightly different
+heights, so a single cell resolves 8 half-steps of SNR = signal - noise instead of
+4 full-dot levels. Height alone encodes strength (no color ramp): the taller column
+is ceil(level/2), the shorter floor(level/2), so odd levels read as a one-dot offset
+between the columns. 1-dot floor while connected; dim blank when disconnected. Emits
+a single steady foreground; set WIFI_METER_NOCOLOR=1 to strip the escape entirely.
 """
 import os
 import subprocess
@@ -21,9 +23,8 @@ LOCK = CACHE + ".lock"
 REFRESH = os.path.join(HOME, ".claude/popups/wifi_refresh.sh")
 REFRESH_S = 20          # cache considered stale after this many seconds
 NCOLOR = bool(os.environ.get("WIFI_METER_NOCOLOR"))
-SIGNAL = ""       # nerd-font signal glyph
-GREEN, YEL, ORG, RED, DIM = "#a7c080", "#dbbc7f", "#e69875", "#e67e80", "#4f5b58"
-DOT = {"L": [0x40, 0x04, 0x02, 0x01], "R": [0x80, 0x20, 0x10, 0x08]}  # bottom->top
+FG, DIM = "#d3c6aa", "#4f5b58"  # steady default-text fg; strength is height, not hue
+DOT = {0: [0x40, 0x04, 0x02, 0x01], 1: [0x80, 0x20, 0x10, 0x08]}  # col%2 -> bottom->top
 
 
 def col(text, fg):
@@ -53,16 +54,16 @@ def maybe_refresh(age):
         pass
 
 
-def sig_level(rssi):
-    return 4 if rssi >= -55 else 3 if rssi >= -65 else 2 if rssi >= -72 else 1 if rssi >= -80 else 0
+def snr_bars(snr):
+    """SNR -> 1..8 half-steps: one step per 5 dB from ~10 dB up to ~45 dB."""
+    return max(1, min(8, round((snr - 5) / 5)))  # 1-dot floor while connected
 
 
-def sig_color(rssi):
-    return [RED, ORG, YEL, GREEN, GREEN][sig_level(rssi)]
-
-
-def noise_q(noise):
-    return 4 if noise <= -95 else 3 if noise <= -90 else 2 if noise <= -85 else 1 if noise <= -80 else 0
+def cell(level):
+    """Braille char with left column ceil(level/2), right floor(level/2) dots tall."""
+    left, right = (level + 1) // 2, level // 2
+    bits = sum(DOT[0][r] for r in range(left)) | sum(DOT[1][r] for r in range(right))
+    return chr(0x2800 + bits)
 
 
 def main():
@@ -71,9 +72,8 @@ def main():
     if sigs == "NA":
         sys.stdout.write(col("⠀", DIM))  # blank braille = disconnected
         return
-    rssi, noise = int(sigs), int(noises)
-    bits = sum(DOT["L"][i] for i in range(sig_level(rssi))) + sum(DOT["R"][i] for i in range(noise_q(noise)))
-    sys.stdout.write(col(chr(0x2800 + bits), sig_color(rssi)))
+    snr = int(sigs) - int(noises)
+    sys.stdout.write(col(cell(snr_bars(snr)), FG))
 
 
 if __name__ == "__main__":

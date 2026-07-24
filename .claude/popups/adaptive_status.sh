@@ -20,7 +20,7 @@ else
 fi
 
 # Resource sections (always shown)
-RESOURCES="#[fg=#374145,bg=default]${PL}#[bg=#374145]#[range=user|slack]#[fg=#e67e80,bg=#374145] ${SLACK}#[fg=#d3c6aa] #(bash ~/.claude/popups/slack_unread.sh) #[norange]#[fg=#4f5b58]⡇ #[range=user|cpu]#[fg=#a7c080]${CPU} #(~/.claude/popups/.venv/bin/python ~/.claude/popups/core_meter.py)#[fg=#a7c080]#[norange] #[fg=#4f5b58]⡇ #[range=user|net]#[fg=#e69875]${WIFI} #(~/.claude/popups/.venv/bin/python ~/.claude/popups/wifi_meter.py) #(bash ~/.claude/popups/net_speed.sh)#[norange] #[fg=#4f5b58]⡇ #[range=user|mem]#[fg=#7fbbb3]${MEM} #(bash ~/.claude/popups/mem_pct.sh)#[norange] #[fg=#4f5b58]⡇"
+RESOURCES="#[fg=#374145,bg=default]${PL}#[bg=#374145]#[range=user|slack]#[fg=#e67e80,bg=#374145] ${SLACK}#[fg=#d3c6aa] #(bash ~/.claude/popups/slack_unread.sh) #[norange]#[fg=#4f5b58]⡇ #[range=user|cpu]#[fg=#a7c080]${CPU} #(~/.claude/popups/.venv/bin/python ~/.claude/popups/core_meter.py)#[fg=#a7c080]#[norange] #[fg=#4f5b58]⡇ #[range=user|net]#[fg=#e69875]${WIFI} #(~/.claude/popups/.venv/bin/python ~/.claude/popups/wifi_spectrum.py) #(~/.claude/popups/.venv/bin/python ~/.claude/popups/wifi_meter.py) #(bash ~/.claude/popups/net_speed.sh)#[norange] #[fg=#4f5b58]⡇ #[range=user|mem]#[fg=#7fbbb3]${MEM} #(~/.claude/popups/.venv/bin/python ~/.claude/popups/mem_meter.py)#[norange] #[fg=#4f5b58]⡇"
 
 # Time pill (always shown)
 TIME_PILL="#[fg=#374145,bg=default]${PR} #[fg=#7fbbb3,bg=default]${PL}#[fg=#232a2e,bg=#7fbbb3,bold]"

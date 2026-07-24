@@ -98,4 +98,29 @@ if git diff --cached --name-only | grep -q 'tests/unit/src/unit/issues/'; then
     done
 fi
 
+# --- Python repos with ruff config: lint + format check on staged files ---
+# Mirrors the CI lint step (ruff check && ruff format --check) so lint failures
+# surface at commit time instead of breaking CI. Scoped to repos that opt in
+# via [tool.ruff] in pyproject.toml or a ruff.toml.
+
+if command -v ruff >/dev/null 2>&1; then
+    top=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [[ -n "$top" ]] && { grep -qs '^\[tool\.ruff' "$top/pyproject.toml" || [[ -f "$top/ruff.toml" || -f "$top/.ruff.toml" ]]; }; then
+        staged_py=$(git diff --cached --name-only --diff-filter=ACMR -- '*.py')
+        if [[ -n "$staged_py" ]]; then
+            ruff_failed=0
+            echo "$staged_py" | tr '\n' '\0' | xargs -0 ruff check --quiet || ruff_failed=1
+            echo "$staged_py" | tr '\n' '\0' | xargs -0 ruff format --check --quiet || ruff_failed=1
+            if [[ $ruff_failed -ne 0 ]]; then
+                echo ""
+                echo "ERROR: ruff lint/format check failed on staged Python files."
+                echo "  Fix with:  ruff check --fix <files> && ruff format <files>"
+                echo "  Then re-stage and commit. Bypass with: git commit --no-verify"
+                tput bel 2>/dev/null || true
+                exit 1
+            fi
+        fi
+    fi
+fi
+
 exit 0

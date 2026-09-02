@@ -166,8 +166,7 @@
         "~/.ssh",
         "~/.aws",
         "~/.config/gcloud",
-        "~/.netrc",
-        "~/.dotfiles"
+        "~/.netrc"
       ]
     }
   },

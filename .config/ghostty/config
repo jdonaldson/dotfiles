@@ -7,7 +7,11 @@ cursor-style = block
 cursor-style-blink = true
 
 # Scrollback
-scrollback-limit = 2000
+# ⚠️ THIS IS BYTES, NOT LINES. It was 2000 — about 2 KB, roughly 20 lines — which read like a
+# sensible line count and was not. tmux hid it completely (tmux owns its own scrollback via
+# history-limit 50000), so the shortfall only ever showed up in non-tmux surfaces: the quick
+# terminal, a fresh tab, anything run outside a session. 10000000 is ghostty's own default (10 MB).
+scrollback-limit = 10000000
 
 # Mouse
 mouse-hide-while-typing = true

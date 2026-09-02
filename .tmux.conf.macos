@@ -48,8 +48,10 @@ bind -n MouseDown1Status \
   select-window -t = } } } } }
 bind > run-shell "osascript -e 'tell application \"Spotify\" to next track'"
 bind < run-shell "osascript -e 'tell application \"Spotify\" to previous track'"
-bind + run-shell "osascript -e 'set volume output volume ((output volume of (get volume settings)) + 10)'"
-bind - run-shell "osascript -e 'set volume output volume ((output volume of (get volume settings)) - 10)'"
+# Volume on prefix +/- REMOVED. `bind -` silently shadowed `bind - split-window -v` from the core
+# ~/.tmux.conf — this file is sourced last, so the split had been dead for as long as both existed,
+# with nothing to warn about the collision. Keyboards have dedicated volume keys; the split does not
+# have a spare binding. Track keys stay: < and > collide with nothing.
 
 # Slack controls
 bind s display-popup -T " Slack Status " -w 40% -h 30% -E "bash ~/.claude/popups/slack_set_status.sh"

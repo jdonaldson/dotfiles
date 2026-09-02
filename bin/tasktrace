@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Usage: tasktrace <project> [close]
+#   tasktrace dyf_typing    — open/reopen trace pane
+#   tasktrace dyf_typing close — kill trace pane
+set -euo pipefail
+
+PROJECT="${1:?Usage: tasktrace <project> [close]}"
+FILE="/tmp/tasktrace_${PROJECT}.md"
+MARKER="tasktrace_${PROJECT}"
+
+# Find and kill existing tasktrace pane for this project
+_kill_pane() {
+  tmux list-panes -a -F '#{pane_id} #{pane_start_command}' 2>/dev/null \
+    | grep "$MARKER" | cut -d' ' -f1 \
+    | while read -r pid; do tmux kill-pane -t "$pid" 2>/dev/null || true; done
+}
+
+if [[ "${2:-}" == "close" ]]; then
+  _kill_pane
+  echo "Closed tasktrace: $PROJECT"
+  exit 0
+fi
+
+# Create file if missing
+[[ -f "$FILE" ]] || cat > "$FILE" <<EOF
+# ${PROJECT} — Task Trace
+
+## Actions
+- [ ] (first task)
+
+## Decisions
+- (none yet)
+
+## Blocked
+- (none)
+EOF
+
+# Kill stale pane, open fresh one on caller's window
+_kill_pane
+CALLER=$(tmux display-message -p '#{pane_id}')
+tmux split-window -h -l 50 -t "$CALLER" \
+  "nvim -R -c 'set autoread norelativenumber nonumber noruler noshowcmd noshowmode laststatus=0 signcolumn=no | hi Normal guibg=NONE ctermbg=NONE | call timer_start(1000, {-> execute(\"checktime\")}, {\"repeat\": -1})' $FILE"
+tmux display-message "Task trace: $FILE"

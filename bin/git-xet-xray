@@ -1,0 +1,2 @@
+#!/bin/bash
+exec /Users/jdonaldson/Projects/xet-xray/.venv/bin/python -m xet_xray.cli "$@"

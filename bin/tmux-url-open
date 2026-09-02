@@ -1,0 +1,44 @@
+#!/bin/sh
+# Pick a URL out of the current tmux pane and open it — including URLs that WRAPPED.
+#
+# THE WHOLE TRICK IS `capture-pane -J`. Terminal emulators detect clickable URLs per DISPLAY LINE,
+# so a URL long enough to wrap becomes two unrelated strings and clicking gets you half of one.
+# `-J` joins wrapped lines back into their logical line before matching, so a 300-char redeem URL
+# comes out whole.
+#
+# This works on output from ANY program, which matters because OSC 8 hyperlinks (the "proper" fix)
+# only help when the emitting program actually sends them — most CLI output, and anything pasted
+# into a chat pane, does not.
+#
+# Bound to prefix+u in ~/.tmux.conf. Also usable directly: `tmux-url-open`
+#
+# -S -5000 scans back 5000 lines of scrollback, not just the visible screen: the URL you want has
+# usually scrolled off by the time you reach for this.
+set -eu
+
+SCROLLBACK="${TMUX_URL_SCROLLBACK:--5000}"
+
+# Trailing )]}>,.;:'" are almost always prose punctuation rather than part of the URL, so they are
+# stripped. A trailing / is kept — it can be significant.
+urls=$(
+  tmux capture-pane -J -p -S "$SCROLLBACK" 2>/dev/null \
+    | grep -oE '(https?|ftp|file)://[^ 	"'"'"'`<>]+' \
+    | sed -E 's/[)]},.;:!?]+$//' \
+    | awk '!seen[$0]++' \
+    | tail -r
+)
+
+[ -n "$urls" ] || { tmux display-message "no URLs in the last ${SCROLLBACK#-} lines"; exit 0; }
+
+# --no-multi: opening several at once is almost never what you meant.
+# The preview pane shows the full URL so a long one is readable before you commit to it.
+choice=$(printf '%s\n' "$urls" | fzf-tmux -p 80%,60% -- \
+  --no-multi --reverse --prompt='url> ' \
+  --preview 'printf "%s" {} | fold -w 76' --preview-window=down,4,wrap) || exit 0
+
+[ -n "$choice" ] || exit 0
+
+case "${1:-open}" in
+  copy) printf '%s' "$choice" | pbcopy; tmux display-message "copied: $(printf '%.60s' "$choice")…" ;;
+  *)    open "$choice"; tmux display-message "opened: $(printf '%.60s' "$choice")…" ;;
+esac

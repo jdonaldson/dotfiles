@@ -183,7 +183,8 @@
         "~/Library/Application Support/quarto",
         "~/Library/Caches/quarto",
         "~/.ipython",
-        "~/.jupyter"
+        "~/.jupyter",
+        "~/.dotfiles"
       ],
       "denyRead": [
         "~/.ssh",

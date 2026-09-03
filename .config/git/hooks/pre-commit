@@ -123,4 +123,22 @@ if command -v ruff >/dev/null 2>&1; then
     fi
 fi
 
+# --- Any repo: a titled document's filename must encode its title ---
+# `report.qmd` titled "Cloud cost: where the money is" forces every reader to open
+# the file to find out what it is. Deliberately loose (see the script's docstring):
+# only a content-free basename, or one sharing no word with its own title, fails.
+# `index.qmd` and friends are exempt -- there the directory carries the meaning.
+
+_fncheck="$(dirname "$0")/check-doc-filenames.py"
+if [[ -f "$_fncheck" ]] && command -v python3 >/dev/null 2>&1; then
+    staged_docs=$(git diff --cached --name-only --diff-filter=ACMR \
+        -- '*.qmd' '*.md' '*.Rmd' '*.ipynb')
+    if [[ -n "$staged_docs" ]]; then
+        if ! echo "$staged_docs" | tr '\n' '\0' | xargs -0 python3 "$_fncheck"; then
+            tput bel 2>/dev/null || true
+            exit 1
+        fi
+    fi
+fi
+
 exit 0

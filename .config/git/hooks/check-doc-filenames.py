@@ -28,8 +28,12 @@ from pathlib import Path
 
 # Names fixed by a tool or convention -- for these the DIRECTORY carries the
 # information, so the filename is not expected to encode anything.
+#
+# NOTE `index` is deliberately NOT here. It is exempt only inside an actual Quarto
+# project (see is_quarto_project_page) -- a bare `index.qmd` in a folder with no
+# _quarto.yml is a standalone document that could just as well carry its title, and
+# exempting it unconditionally is how two runbooks kept content-free names.
 EXEMPT_STEMS = {
-    "index",  # Quarto/website entry point
     "readme",
     "claude",
     "agent",
@@ -87,6 +91,7 @@ SKIP_PATH_PARTS = {".resume", "memory", "node_modules", ".venv", "_site", "_free
 def slug(text):
     """Lowercase kebab-case slug: drop punctuation, collapse whitespace."""
     text = text.lower()
+    text = re.sub(r"['’]", "", text)  # drop apostrophes: curvo's -> curvos
     text = re.sub(r"[‐-―]", " ", text)  # unicode dashes
     text = re.sub(r"[^a-z0-9\s-]", " ", text)
     text = re.sub(r"[\s-]+", "-", text)
@@ -157,6 +162,20 @@ def frontmatter_title(text):
     return None
 
 
+def is_quarto_project_page(p):
+    """True if `index` is genuinely required here, i.e. a Quarto project/site.
+
+    Walk up looking for _quarto.yml. Without one, quarto renders the file
+    standalone and the name `index` buys nothing.
+    """
+    for parent in [p.parent, *p.parent.parents]:
+        if (parent / "_quarto.yml").exists() or (parent / "_quarto.yaml").exists():
+            return True
+        if (parent / ".git").exists():  # stop at the repo root
+            break
+    return False
+
+
 def check(path):
     """Return a list of problem strings for one file."""
     p = Path(path)
@@ -165,6 +184,8 @@ def check(path):
 
     stem = p.stem
     if stem.lower() in EXEMPT_STEMS or stem.startswith("_"):
+        return []
+    if stem.lower() == "index" and is_quarto_project_page(p):
         return []
 
     title = frontmatter_title(staged_content(path))

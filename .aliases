@@ -206,5 +206,12 @@ claude-resume-check() {
   fi
 }
 
+wolf-unstick() {
+  # sleipnir gaming (VM 101, gpu-models): kill any lingering Wolf app-session
+  # container and restart Wolf cleanly. Fixes "No video received from host"
+  # caused by a stuck session blocking the next one's GPU/CUDA context.
+  ssh admin@192.168.1.201 '/opt/wolf/unstick.sh'
+}
+
 # Machine-/work-specific aliases (not tracked in public dotfiles).
 [[ -f ~/.aliases.work ]] && source ~/.aliases.work

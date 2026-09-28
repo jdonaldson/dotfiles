@@ -1,0 +1,10 @@
+#!/bin/sh
+# Run one command against the Curvo DATA account (350159409691), past Claude Desktop's
+# per-session AWS config, which only knows the Bedrock/test account.
+#   curvo-data aws athena list-databases --catalog-name AwsDataCatalog
+#   curvo-data python probe.py
+# Athena: use --work-group jdonaldson (default output location + 1 TB/query scan cap).
+export AWS_CONFIG_FILE="$HOME/.aws/config" \
+       AWS_SHARED_CREDENTIALS_FILE="$HOME/.aws/credentials" \
+       AWS_PROFILE=curvo-data
+exec "$@"

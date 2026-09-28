@@ -7,4 +7,7 @@
 export AWS_CONFIG_FILE="$HOME/.aws/config" \
        AWS_SHARED_CREDENTIALS_FILE="$HOME/.aws/credentials" \
        AWS_PROFILE=curvo-data
+# Env creds outrank the profile -- drop any the parent exported.
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_BEARER_TOKEN_BEDROCK
+# Same wrapper for any command; ~/.local/bin/aws-data is the aws-only sibling.
 exec "$@"

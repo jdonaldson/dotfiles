@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# ct [thread] [claude args...]: launch Claude Code named after a work thread.
+#
+# The thread name is the session name (claude -n), which thread-name.sh then turns into the tmux
+# pane label and the .resume/<thread>.md pointer. With no thread, pick one from the nearest
+# .resume/ (newest first), or type a new kebab-case name in the picker.
+#
+# Launches through `direnv exec` so the account routing in ~/.config/direnv/direnvrc
+# (CLAUDE_CONFIG_DIR) applies even from a non-interactive shell such as `tmux new-window ... ct x`.
+set -euo pipefail
+
+valid() { [[ $1 =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; }
+
+# Nearest ancestor holding .resume/, else the current directory.
+root=$PWD
+while [ "$root" != / ] && [ ! -d "$root/.resume" ]; do root=$(dirname "$root"); done
+[ -d "$root/.resume" ] || root=$PWD
+
+thread=""
+if [ $# -gt 0 ] && [[ $1 != -* ]]; then
+  thread=$1
+  shift
+else
+  command -v fzf >/dev/null || { echo "ct: no thread given and fzf is not installed" >&2; exit 2; }
+  picked=$(ls -t "$root/.resume" 2>/dev/null | sed -n 's/\.md$//p' |
+    fzf --print-query --prompt 'thread> ' --header 'pick a thread, or type a new name' || true)
+  # --print-query: line 1 = typed query, line 2 = selection (absent when nothing matched).
+  thread=$(printf '%s\n' "$picked" | sed -n 2p)
+  [ -n "$thread" ] || thread=$(printf '%s\n' "$picked" | sed -n 1p)
+fi
+
+[ -n "$thread" ] || { echo "ct: no thread chosen" >&2; exit 1; }
+valid "$thread" || { echo "ct: '$thread' is not kebab-case (a-z, 0-9, single hyphens)" >&2; exit 2; }
+
+if command -v direnv >/dev/null; then
+  exec direnv exec "$PWD" claude -n "$thread" "$@"
+fi
+exec claude -n "$thread" "$@"

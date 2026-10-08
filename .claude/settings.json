@@ -52,6 +52,11 @@
             "type": "command",
             "command": "~/.claude/hooks/guard-heredoc.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-clobber.py",
+            "timeout": 5
           }
         ]
       },
@@ -116,6 +121,16 @@
             "type": "command",
             "command": "~/.claude/hooks/tool-status.sh",
             "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/thread-name.sh"
           }
         ]
       }

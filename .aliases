@@ -95,16 +95,43 @@ alias mamba=micromamba
 alias llms="llama-server --fim-qwen-7b-default"
 
 
+# Mint a 12h MFA session into the environment.
+#   aws-mfa-login          -> prompts for the code
+#   aws-mfa-login 123456   -> non-interactive (scripts, pipes, Claude Code `!` lines)
+# Validates the code and checks sts actually returned something BEFORE exporting.
+# The old version did neither: a non-interactive call got an empty read, passed an
+# empty --token-code, and still printed success while exporting three empty strings
+# -- which poisons the shell env and, if piped into `aws configure set`, wipes the
+# [mfa] profile. Burned one single-use code finding that out.
 aws-mfa-login() {
-  read "mfa_code?Enter MFA code: "
+  local mfa_code="${1:-}" serial creds key secret token
+  [[ -z "$mfa_code" ]] && read "mfa_code?Enter MFA code: "
+  if [[ ! "$mfa_code" =~ ^[0-9]{6}$ ]]; then
+    echo "aws-mfa-login: need a 6-digit code (got ${#mfa_code} chars); nothing changed" >&2
+    return 2
+  fi
+
+  serial=$(aws iam list-mfa-devices --query "MFADevices[0].SerialNumber" --output text) || return 3
+  if [[ -z "$serial" || "$serial" == "None" ]]; then
+    echo "aws-mfa-login: could not resolve an MFA device serial; nothing changed" >&2
+    return 3
+  fi
+
   creds=$(aws sts get-session-token \
-    --serial-number $(aws iam list-mfa-devices --query "MFADevices[0].SerialNumber" --output text) \
-    --token-code $mfa_code \
+    --serial-number "$serial" \
+    --token-code "$mfa_code" \
     --query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
-    --output text)
-  export AWS_ACCESS_KEY_ID=$(echo $creds | awk '{print $1}')
-  export AWS_SECRET_ACCESS_KEY=$(echo $creds | awk '{print $2}')
-  export AWS_SESSION_TOKEN=$(echo $creds | awk '{print $3}')
+    --output text) || return 4
+  read -r key secret token <<< "$creds"
+  if [[ -z "$key" || -z "$secret" || -z "$token" ]]; then
+    echo "aws-mfa-login: sts returned an incomplete credential set; nothing changed" >&2
+    return 4
+  fi
+
+  export AWS_ACCESS_KEY_ID="$key"
+  export AWS_SECRET_ACCESS_KEY="$secret"
+  export AWS_SESSION_TOKEN="$token"
+  unset AWS_PROFILE   # an explicit profile would override these
   echo "✅ MFA session credentials set. Valid for up to 12 hours."
 }
 

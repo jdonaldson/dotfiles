@@ -1,7 +1,12 @@
 #!/bin/bash
 # Simple AWS MFA script - refreshes [mfa] profile using [default] base credentials
 
-MFA_SERIAL="arn:aws:iam::350159409691:mfa/iphone"
+# Serial comes from the account, not this file (the repo is public). Override with AWS_MFA_SERIAL.
+MFA_SERIAL="${AWS_MFA_SERIAL:-$(aws iam list-mfa-devices --profile default --query 'MFADevices[0].SerialNumber' --output text)}"
+if [ -z "$MFA_SERIAL" ] || [ "$MFA_SERIAL" = "None" ]; then
+    echo "Error: could not resolve an MFA device serial (set AWS_MFA_SERIAL)"
+    exit 1
+fi
 DURATION=43200  # 12 hours
 
 echo -n "Enter MFA code: "

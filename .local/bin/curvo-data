@@ -1,5 +1,5 @@
 #!/bin/sh
-# Run one command against the Curvo DATA account (350159409691), past Claude Desktop's
+# Run one command against the Curvo DATA account (the default profile's account), past Claude Desktop's
 # per-session AWS config, which only knows the Bedrock/test account.
 #   curvo-data aws athena list-databases --catalog-name AwsDataCatalog
 #   curvo-data python probe.py
